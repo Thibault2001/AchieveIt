@@ -1,61 +1,80 @@
 import React, { useState } from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom'; 
+import { sendPasswordResetEmail } from 'firebase/auth';
 
-// Import Firebase hooks 
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';  
-
-// Import Firebase auth instance
-import { app, auth } from './firebase';
+import { auth } from './firebase';
 
 const LoginPage = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Use Firebase hook
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);  
+  const [signInWithEmailAndPassword, user, error] = useSignInWithEmailAndPassword(auth);
+  
+  const navigate = useNavigate();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogin = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    await signInWithEmailAndPassword(username, password);
     
-    // Call Firebase method on click
-    signInWithEmailAndPassword(username, password);
+    if (user) {
+      navigate('/welcome');
+    }
+  };
+
+  const [resetEmail, setResetEmail] = useState('');
+  const [showReset, setShowReset] = useState(false);
+
+  const resetPassword = () => {
+    setShowReset(true);
+  };
+
+  const handleReset = () => {
+    sendPasswordResetEmail(auth, resetEmail);
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
+    <form onSubmit={handleSubmit}>
+      
+      {error && <p>Error: {error.message}</p>} 
 
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username:</label> 
-          <input 
-            type="text"
-            value={username}
-            onChange={handleUsernameChange}  
+      <input 
+        type="email"
+        placeholder="Email"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+
+      <input
+        type="password" 
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}  
+      />
+
+      <button type="submit">Login</button>
+      <button onClick={resetPassword}>
+        Réinitialiser le mot de passe
+      </button>
+
+      {showReset && (  
+        <>
+          <input
+            type="email"
+            placeholder="Email"
+            value={resetEmail}
+            onChange={(e) => setResetEmail(e.target.value)}  
           />
-        </div>
+          <button onClick={handleReset}>
+            Confirmer réinitialisation
+          </button>
+        </>
+      )}
 
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password"
-            value={password} 
-            onChange={handlePasswordChange} 
-          />
-        </div>
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    </form>
   );
-};
+}
 
 export default LoginPage;
