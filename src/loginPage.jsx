@@ -37,43 +37,51 @@ const LoginPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      
-      {error && <p>Error: {error.message}</p>} 
 
-      <input 
+  {error && (
+    <p>
+      Error: {error.message}
+    </p>
+  )}
+
+  <input 
+    type="email"
+    placeholder="Email"
+    value={username}
+    onChange={(e) => setUsername(e.target.value)}
+  />
+
+  <input
+    type="password"
+    placeholder="Password" 
+    value={password}
+    onChange={(e) => setPassword(e.target.value)} 
+  />
+
+  <button type="submit">
+    Login
+  </button>
+  <br />
+  <button onClick={resetPassword}>
+    Reset Password
+  </button>
+
+  {showReset && (
+    <>
+      <input
         type="email"
         placeholder="Email"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={resetEmail}
+        onChange={(e) => setResetEmail(e.target.value)}  
       />
-
-      <input
-        type="password" 
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}  
-      />
-
-      <button type="submit">Login</button>
-      <button onClick={resetPassword}>
-        Réinitialiser le mot de passe
+      <br />
+      <button onClick={handleReset}>
+        Confirm Reset
       </button>
+    </>
+  )}
 
-      {showReset && (  
-        <>
-          <input
-            type="email"
-            placeholder="Email"
-            value={resetEmail}
-            onChange={(e) => setResetEmail(e.target.value)}  
-          />
-          <button onClick={handleReset}>
-            Confirmer réinitialisation
-          </button>
-        </>
-      )}
-
-    </form>
+</form>
   );
 }
 

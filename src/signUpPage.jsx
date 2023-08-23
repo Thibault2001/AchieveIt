@@ -8,20 +8,34 @@ function SignUpPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('Successfully signed up!', userCredential.user);
-    } catch(error) {
-      console.log('Error signing up:', error);
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log(error);
+      
+    } catch (err) {
+      console.log(err);
+      // error management 
+      if (err.code === 'auth/email-already-in-use') {
+        setError('This email is already used'); 
+      }
+      if (err.code === 'auth/weak-password') {
+        setError('Password should be at least 6 characters'); 
+      } 
+      else {
+        setError('Error signing up');
+      }
     }
 
-  }
+  };
 
   return (
+    <div>
+      {error && <p>{error}</p>}
     <form onSubmit={handleSubmit}>
       <input 
         type="email"
@@ -39,6 +53,7 @@ function SignUpPage() {
 
       <button type="submit">Sign Up</button>
     </form>
+    </div>
   );
 }
 
