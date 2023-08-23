@@ -18,6 +18,7 @@ import './CSS files/Appointment.css';
 
         const items = [
             {id: 1, name: 'Appointment'},
+            {id: 2, name: 'Sports'}
         ]
 
     return (
@@ -35,6 +36,7 @@ import './CSS files/Appointment.css';
                     >
                        {item.name} 
                     </li>
+                    
                 ))}
             </ul>
            )} 
