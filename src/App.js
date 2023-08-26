@@ -4,6 +4,7 @@ import './App.css';
 import LoginPage from './loginPage';
 import SignUpPage from './signUpPage';
 import WelcomeUser from './welcomeUsers';
+import WelcomeAdmin from './adminPages/welcomeAdmin'
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
             <li>
               <Link to="/signUp">Sign Up</Link>
             </li>
+            <li>
+              
+            </li>
           </ul>
         </nav>
 
@@ -24,6 +28,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/welcome" element={<WelcomeUser />} />
+          <Route path="welcomeAdmin" element={<WelcomeAdmin />} />
         </Routes>
       </div>
     </Router>

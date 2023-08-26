@@ -52,22 +52,32 @@ const LoginPage = () => {
     try {
       setIsSubmitting(true);
 
-      // Use signInWithEmailAndPassword function to attempt login
-      signInWithEmailAndPassword(auth, username, password)
-        .then((userCredential) => {
-          // Login successful
-          const user = userCredential.user;
-           // Convert user in a JSON chain
-          const userJSON = JSON.stringify(user);
-          // Define a cookie with the JSON chain of the user object
-          document.cookie = `user=${userJSON}; path=/`;
-          console.log(document.cookie);
-          navigate('/welcome')// Navigate to welcome page on success
-        })
-        .catch((error) => {
-          // Handle login error
-          setFirebaseError(error);
-        });
+    // Use signInWithEmailAndPassword function to attempt login
+    signInWithEmailAndPassword(auth, username, password)
+    .then((userCredential) => {
+      // Login successful
+      const user = userCredential.user;
+
+      user.getIdTokenResult().then((idTokenResult) => {
+        const { admin } = idTokenResult.claims; // Get user's claims
+
+        // Convert user in a JSON chain
+        const userJSON = JSON.stringify(user);
+        // Define a cookie with the JSON chain of the user object
+        document.cookie = `user=${userJSON}; path=/`;
+        if (admin) {
+          navigate('/welcomeAdmin');
+        } else{
+        console.log(document.cookie);
+        navigate('/welcome'); // Navigate to welcome page on success
+        }
+      });
+    })
+    .catch((error) => {
+      // Handle login error
+      setFirebaseError(error);
+    });
+
     } finally {
       setIsSubmitting(false);
     }
