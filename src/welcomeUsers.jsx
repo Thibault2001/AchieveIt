@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Appointment from './Appointment';
 
 const WelcomeUser = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const WelcomeUser = () => {
     <div>
       <h1>Welcome User!</h1>
       {/* ... (The rest of the welcome page content) */}
+      <Appointment />
     </div>
   );
 };

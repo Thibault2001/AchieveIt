@@ -12,7 +12,7 @@ import Modal from 'react-modal';
         {
             setSelectedItem(item);
 
-            if(item.name === 'Appointment')
+            //if(item.name === 'Appointment')
             {
                 handleAppointmentClick();
             }
@@ -64,11 +64,17 @@ import Modal from 'react-modal';
            onRequestClose={closeModal}
            contentLabel="Popup Modal"
            >
-            <h1> Add Appointment Event </h1>
-            <p> Appointment Title</p>
-            <p> Appointment Location </p>
-            <p> Appointment Date </p>
-            <p> Appointment Time </p>
+            <h1> Add {selectedItem ? selectedItem.name : ''} </h1>
+            <p> {selectedItem ? selectedItem.name : ''} Title</p>
+            <p> Add text field </p>
+            <p> {selectedItem ? selectedItem.name : ''} Location </p>
+            <p> Add text field </p>
+            <p> {selectedItem ? selectedItem.name : ''} Date </p>
+            <p> Add Date Selector </p>
+            <p> {selectedItem ? selectedItem.name : ''} Time </p>
+            <p> Add Time Selector </p>
+            <p> {selectedItem ? selectedItem.name : ''} Duration </p>
+            <p> Add Mins Selector </p>
             <button onClick={closeModal}> Close </button>
 
            </Modal>
