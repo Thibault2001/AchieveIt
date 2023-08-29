@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import LoginPage from './loginPage';
 import SignUpPage from './signUpPage';
-import WelcomeUser from './welcomeUsers'
+import WelcomeUser from './welcomeUsers';
+import WelcomeAdmin from './adminPages/welcomeAdmin'
 
 //changing comment 
 function App() {
@@ -18,6 +19,9 @@ function App() {
             <li>
               <Link to="/signUp">Sign Up</Link>
             </li>
+            <li>
+              
+            </li>
           </ul>
         </nav>
 
@@ -25,6 +29,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/welcome" element={<WelcomeUser />} />
+          <Route path="welcomeAdmin" element={<WelcomeAdmin />} />
         </Routes>
       </div>
     </Router>

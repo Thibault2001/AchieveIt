@@ -15,7 +15,6 @@ function SignUpPage() {
     
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log(error);
       
     } catch (err) {
       console.log(err);
