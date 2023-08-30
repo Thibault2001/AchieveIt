@@ -3,7 +3,7 @@ import './App.css';
 import './Event.css';
 import { Event } from './Event.js';
 
-function App() {
+function EventDisplayFunction() {
   const [events, setEvents] = useState([
     //example events
     {
@@ -118,4 +118,4 @@ function App() {
   );
 }
 
-export default App;
+export default EventDisplayFunction;
