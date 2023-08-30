@@ -1,0 +1,36 @@
+.appointment
+{
+    position: relative;
+    display: inline-block;
+}
+
+.appointment-toggle
+{
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 16px 30px;
+    cursor: pointer;
+}
+
+.appointment-menu
+{
+    position: absolute;
+    top: 75%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+}
+
+.appointment-menu li
+{
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.appointment-menu :hover
+{
+    background-color: #f643f4;
+}
+
