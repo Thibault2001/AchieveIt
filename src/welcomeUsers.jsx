@@ -1,18 +1,8 @@
 
-import React, { useState, useEffect, useNavigate, Cookies } from 'react';
+import React, { useState} from 'react';
 import { Button, Typography, Box, Grid, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 const WelcomeUser = () => {
-
-        const navigate = useNavigate();
-
-        useEffect(() => {
-        const userCookie = Cookies.get('user');
-    
-        if (!userCookie) {
-            navigate('/login');
-        }
-        }, [navigate]);
     
         const [currentDate, setCurrentDate] = useState(new Date());
         const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
