@@ -17,18 +17,14 @@ function SignUpPage() {
       await createUserWithEmailAndPassword(auth, email, password);
       
     } catch (err) {
-      console.log(err);
-      // error management 
       if (err.code === 'auth/email-already-in-use') {
-        setError('This email is already used'); 
-      }
-      if (err.code === 'auth/weak-password') {
-        setError('Password should be at least 6 characters'); 
-      } 
-      else {
+        setError('This email is already used');
+      } else if (err.code === 'auth/weak-password') {
+        setError('Password should be at least 6 characters');
+      } else {
         setError('Error signing up');
       }
-    }
+    }    
 
   };
 
