@@ -3,30 +3,10 @@ import './App.css';
 import './Event.css';
 import { Event } from './Event.js';
 
-function EventDisplayFunction() {
+function EventDisplay() {
   const [events, setEvents] = useState([
     //example events
-    {
-      id: 1,
-      title: "Event 1",
-      type: "University",
-      date: "2023-08-18",
-      description: "Today I have an assignment to do"
-    },
-    {
-      id: 2,
-      title: "Event 2",
-      type: "Birthday",
-      date: "2023-09-21",
-      description: "Someone's birthday"
-    },
-    {
-      id: 3,
-      title: "Event 3",
-      type: "Sports",
-      date: "2023-09-21",
-      description: "Today I really want to play some football"
-    }
+ 
   ]);
 
   const [title, setTitle] = useState('');
@@ -118,4 +98,4 @@ function EventDisplayFunction() {
   );
 }
 
-export default EventDisplayFunction;
+export default EventDisplay;
