@@ -7,15 +7,14 @@ import Modal from 'react-modal';
         const[isModalOpen, setIsModalOpen] = useState(false);
         const[selectedItem, setSelectedItem] = useState(null);
         const[isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     
         const handleItemClick = (item) =>
         {
             setSelectedItem(item);
-
-            //if(item.name === 'Appointment')
-            {
-                handleAppointmentClick();
-            }
+            
+            handleAppointmentClick();
+            
         };
 
         const handleAppointmentClick = () =>
@@ -27,6 +26,11 @@ import Modal from 'react-modal';
         {
             setIsModalOpen(false);
         };
+
+        const confirmEvent = () =>
+        {
+            //When clicked take the information from text fields and enter into database.
+        }
 
         const toggleDropdown = () =>
         {
@@ -66,7 +70,6 @@ import Modal from 'react-modal';
            >
             <h1> Add {selectedItem ? selectedItem.name : ''} </h1>
             <p> {selectedItem ? selectedItem.name : ''} Title</p>
-            <p> Add text field </p>
             <p> {selectedItem ? selectedItem.name : ''} Location </p>
             <p> Add text field </p>
             <p> {selectedItem ? selectedItem.name : ''} Date </p>
@@ -76,6 +79,7 @@ import Modal from 'react-modal';
             <p> {selectedItem ? selectedItem.name : ''} Duration </p>
             <p> Add Mins Selector </p>
             <button onClick={closeModal}> Close </button>
+            <button onClick={confirmEvent}> Confirm Event </button>
 
            </Modal>
       </div>
