@@ -3,13 +3,13 @@ import './App.css';
 import './Event.css';
 import { Event } from './Event.js';
 
-function EventDisplay() {
+function EventDisplay({selectedItem, closeModal}) {
   const [events, setEvents] = useState([
     //example events
  
   ]);
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
   const [type, setType] = useState('');
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
@@ -18,9 +18,9 @@ function EventDisplay() {
     setTitle(event.target.value);
   };
 
-  const typeChange = (event) => {
-    setType(event.target.value);
-  };
+  // const typeChange = (event) => {
+  //   setType(event.target.value);
+  // };
 
   const dateChange = (event) => {
     setDate(event.target.value);
@@ -53,19 +53,19 @@ function EventDisplay() {
   return (
     <body>
       <div className='createEvent'>
-      <p>title:</p>
+      <p>{selectedItem ? selectedItem.name : ''} title:</p>
         <input
           type="text"
           value={title}
           onChange={titleChange}
         />
 
-        <p>type:</p>
+        {/*<p>type:</p>
         <input
           type="text"
           value={type}
           onChange={typeChange}
-        />
+  />*/}
 
         <p>date:</p>
         <input
@@ -87,7 +87,7 @@ function EventDisplay() {
             <Event
               key={event.id}
               title={event.title}
-              type={event.type}
+              type={selectedItem ? selectedItem.name : ''}
               date={event.date}
               description={event.description}
             />

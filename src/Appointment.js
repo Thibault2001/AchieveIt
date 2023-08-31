@@ -65,7 +65,7 @@ import EventDisplay from './EventDisplay'
            onRequestClose={closeModal}
            contentLabel="Popup Modal"
            >
-            <EventDisplay/>
+            <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/>
             <button onClick={closeModal}> Close </button>
           
            </Modal>
