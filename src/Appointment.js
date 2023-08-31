@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './CSS files/Appointment.css';
 import Modal from 'react-modal';
+import EventDisplay from './EventDisplay'
     
     function Appointment() 
     {
@@ -27,11 +28,6 @@ import Modal from 'react-modal';
             setIsModalOpen(false);
         };
 
-        const confirmEvent = () =>
-        {
-            //When clicked take the information from text fields and enter into database.
-        }
-
         const toggleDropdown = () =>
         {
             setIsDropdownOpen(!isDropdownOpen);
@@ -39,7 +35,8 @@ import Modal from 'react-modal';
     
         const items = [
             {id: 1, name: 'Appointment'},
-            {id: 2, name: 'Sports'}
+            {id: 2, name: 'Sports'},
+            {id: 3, name: 'Birthday'}
         ]
 
     return (
@@ -68,19 +65,9 @@ import Modal from 'react-modal';
            onRequestClose={closeModal}
            contentLabel="Popup Modal"
            >
-            <h1> Add {selectedItem ? selectedItem.name : ''} </h1>
-            <p> {selectedItem ? selectedItem.name : ''} Title</p>
-            <p> {selectedItem ? selectedItem.name : ''} Location </p>
-            <p> Add text field </p>
-            <p> {selectedItem ? selectedItem.name : ''} Date </p>
-            <p> Add Date Selector </p>
-            <p> {selectedItem ? selectedItem.name : ''} Time </p>
-            <p> Add Time Selector </p>
-            <p> {selectedItem ? selectedItem.name : ''} Duration </p>
-            <p> Add Mins Selector </p>
+            <EventDisplay/>
             <button onClick={closeModal}> Close </button>
-            <button onClick={confirmEvent}> Confirm Event </button>
-
+          
            </Modal>
       </div>
 
