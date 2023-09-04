@@ -48,16 +48,17 @@ function EventDisplay({selectedItem, closeModal}) {
     setDate('');
     setDesc('');
   };
-
+    
   //
   return (
     <body>
       <div className='createEvent'>
-      <p>{selectedItem ? selectedItem.name : ''} title:</p>
+      <p>{selectedItem ? selectedItem.name : ''} Title:</p>
         <input
           type="text"
-          value={title}
+
           onChange={titleChange}
+          placeholder='Enter Event Title'
         />
 
         {/*<p>type:</p>
@@ -67,21 +68,29 @@ function EventDisplay({selectedItem, closeModal}) {
           onChange={typeChange}
   />*/}
 
-        <p>date:</p>
+        <p>Date:</p>
         <input
           type="date"
           value={date}
           onChange={dateChange}
         />
 
-        <p>description:</p>
-        <input
+        <p>{selectedItem ? selectedItem.name : ''} Description:</p>
+        {/* <input
           type="text"
           value={desc}
           onChange={descChange}
-        />
-        <button onClick={handleCreateEvent}>Create Event</button>
+        /> */}
 
+        <textarea
+          id="textAreaDescription"
+          rows="5"
+          cols="50"
+          placeholder='Enter your event description here...'
+          onChange={descChange}
+          ></textarea>
+
+       
         <div className='eventHolder'>
           {events.map((event) => (
             <Event
@@ -93,6 +102,8 @@ function EventDisplay({selectedItem, closeModal}) {
             />
           ))}
         </div>
+        <button onClick={handleCreateEvent}>Create Event</button>
+            
       </div>
     </body>
   );

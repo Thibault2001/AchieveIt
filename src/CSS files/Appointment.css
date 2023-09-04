@@ -34,3 +34,12 @@
     background-color: #f643f4;
 }
 
+.modal-custom {
+
+    z-index: 9999;
+    pointer-events: auto;
+    width: 10% !important;
+    max-width: 800px !important;
+    height: 70% !important;
+    max-height: 500px !important;
+}

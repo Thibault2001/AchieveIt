@@ -84,9 +84,9 @@ const WelcomeUser = () => {
                             <Typography gutterBottom>
                                 Goal 2
                             </Typography>
-                            <Fab color="primary" aria-label="add" style={{ marginTop: 15 }}>
+                            {/* <Fab color="primary" aria-label="add" style={{ marginTop: 15 }}>
                                 <AddIcon />
-                            </Fab>
+                            </Fab> */}
                         </Box>
                     </Box>
                 </Grid>

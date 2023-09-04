@@ -60,15 +60,16 @@ import EventDisplay from './EventDisplay'
                 ))}
             </ul>
             )}
-           <Modal
-           isOpen={isModalOpen}
-           onRequestClose={closeModal}
-           contentLabel="Popup Modal"
-           >
-            <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/>
-            <button onClick={closeModal}> Close </button>
-          
-           </Modal>
+            <div className="modal-custom"> 
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="Popup Modal"
+                >
+                    <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/>
+                    <button onClick={closeModal}> Close </button>
+                </Modal>
+           </div>
       </div>
 
     );
