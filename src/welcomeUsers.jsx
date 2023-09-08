@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Typography, Box, Grid, Select, MenuItem } from '@mui/material';
+import Appointment from './Appointment'
 
 const WelcomeUser = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -26,10 +27,14 @@ const WelcomeUser = () => {
     const months = Array.from({ length: 12 }, (_, index) => new Date(2000, index).toLocaleString('default', { month: 'long' }));
 
     return (
+
+        
         <Box p={4}>
             <Typography variant="h4" fontSize={50} gutterBottom>
                 Welcome, here is your day
             </Typography>
+
+             <Appointment /> {/* Calls the dropdown of the event creation method. */}
 
             <Grid container spacing={4} mt={10} justifyContent="center" alignItems="center" style={{ height: '80vh' }}>
                 {/* Dates Section */}
@@ -100,6 +105,8 @@ const WelcomeUser = () => {
                 </Grid>
             </Grid>
         </Box>
+
+        
     );
 }
 
