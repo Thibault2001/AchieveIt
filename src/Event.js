@@ -2,13 +2,15 @@ import React from "react";
 import './App.js';
 import { useState } from "react";
 
-function Event({ title, type, date, description }) {
+function Event({ title, type, date, time, description }) {
 
     return (
         <div className="event" style={{ backgroundColor: GetColour(type) }}>
             <h2>{title}</h2>
             <h3>{date}</h3>
-            <h4>{type}</h4>
+            <br />
+            <h3>{time}</h3>
+            <h4><u>{type}</u></h4>
             <p>{description}</p>
         </div>
     );
@@ -17,14 +19,16 @@ function Event({ title, type, date, description }) {
 //This function will return a hexadecimal colour based on the type of event the user chooses.
 function GetColour(type) {
     switch (type) {
-        case "University":
-            return "#ffaa00c7"
+        case "Appointment":
+            return "#ffaa00c7" //Orange
         case "Sports":
-            return "#13bb0ac7"
+            return "#13bb0ac7" //Green
         case "Birthday":
-            return "#0ab5bbc7"
+            return "#0ab5bbc7" //Turquoise
+        case "University":
+            return "#d4ff00" //Yellow
         default:
-            return "#6200ffc7"
+            return "#6200ffc7" //Blue
     }
 
 }
@@ -135,6 +139,7 @@ function EventDisplayFunction() {
                 title={event.title}
                 type={event.type}
                 date={event.date}
+                time={event.time}
                 description={event.description}
               />
             ))}

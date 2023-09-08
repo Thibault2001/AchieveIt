@@ -13,6 +13,7 @@ function EventDisplay({selectedItem, closeModal}) {
   const [type, setType] = useState('');
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
+  const [selectedTime, setSelectedTime] = useState('00:00');
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -36,7 +37,8 @@ function EventDisplay({selectedItem, closeModal}) {
       title: title,
       type: type,
       date: date,
-      description: desc
+      time: selectedTime,
+      description: desc,
     };
 
     setEvents([...events, newEvent]);
@@ -46,8 +48,23 @@ function EventDisplay({selectedItem, closeModal}) {
     setTitle('');
     setType('');
     setDate('');
+    setSelectedTime('00:00')
     setDesc('');
   };
+
+  const timeOptions = [];
+  for(let hour = 0; hour < 24; hour++)
+  {
+    for(let min = 0; min < 60; min +=15)
+    {
+      const formattedHour = String(hour).padStart(2, '0');
+      const formattedMinute = String(min).padStart(2,'0')
+      const timeOption = `${formattedHour}:${formattedMinute}`;
+      timeOptions.push(timeOption);
+    }
+  }
+
+
     
   //
   return (
@@ -75,6 +92,22 @@ function EventDisplay({selectedItem, closeModal}) {
           onChange={dateChange}
         />
 
+        <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p>
+        <select
+          type="time"
+          value={selectedTime}
+          onChange={(e) => setSelectedTime(e.target.value)}
+        >
+
+          {timeOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+
+          ))}
+
+        </select>
+
         <p>{selectedItem ? selectedItem.name : ''} Description:</p>
         {/* <input
           type="text"
@@ -98,6 +131,7 @@ function EventDisplay({selectedItem, closeModal}) {
               title={event.title}
               type={selectedItem ? selectedItem.name : ''}
               date={event.date}
+              time={event.time}
               description={event.description}
             />
           ))}
