@@ -43,3 +43,9 @@
     height: 70% !important;
     max-height: 500px !important;
 }
+
+.closeButton 
+{
+    margin-top: 20px;
+}
+

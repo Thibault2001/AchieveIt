@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import './Event.css';
+import './CSS files/EventDisplay.css';
 import { Event } from './Event.js';
 
 function EventDisplay({selectedItem, closeModal}) {
@@ -14,6 +15,7 @@ function EventDisplay({selectedItem, closeModal}) {
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
   const [selectedTime, setSelectedTime] = useState('00:00');
+  const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -39,6 +41,7 @@ function EventDisplay({selectedItem, closeModal}) {
       date: date,
       time: selectedTime,
       description: desc,
+      reminderTime: selectedReminderTime,
     };
 
     setEvents([...events, newEvent]);
@@ -50,6 +53,7 @@ function EventDisplay({selectedItem, closeModal}) {
     setDate('');
     setSelectedTime('00:00')
     setDesc('');
+    setSelectedReminderTime('at_event');
   };
 
   const timeOptions = [];
@@ -122,8 +126,30 @@ function EventDisplay({selectedItem, closeModal}) {
           placeholder='Enter your event description here...'
           onChange={descChange}
           ></textarea>
+        <br></br>
+        
+        <p>Set Reminder Time:</p>
+        <select
+          value={selectedReminderTime}
+          onChange={(e) => setSelectedReminderTime(e.target.value)}
+          >
+            <option value="at_event">At Time of Event</option>
+            <option value="5">5 Minutes</option>
+            <option value="10">10 Minutes</option>
+            <option value="15">15 Minutes</option>
+            <option value="30">30 Minutes</option>
+            <option value="60">1 Hour</option>
+            <option value="120">2 Hours</option>
+            <option value="360">6 Hours</option>
+            <option value="720">12 Hours</option>
+            <option value="1440">1 Day</option>
+            <option value="2880">2 Days</option>
+            <option value="4320">3 Days</option>
+            <option value="10080">1 Week</option>
+            <option value="20160">2 Weeks</option>
+          </select>
 
-       
+        <br />
         <div className='eventHolder'>
           {events.map((event) => (
             <Event
@@ -132,11 +158,12 @@ function EventDisplay({selectedItem, closeModal}) {
               type={selectedItem ? selectedItem.name : ''}
               date={event.date}
               time={event.time}
+              reminderTime={event.reminderTime}
               description={event.description}
             />
           ))}
         </div>
-        <button onClick={handleCreateEvent}>Create Event</button>
+        <button className='createEventButton' onClick={handleCreateEvent}>Create Event</button>
             
       </div>
     </body>
