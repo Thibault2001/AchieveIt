@@ -5,7 +5,7 @@ import LoginPage from './loginPage';
 import SignUpPage from './signUpPage';
 import WelcomeUser from './welcomeUsers';
 import WelcomeAdmin from './adminPages/welcomeAdmin'
-
+ 
 //changing comment 
 function App() {
   return (
@@ -30,6 +30,8 @@ function App() {
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/welcome" element={<WelcomeUser />} />
           <Route path="welcomeAdmin" element={<WelcomeAdmin />} />
+
+
         </Routes>
       </div>
     </Router>
