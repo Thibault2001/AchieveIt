@@ -6,7 +6,7 @@ import { Event } from './Event.js';
 
 function EventDisplay({selectedItem, closeModal}) {
   const [events, setEvents] = useState([
-    //example events
+    //Define state variables for inputs
  
   ]);
 
@@ -56,6 +56,7 @@ function EventDisplay({selectedItem, closeModal}) {
     setSelectedReminderTime('at_event');
   };
 
+  //Generating an array of time options of every 15 mins from 00:00 to 23:45
   const timeOptions = [];
   for(let hour = 0; hour < 24; hour++)
   {
@@ -74,7 +75,7 @@ function EventDisplay({selectedItem, closeModal}) {
   return (
     <body>
       <div className='createEvent'>
-      <p>{selectedItem ? selectedItem.name : ''} Title:</p>
+      <p>{selectedItem ? selectedItem.name : ''} Title:</p> {/* Title input */}
         <input
           type="text"
 
@@ -89,14 +90,14 @@ function EventDisplay({selectedItem, closeModal}) {
           onChange={typeChange}
   />*/}
 
-        <p>Date:</p>
+        <p>Date:</p> {/* Date input */}
         <input
           type="date"
           value={date}
           onChange={dateChange}
         />
 
-        <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p>
+        <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p> {/* Time input */}
         <select
           type="time"
           value={selectedTime}
@@ -112,7 +113,7 @@ function EventDisplay({selectedItem, closeModal}) {
 
         </select>
 
-        <p>{selectedItem ? selectedItem.name : ''} Description:</p>
+        <p>{selectedItem ? selectedItem.name : ''} Description:</p> {/* Description input */}
         {/* <input
           type="text"
           value={desc}
@@ -133,7 +134,7 @@ function EventDisplay({selectedItem, closeModal}) {
           value={selectedReminderTime}
           onChange={(e) => setSelectedReminderTime(e.target.value)}
           >
-            <option value="at_event">At Time of Event</option>
+            <option value="at_event">At Time of Event</option> {/* values for each time period and names */}
             <option value="5">5 Minutes</option>
             <option value="10">10 Minutes</option>
             <option value="15">15 Minutes</option>
@@ -151,6 +152,7 @@ function EventDisplay({selectedItem, closeModal}) {
 
         <br />
         <div className='eventHolder'>
+          {/* Map through events and display event component for each variable */}
           {events.map((event) => (
             <Event
               key={event.id}

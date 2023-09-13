@@ -5,6 +5,7 @@ import { useState } from "react";
 function Event({ title, type, date, time, reminderTime, description }) {
 
   const reminderTimeOptions = {
+    //Defining options for the reminder time
     at_event: 'At Time of Event',
     '5': '5 Minutes',
     '10': '10 Minutes',
@@ -21,7 +22,7 @@ function Event({ title, type, date, time, reminderTime, description }) {
     '20160': '2 Weeks',
   };
     return (
-        <div className="event" style={{ backgroundColor: GetColour(type) }}>
+        <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
             <h2><u>{title}</u></h2><br />
             <h3>Event Type: <u>{type}</u></h3> <br />
             <h3>Date: <u>{date}</u></h3>
@@ -31,11 +32,11 @@ function Event({ title, type, date, time, reminderTime, description }) {
             <h3>Reminder will be sent {' '}
             <u>
               {reminderTime === 'at_event'
-              ? `${reminderTimeOptions[reminderTime]}.`
-              : `${reminderTimeOptions[reminderTime]} before event.`}
+              ? `${reminderTimeOptions[reminderTime]}.` 
+              : `${reminderTimeOptions[reminderTime]} before event.`} {/* Ternary statement so sentence makes logical sense.*/}
               </u>
             </h3>
-            <p><b>Details:</b><br />{description}</p>
+            <p><b>Details:</b><br />{description}</p> {/* Prints event description based on user input */}
         </div>
     );
 }
@@ -88,9 +89,10 @@ function EventDisplayFunction() {
     const [date, setDate] = useState('');
     const [desc, setDesc] = useState('');
   
+    //Set methods used for accessing user inputs
     const titleChange = (event) => {
       setTitle(event.target.value);
-    };
+    }; 
   
     const typeChange = (event) => {
       setType(event.target.value);
@@ -158,6 +160,8 @@ function EventDisplayFunction() {
           <button onClick={handleCreateEvent}>Create Event</button>
   
           <div className='eventHolder'>
+            {/* Map through the events and display Event component for each one */}
+
             {events.map((event) => (
               <Event
                 key={event.id}
