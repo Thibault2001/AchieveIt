@@ -3,13 +3,13 @@
 Preston: My code in this file contains the main screen the user sees once they log in. It displays a calendar interface showing
 the dates of the current month, with a few dates from the previous and next month. Users are able to select
 the month and year they want to view. The current date is highlighted and displayed to the user. 
-
 */
 
 // Importing required components.
 import React, { useState } from "react";
 import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
 import Appointment from "./Appointment";
+import Goal from './Goals';
 
 /* 
     In this section, we are setting up state and utility variables to manage and interact with dates:
@@ -100,6 +100,7 @@ const WelcomeUser = () => {
         Welcome, here is your day
       </Typography>
       <Appointment /> {/* Calls the dropdown of the event creation method. */}
+      <Goal/>
       {/* Main container for the grid system, setting margins, and justifying content to center to ensure it appears centered vertically and horizontally */}
       <Grid
         container
