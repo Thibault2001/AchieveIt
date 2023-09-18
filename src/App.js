@@ -1,18 +1,12 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  useLocation,
-} from "react-router-dom";
-import "./App.css";
-import LoginPage from "./loginPage";
-import SignUpPage from "./signUpPage";
-import WelcomeUser from "./welcomeUsers";
-import WelcomeAdmin from "./adminPages/welcomeAdmin";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import './App.css';
+import LoginPage from './loginPage';
+import SignUpPage from './signUpPage';
+import WelcomeUser from './welcomeUsers';
+import WelcomeAdmin from './adminPages/welcomeAdmin'
 
-//changing comment
+//changing comment 
 function App() {
   return (
     <Router>
@@ -33,7 +27,7 @@ function Navigation() {
   const location = useLocation();
 
   // If the current path is '/welcome', don't render the navigation
-  if (location.pathname === "/welcome") {
+  if (location.pathname === '/welcome') {
     return null;
   }
 
@@ -45,9 +39,6 @@ function Navigation() {
         </li>
         <li>
           <Link to="/signUp">Sign Up</Link>
-        </li>
-        <li>
-          {/* This list item is empty, consider removing or adding content here */}
         </li>
       </ul>
     </nav>
