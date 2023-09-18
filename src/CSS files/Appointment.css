@@ -1,45 +1,47 @@
 .appointment
 {
-    position: relative;
-    display: inline-block;
+    position: relative; /* Positioned relative */
+    display: inline-block; /* Inline level block container */
 }
 
 .appointment-toggle
 {
-    background: #fff;
-    border: 1px solid #ccc;
+    background: #fff; /* Background colour of toggle button is white */
+    border: 1px solid #ccc; /* Border is 1px and of #ccc colour */
     padding: 16px 30px;
     cursor: pointer;
 }
 
 .appointment-menu
 {
-    position: absolute;
-    top: 75%;
+    position: absolute; /* Positioned absoloute with class */
+    top: 75%; /* Positioned 75% from top */
     left: 0;
     background: #fff;
     border: 1px solid #ccc;
-    list-style: none;
+    list-style: none; /* Removes bullet points */
     padding: 0;
 }
 
 .appointment-menu li
 {
-    padding: 8px 14px;
-    cursor: pointer;
+    padding: 8px 14px; /* Padding top/bottom 8/14px.*/
+    cursor: pointer; /* Cursor is a pointer on hover */
 }
 
 .appointment-menu :hover
 {
-    background-color: #f643f4;
+    background-color: #f643f4; /* hover colour */
 }
 
 .modal-custom {
 
-    z-index: 9999;
-    pointer-events: auto;
-    width: 10% !important;
-    max-width: 800px !important;
-    height: 70% !important;
-    max-height: 500px !important;
+    z-index: 9999; /* Highest stacking value*/
+    pointer-events: auto; 
 }
+
+.closeButton 
+{
+    margin-top: 20px; /* 20 px padding from top*/
+}
+

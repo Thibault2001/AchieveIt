@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
 import './Event.css';
+import './CSS files/EventDisplay.css';
 import { Event } from './Event.js';
 
 function EventDisplay({selectedItem, closeModal}) {
   const [events, setEvents] = useState([
-    //example events
+    //Define state variables for inputs
  
   ]);
 
@@ -14,6 +15,7 @@ function EventDisplay({selectedItem, closeModal}) {
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
   const [selectedTime, setSelectedTime] = useState('00:00');
+  const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -39,6 +41,7 @@ function EventDisplay({selectedItem, closeModal}) {
       date: date,
       time: selectedTime,
       description: desc,
+      reminderTime: selectedReminderTime,
     };
 
     setEvents([...events, newEvent]);
@@ -50,8 +53,10 @@ function EventDisplay({selectedItem, closeModal}) {
     setDate('');
     setSelectedTime('00:00')
     setDesc('');
+    setSelectedReminderTime('at_event');
   };
 
+  //Generating an array of time options of every 15 mins from 00:00 to 23:45
   const timeOptions = [];
   for(let hour = 0; hour < 24; hour++)
   {
@@ -70,7 +75,7 @@ function EventDisplay({selectedItem, closeModal}) {
   return (
     <body>
       <div className='createEvent'>
-      <p>{selectedItem ? selectedItem.name : ''} Title:</p>
+      <p>{selectedItem ? selectedItem.name : ''} Title:</p> {/* Title input */}
         <input
           type="text"
 
@@ -85,14 +90,14 @@ function EventDisplay({selectedItem, closeModal}) {
           onChange={typeChange}
   />*/}
 
-        <p>Date:</p>
+        <p>Date:</p> {/* Date input */}
         <input
           type="date"
           value={date}
           onChange={dateChange}
         />
 
-        <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p>
+        <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p> {/* Time input */}
         <select
           type="time"
           value={selectedTime}
@@ -108,7 +113,7 @@ function EventDisplay({selectedItem, closeModal}) {
 
         </select>
 
-        <p>{selectedItem ? selectedItem.name : ''} Description:</p>
+        <p>{selectedItem ? selectedItem.name : ''} Description:</p> {/* Description input */}
         {/* <input
           type="text"
           value={desc}
@@ -122,9 +127,32 @@ function EventDisplay({selectedItem, closeModal}) {
           placeholder='Enter your event description here...'
           onChange={descChange}
           ></textarea>
+        <br></br>
+        
+        <p>Set Reminder Time:</p>
+        <select
+          value={selectedReminderTime}
+          onChange={(e) => setSelectedReminderTime(e.target.value)}
+          >
+            <option value="at_event">At Time of Event</option> {/* values for each time period and names */}
+            <option value="5">5 Minutes</option>
+            <option value="10">10 Minutes</option>
+            <option value="15">15 Minutes</option>
+            <option value="30">30 Minutes</option>
+            <option value="60">1 Hour</option>
+            <option value="120">2 Hours</option>
+            <option value="360">6 Hours</option>
+            <option value="720">12 Hours</option>
+            <option value="1440">1 Day</option>
+            <option value="2880">2 Days</option>
+            <option value="4320">3 Days</option>
+            <option value="10080">1 Week</option>
+            <option value="20160">2 Weeks</option>
+          </select>
 
-       
+        <br />
         <div className='eventHolder'>
+          {/* Map through events and display event component for each variable */}
           {events.map((event) => (
             <Event
               key={event.id}
@@ -132,11 +160,12 @@ function EventDisplay({selectedItem, closeModal}) {
               type={selectedItem ? selectedItem.name : ''}
               date={event.date}
               time={event.time}
+              reminderTime={event.reminderTime}
               description={event.description}
             />
           ))}
         </div>
-        <button onClick={handleCreateEvent}>Create Event</button>
+        <button className='createEventButton' onClick={handleCreateEvent}>Create Event</button>
             
       </div>
     </body>

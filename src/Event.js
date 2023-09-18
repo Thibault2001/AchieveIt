@@ -2,16 +2,41 @@ import React from "react";
 import './App.js';
 import { useState } from "react";
 
-function Event({ title, type, date, time, description }) {
+function Event({ title, type, date, time, reminderTime, description }) {
 
+  const reminderTimeOptions = {
+    //Defining options for the reminder time
+    at_event: 'At Time of Event',
+    '5': '5 Minutes',
+    '10': '10 Minutes',
+    '15': '15 Minutes',
+    '30': '30 Minutes',
+    '60': '1 Hour',
+    '120': '2 Hours',
+    '360': '6 Hours',
+    '720': '12 Hours',
+    '1440': '1 Day',
+    '2880': '2 Days',
+    '4320': '3 Days',
+    '10080': '1 Week',
+    '20160': '2 Weeks',
+  };
     return (
-        <div className="event" style={{ backgroundColor: GetColour(type) }}>
-            <h2>{title}</h2>
-            <h3>{date}</h3>
+        <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
+            <h2><u>{title}</u></h2><br />
+            <h3>Event Type: <u>{type}</u></h3> <br />
+            <h3>Date: <u>{date}</u></h3>
             <br />
-            <h3>{time}</h3>
-            <h4><u>{type}</u></h4>
-            <p>{description}</p>
+            <h3>Time: <u>{time}</u></h3>
+            <br />
+            <h3>Reminder will be sent {' '}
+            <u>
+              {reminderTime === 'at_event'
+              ? `${reminderTimeOptions[reminderTime]}.` 
+              : `${reminderTimeOptions[reminderTime]} before event.`} {/* Ternary statement so sentence makes logical sense.*/}
+              </u>
+            </h3>
+            <p><b>Details:</b><br />{description}</p> {/* Prints event description based on user input */}
         </div>
     );
 }
@@ -64,9 +89,10 @@ function EventDisplayFunction() {
     const [date, setDate] = useState('');
     const [desc, setDesc] = useState('');
   
+    //Set methods used for accessing user inputs
     const titleChange = (event) => {
       setTitle(event.target.value);
-    };
+    }; 
   
     const typeChange = (event) => {
       setType(event.target.value);
@@ -130,9 +156,12 @@ function EventDisplayFunction() {
             value={desc}
             onChange={descChange}
           />
+          
           <button onClick={handleCreateEvent}>Create Event</button>
   
           <div className='eventHolder'>
+            {/* Map through the events and display Event component for each one */}
+
             {events.map((event) => (
               <Event
                 key={event.id}
