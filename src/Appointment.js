@@ -37,8 +37,7 @@ import EventDisplay from './EventDisplay'
             {id: 1, name: 'Appointment'},
             {id: 2, name: 'Sports'},
             {id: 3, name: 'Birthday'},
-            {id: 4, name: 'University'},
-            {id:5, name: 'Goals'}
+            {id: 4, name: 'University'}
         ]
 
     return (
