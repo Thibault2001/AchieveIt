@@ -27,8 +27,6 @@ function GetColour(type) {
             return "#0ab5bbc7" //Turquoise
         case "University":
             return "#d4ff00" //Yellow
-        case "Goal":
-            return "#CF9FFF" //Purple
         default:
             return "#6200ffc7" //Blue
     }

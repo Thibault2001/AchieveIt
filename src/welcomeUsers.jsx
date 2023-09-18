@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography, Box, Grid, Select, MenuItem } from '@mui/material';
 import Appointment from './Appointment'
+import Goal from './Goals';
 
 const WelcomeUser = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -35,6 +36,7 @@ const WelcomeUser = () => {
             </Typography>
 
              <Appointment /> {/* Calls the dropdown of the event creation method. */}
+             <Goal />
 
             <Grid container spacing={4} mt={10} justifyContent="center" alignItems="center" style={{ height: '80vh' }}>
                 {/* Dates Section */}
