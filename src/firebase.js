@@ -1,11 +1,13 @@
 // Imports
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getDatabase, ref, get, onValue } from 'firebase/database';
 
 // Configuration Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD4cu5CDEUYWYFf6lAtWX8meZWW7EMxGkU",
   authDomain: "myapp.firebaseapp.com",
+  databaseURL: "https://achieveit-d8b83-default-rtdb.asia-southeast1.firebasedatabase.app/",
   projectId: "myapp", 
   storageBucket: "myapp.appspot.com",
   messagingSenderId: "123456789",
@@ -18,8 +20,16 @@ const app = initializeApp(firebaseConfig);
 // Get Authentification instance
 const auth = getAuth(app);
 
+// Get Firestore instance
+const db = getDatabase(app);
+
+
 // export 
 export {
   app,
   auth,
+  db,
+  ref,
+  get,
+  onValue,
 };
