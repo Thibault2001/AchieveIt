@@ -62,9 +62,10 @@ const LoginPage = () => {
         const { admin } = idTokenResult.claims; // Get user's claims
 
         // Convert user in a JSON chain
-        const userJSON = JSON.stringify(user);
-        // Define a cookie with the JSON chain of the user object
-        document.cookie = `user=${userJSON}; path=/`;
+      const userJSON = JSON.stringify(user);
+      // Définissez le nom du cookie en fonction du rôle de l'utilisateur
+      const cookieName = admin ? 'admin' : 'user';
+      document.cookie = `${cookieName}=${userJSON}; path=/`;
         if (admin) {
           navigate('/welcomeAdmin');
         } else{

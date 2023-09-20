@@ -1,7 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
   const [email, setEmail] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false); // Add state to check if the user is an admin
+  const navigate = useNavigate();
+
+  // Effect to check if the user is an admin when the page loads
+  useEffect(() => {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('admin='));
+
+    if (cookieValue) {
+      // If the "admin" cookie exists, consider the user as an administrator
+      setIsAdmin(true);
+    }
+  }, []);
 
   const handleExecuteScript = async () => {
     try {
@@ -19,6 +34,12 @@ const AdminPage = () => {
       console.error('Error executing script:', error);
     }
   };
+
+  // If the user is not an admin, redirect them to the login page
+  if (!isAdmin) {
+    navigate('/login');
+    return null;
+  }
 
   return (
     <div>
