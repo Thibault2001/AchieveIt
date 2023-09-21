@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Event } from './Event.js';
 import './App.css';
-import './Event.css';
+import './CSS files/Event.css';
 
 function GoalDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);

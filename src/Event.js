@@ -2,6 +2,10 @@ import React from "react";
 import './App.js';
 import { useState } from "react";
 
+/*
+This file contains the logic of creating an event, as well as the reminder times, it also contains the display of an event, and some example events
+*/
+
 function Event({ title, type, date, time, reminderTime, description }) {
 
   const reminderTimeOptions = {
@@ -21,6 +25,7 @@ function Event({ title, type, date, time, reminderTime, description }) {
     '10080': '1 Week',
     '20160': '2 Weeks',
   };
+  //display for the event:
     return (
         <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
             <h2><u>{title}</u></h2><br />
@@ -106,6 +111,7 @@ function EventDisplayFunction() {
       setDesc(event.target.value);
     };
   
+    //create an event with the inputs
     const handleCreateEvent = () => {
       const newEvent = {
         id: events.length + 1,
@@ -125,7 +131,7 @@ function EventDisplayFunction() {
       setDesc('');
     };
   
-    //
+    //display input fields
     return (
       <body>
         <div className='createEvent'>
@@ -157,6 +163,7 @@ function EventDisplayFunction() {
             onChange={descChange}
           />
           
+          {/*Button to create event*/}
           <button onClick={handleCreateEvent}>Create Event</button>
   
           <div className='eventHolder'>
