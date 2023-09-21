@@ -3,24 +3,33 @@ import { Event } from './Event.js';
 import './App.css';
 import './CSS files/Event.css';
 
+/*
+  This function creates all the details and fields needed for the goal details pop
+  up modal. 
+*/
 function GoalDisplay({ selectedItem, closeModal }) {
+  //create all the state variables
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
   const [type, setType] = useState('');
   const [date, setDate] = useState('');
   const [descrip, setDescrip] = useState('');
 
+  //Allows a user to enter a Title for the goal
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  //Allows the user to set the due date for the goal
   const dateChange = (event) => {
     setDate(event.target.value);
   };
 
+  //allows the user to add a description for the goal
   const descChange = (event) => {
     setDescrip(event.target.value);
   };
+
 
   const handleCreateEvent = () => {
     // Get the current date as a JavaScript Date object
@@ -39,6 +48,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         description: descrip,
       };
 
+      //clear the fields for the user to add another goal
       setEvents([...events, newEvent]);
       setTitle('');
       setType('');
@@ -50,6 +60,8 @@ function GoalDisplay({ selectedItem, closeModal }) {
     }
   };
 
+  //display the pop up modal for the user to see and fill in their
+  //goal details
   return (
     <div className="createEvent">
       <p>{selectedItem ? selectedItem.name : ''} Title:</p>
