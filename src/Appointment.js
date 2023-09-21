@@ -3,6 +3,15 @@ import './CSS files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
     
+    /* 
+        The Appointment.js file has the dropdown menu that users will use in order to create an event.
+        The button is called Add Event and when this button is clicked, it will set the variable
+        setIsDropdownOpen to True. It is set to false by default and then can be turned on off by clicking 
+        the button. There is an array of items that will be in the dropdown list. From the dropdown, users can select the event type that they like and once they click an
+        event type, the React Modal will be set to true for which the user is prompted to enter the details 
+        of their event. Inside of the Modal being called, the Event.js file is called. 
+    */
+
     function Appointment() 
     { //Defining state variables using the useState hook
         const[isModalOpen, setIsModalOpen] = useState(false);
