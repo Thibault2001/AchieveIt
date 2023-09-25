@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './CSS_files/App.css';
 import './Event.css';
 import { Event } from './Event.js';
 

@@ -1,14 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
-import './App.css';
+import './CSS_files/App.css';
 import LoginPage from './loginPage';
 import SignUpPage from './signUpPage';
 import WelcomeUser from './welcomeUsers';
-import WelcomeAdmin from './adminPages/welcomeAdmin'
-import Test from './dataBaseTest'
+import WelcomeAdmin from './adminPages/welcomeAdmin';
+import Test from './dataBaseTest';
 import UserDisplayPage from './adminPages/userDisplay';
 
-//changing comment 
 function App() {
   return (
     <Router>
@@ -18,7 +17,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/welcome" element={<WelcomeUser />} />
-          <Route path="welcomeAdmin" element={<WelcomeAdmin />} />
+          <Route path="/welcomeAdmin" element={<WelcomeAdmin />} />
           <Route path="/test" element={<Test />} />
           <Route path="/userDisplay" element={<UserDisplayPage />} />
         </Routes>
@@ -30,18 +29,18 @@ function App() {
 function Navigation() {
   const location = useLocation();
 
-  // If the current path is '/welcome', don't render the navigation
+  // Si le chemin actuel est '/welcome', ne pas rendre la navigation
   if (location.pathname === '/welcome') {
     return null;
   }
 
   return (
-    <nav>
-      <ul>
-        <li>
+    <nav className="navbar">
+      <ul className="nav-list">
+        <li className="nav-item">
           <Link to="/login">Log in</Link>
         </li>
-        <li>
+        <li className="nav-item">
           <Link to="/signUp">Sign Up</Link>
         </li>
       </ul>
