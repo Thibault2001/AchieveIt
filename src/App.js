@@ -6,6 +6,7 @@ import SignUpPage from './signUpPage';
 import WelcomeUser from './welcomeUsers';
 import WelcomeAdmin from './adminPages/welcomeAdmin'
 import Test from './dataBaseTest'
+import UserDisplayPage from './adminPages/userDisplay';
 
 //changing comment 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/welcome" element={<WelcomeUser />} />
           <Route path="welcomeAdmin" element={<WelcomeAdmin />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/userDisplay" element={<UserDisplayPage />} />
         </Routes>
       </div>
     </Router>
@@ -41,7 +43,6 @@ function Navigation() {
         </li>
         <li>
           <Link to="/signUp">Sign Up</Link>
-          <Link to="/test">Coucou</Link>
         </li>
       </ul>
     </nav>

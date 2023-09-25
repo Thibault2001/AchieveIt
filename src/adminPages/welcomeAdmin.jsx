@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for creating a button link
 
 // Admin Page Component
 // This component represents the admin page. It allows an administrator to execute a script
@@ -9,7 +10,8 @@ const AdminPage = () => {
   // State variables
   const [email, setEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  const [ setAccessDenied] = useState(false); // State to track access denied
+  const [, setAccessDenied] = useState(false); // State to track access denied
+
 
   // Check if the user has an "admin" cookie when the page loads
   useEffect(() => {
@@ -41,17 +43,17 @@ const AdminPage = () => {
     }
   };
 
+  // Function to close the access denied message
+  const handleCloseAccessDenied = () => {
+    setAccessDenied(false);
+  };
+
   // Check if the user is not an admin and set the accessDenied state
   useEffect(() => {
     if (!isAdmin) {
       setAccessDenied(true);
     }
   }, [isAdmin]);
-
-  // Function to close the access denied message
-  const handleCloseAccessDenied = () => {
-    setAccessDenied(false);
-  };
 
   return (
     <div>
@@ -67,6 +69,10 @@ const AdminPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button onClick={handleExecuteScript}>Execute Script</button>
+          {/* Create a button link to userDisplay.jsx */}
+          <Link to="/userDisplay">
+            <button>User Display</button>
+          </Link>
         </>
       ) : (
         // If the user is not an admin, display the "Access Denied" message
@@ -77,6 +83,9 @@ const AdminPage = () => {
             readOnly
             style={styles.accessDeniedInput}
           />
+          <button onClick={handleCloseAccessDenied} style={styles.closeButton}>
+            Close
+          </button>
         </div>
       )}
     </div>

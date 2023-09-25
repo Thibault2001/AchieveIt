@@ -1,7 +1,7 @@
 // Imports
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref, get, onValue } from 'firebase/database';
+import { getAuth, deleteUser } from "firebase/auth";
+import { getDatabase, ref, get, onValue, remove , set} from 'firebase/database';
 
 // Configuration Firebase
 const firebaseConfig = {
@@ -29,7 +29,10 @@ export {
   app,
   auth,
   db,
+  remove,
+  set,
   ref,
   get,
   onValue,
+  deleteUser,
 };

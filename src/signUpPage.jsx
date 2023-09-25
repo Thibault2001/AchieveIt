@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
+import { getDatabase, ref, set } from 'firebase/database';
 
 // Define the SignUpPage component
 function SignUpPage() {
@@ -20,7 +21,14 @@ function SignUpPage() {
 
     try {
       // Attempt to create a new user with email and password
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Get user ID and email
+      const userId = userCredential.user.uid;
+
+      // Store ID in the real time Database
+      const db = getDatabase();
+      const usersRef = ref(db, 'users/' + userId);
+      set(usersRef, email);
     } catch (err) {
       // Handle specific error codes and display appropriate error messages
       if (err.code === 'auth/email-already-in-use') {
