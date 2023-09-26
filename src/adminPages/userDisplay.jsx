@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { db, ref, onValue, set } from '../firebase';
-import '../CSS_files/userDisplay.css'
+import { db, ref, onValue, set } from '../firebase'; // Assurez-vous d'importer correctement les dépendances Firebase.
+import '../CSS_files/userDisplay.css';
+
 function UsersPage() {
   // State variables for user data, loading status, selected users, and deletion errors
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ function UsersPage() {
 
   useEffect(() => {
     // Reference to the 'users' node in Realtime Database
-    const databaseRef = ref(db, 'users');
+    const databaseRef = ref(db, 'users'); // Mettez à jour le chemin vers le nouveau chemin de base de données.
 
     // Fetch user data from Realtime Database and update state
     onValue(databaseRef, (snapshot) => {
@@ -18,7 +19,7 @@ function UsersPage() {
       if (data) {
         const usersArray = Object.keys(data).map((userId) => ({
           uid: userId,
-          email: data[userId],
+          email: data[userId].email, // Mettez à jour la structure de données pour utiliser le nouveau chemin.
         }));
         setUsers(usersArray);
       }
