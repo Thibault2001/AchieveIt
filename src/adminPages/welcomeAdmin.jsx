@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for creating a button link
-import '../CSS_files/welcomeAdmin.css'; // Importez le fichier CSS pour les styles
+import '../CSS_files/welcomeAdmin.css';
 
 const AdminPage = () => {
   // State variables

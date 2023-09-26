@@ -1,6 +1,6 @@
 // Imports
 import { initializeApp } from "firebase/app";
-import { getAuth, deleteUser } from "firebase/auth";
+import { getAuth, deleteUser, } from "firebase/auth";
 import { getDatabase, ref, get, onValue, remove , set} from 'firebase/database';
 
 // Configuration Firebase

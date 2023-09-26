@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CSS_files/App.css';
-import './Event.css';
+import './CSS_files/Event.css';
 import { Event } from './Event.js';
 
 function EventDisplay({selectedItem, closeModal}) {
