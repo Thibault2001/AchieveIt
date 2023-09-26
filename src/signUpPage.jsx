@@ -3,6 +3,7 @@
 // and displays error messages if the sign-up process fails.
 
 // Import necessary libraries and functions
+import './CSS_files/App.css';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';

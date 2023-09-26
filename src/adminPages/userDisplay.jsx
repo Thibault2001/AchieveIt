@@ -1,7 +1,6 @@
-//This React component displays a list of users and allows you to select and delete multiple users. It communicates with the server to perform user deletion.
 import React, { useState, useEffect } from 'react';
 import { db, ref, onValue, set } from '../firebase';
-
+import '../CSS_files/userDisplay.css'
 function UsersPage() {
   // State variables for user data, loading status, selected users, and deletion errors
   const [users, setUsers] = useState([]);
@@ -80,13 +79,13 @@ function UsersPage() {
   };
 
   return (
-    <div>
+    <div className="users-page"> {/* Appliquez la classe CSS pour centrer le contenu */}
       <h1>Users</h1>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <table>
+        <table className="users-table"> {/* Appliquez la classe CSS pour le tableau */}
           <thead>
             <tr>
               <th>Select</th>
@@ -123,7 +122,7 @@ function UsersPage() {
         </div>
       )}
 
-      <button onClick={handleDeleteSelectedUsers}>Delete Selected Users</button>
+      <button onClick={handleDeleteSelectedUsers} className="delete-button">Delete Selected Users</button> {/* Appliquez la classe CSS pour le bouton */}
     </div>
   );
 }
