@@ -13,6 +13,7 @@
   }
   
   /* Styles for the input fields */
+  input[type="text"],
   input[type="email"],
   input[type="password"] {
     width: 30%;
@@ -38,7 +39,7 @@
     margin: 10px auto; /*Center the button*/
   }
   
-  button[type="submit"]:hover {
+  button:hover {
     background-color: #0056b3;
   }
   
