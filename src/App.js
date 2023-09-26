@@ -24,6 +24,7 @@ function App() {
           <Route path="/test" element={<Test />} />
           <Route path="/userDisplay" element={<UserDisplayPage />} />
         </Routes>
+        <div className="logo-text">AchieveIt</div>
       </div>
     </Router>
   );
@@ -46,10 +47,10 @@ function Navigation() {
 
   const handleLogout = () => {
     auth.signOut().then(() => {
-      // DElete all the cookies
-    Object.keys(Cookies.get()).forEach((cookieName) => {
-      Cookies.remove(cookieName);
-    });
+      // Delete all the cookies
+      Object.keys(Cookies.get()).forEach((cookieName) => {
+        Cookies.remove(cookieName);
+      });
 
       // Log out the user and navigate them to the home page
       Navigate('/');
@@ -82,6 +83,7 @@ function Navigation() {
         )}
       </ul>
     </nav>
+    
   );
 }
 
