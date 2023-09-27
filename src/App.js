@@ -31,7 +31,6 @@ function App() {
 }
 
 function Navigation() {
-  const location = useLocation();
   const Navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
