@@ -57,11 +57,6 @@ function Navigation() {
     });
   };
 
-  // If the current path is '/welcome', do not render the navigation
-  if (location.pathname === '/welcome') {
-    return null;
-  }
-
   return (
     <nav className="navbar">
       <ul className="nav-list">
