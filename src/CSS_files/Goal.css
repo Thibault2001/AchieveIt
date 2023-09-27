@@ -1,0 +1,39 @@
+.goal
+{
+    position: relative;
+    display: inline-block
+}
+
+.goal-types
+{
+    position: absolute;
+    top: 50%;
+    left:0;
+    background: #add8e6;
+    border: 1px solid #8ac7db;
+    list-style: none; 
+    padding: 1px;
+}
+
+.goal-types-list
+{
+    padding: 10px 15px;
+    cursor: auto;
+}
+
+.goal-types :hover
+{
+    background-color: blue;
+    color: white;
+    cursor: auto;
+}
+
+.modal
+{
+    z-index: 9999;
+    pointer-events: auto;
+    width: fit-content;
+    max-width: max-content;
+    height: fit-content;
+    max-height: max-content;
+}

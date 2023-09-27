@@ -9,6 +9,7 @@ the month and year they want to view. The current date is highlighted and displa
 import React, { useState } from "react";
 import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
 import Appointment from "./Appointment";
+import Goal from './Goals';
 
 /* 
     In this section, we are setting up state and utility variables to manage and interact with dates:
@@ -99,6 +100,7 @@ const WelcomeUser = () => {
         Welcome, here is your day
       </Typography>
       <Appointment /> {/* Calls the dropdown of the event creation method. */}
+      <Goal/>
       {/* Main container for the grid system, setting margins, and justifying content to center to ensure it appears centered vertically and horizontally */}
       <Grid
         container
