@@ -1,9 +1,8 @@
 // Import necessary libraries
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth'; // Modified import
-
-import { auth } from './firebase'; // Import your Firebase configuration
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
 // Define a component for the login page
 const LoginPage = () => {
@@ -25,67 +24,74 @@ const LoginPage = () => {
   };
 
   // State variables for form input and error handling
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
   const [firebaseError, setFirebaseError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
+  // State variables and functions for password reset
+  const [resetEmail, setResetEmail] = useState('');
+  const [showReset, setShowReset] = useState(false);
+
   // Get navigation function from react-router-dom
   const navigate = useNavigate();
 
-  // Effect to check if authentication is ready
   useEffect(() => {
-    if (auth) { // Check if auth is ready
+    if (auth) {
       setIsReady(true);
     }
   }, []);
 
-  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (isSubmitting || !isReady) {
-      return; // Prevent multiple submissions or submissions while loading
+      return;
     }
 
     try {
       setIsSubmitting(true);
 
-    // Use signInWithEmailAndPassword function to attempt login
-    signInWithEmailAndPassword(auth, username, password)
-    .then((userCredential) => {
-      // Login successful
-      const user = userCredential.user;
+      signInWithEmailAndPassword(auth, formData.username, formData.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
 
-      user.getIdTokenResult().then((idTokenResult) => {
-        const { admin } = idTokenResult.claims; // Get user's claims
+          user.getIdTokenResult().then((idTokenResult) => {
+            const { admin } = idTokenResult.claims;
 
-        // Convert user in a JSON chain
-        const userJSON = JSON.stringify(user);
-        // Define a cookie with the JSON chain of the user object
-        document.cookie = `user=${userJSON}; path=/`;
-        if (admin) {
-          navigate('/welcomeAdmin');
-        } else{
-        console.log(document.cookie);
-        navigate('/welcome'); // Navigate to welcome page on success
-        }
-      });
-    })
-    .catch((error) => {
-      // Handle login error
-      setFirebaseError(error);
-    });
+            // Convert user in a JSON chain
+            const userJSON = JSON.stringify(user);
+            // Définissez le nom du cookie en fonction du rôle de l'utilisateur
+            const cookieName = admin ? 'admin' : 'user';
+            document.cookie = `${cookieName}=${userJSON}; path=/`;
 
+            if (admin) {
+              navigate('/welcomeAdmin');
+            } else {
+              console.log(document.cookie);
+              navigate('/welcome');
+            }
+          });
+        })
+        .catch((error) => {
+          setFirebaseError(error);
+        });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // State variables and functions for password reset
-  const [resetEmail, setResetEmail] = useState('');
-  const [showReset, setShowReset] = useState(false);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const resetPassword = () => {
     setShowReset(true);
@@ -100,43 +106,42 @@ const LoginPage = () => {
     }
   };
 
-  // Render the form
   return (
     <form onSubmit={handleSubmit}>
-      {/* Input fields for email and password */}
-      <input 
+      <input
         type="email"
+        name="username"
         placeholder="Email"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={formData.username}
+        onChange={handleInputChange}
+        required
       />
 
       <input
         type="password"
-        placeholder="Password" 
-        value={password}
-        onChange={(e) => setPassword(e.target.value)} 
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleInputChange}
+        required
       />
 
-      {/* Button for form submission */}
       <button type="submit" disabled={!isReady || isSubmitting}>
         {isSubmitting ? 'Logging in...' : 'Login'}
       </button>
       <br />
 
-      {/* Button to trigger password reset */}
       <button onClick={resetPassword}>
         Reset Password
       </button>
 
-      {/* Display password reset input and button if showReset is true */}
       {showReset && (
         <>
           <input
             type="email"
             placeholder="Email"
             value={resetEmail}
-            onChange={(e) => setResetEmail(e.target.value)}  
+            onChange={(e) => setResetEmail(e.target.value)}
           />
           <br />
           <button onClick={handleReset}>
@@ -145,7 +150,6 @@ const LoginPage = () => {
         </>
       )}
 
-      {/* Display error message if firebaseError exists */}
       {firebaseError && (
         <p className="error-message">
           {getErrorMessage(firebaseError.code)}
@@ -153,6 +157,6 @@ const LoginPage = () => {
       )}
     </form>
   );
-}
+};
 
-export default LoginPage; // Export the component
+export default LoginPage;

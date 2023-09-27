@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
-import './CSS files/Event.css';
-import './CSS files/EventDisplay.css';
+import './CSS_files/App.css';
+import './CSS_files/Event.css';
+import './CSS_files/EventDisplay.css';
+
 import { Event } from './Event.js';
 
 /*

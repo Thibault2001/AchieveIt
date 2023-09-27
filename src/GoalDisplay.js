@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Event } from './Event.js';
-import './App.css';
-import './CSS files/Event.css';
+import './CSS_files/App.css';
+import './CSS_files/Event.css';
 
 /*
   This function creates all the details and fields needed for the goal details pop

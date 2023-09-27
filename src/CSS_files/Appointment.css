@@ -6,16 +6,15 @@
 
 .appointment-toggle
 {
-    background: #fff; /* Background colour of toggle button is white */
-    border: 1px solid #ccc; /* Border is 1px and of #ccc colour */
+    border: 1px solid #ccc;
     padding: 16px 30px;
     cursor: pointer;
+    width: auto;
 }
 
 .appointment-menu
 {
-    position: absolute; /* Positioned absoloute with class */
-    top: 75%; /* Positioned 75% from top */
+    top: 75%;
     left: 0;
     background: #fff;
     border: 1px solid #ccc;

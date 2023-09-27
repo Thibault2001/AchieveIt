@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import GoalDisplay from './GoalDisplay'; // Import GoalDisplay
-import './CSS files/Goal.css';
+import './CSS_files/Goal.css';
 
 
 /*

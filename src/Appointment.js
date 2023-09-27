@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './CSS files/Appointment.css';
+import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
     
