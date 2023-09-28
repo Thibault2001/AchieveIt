@@ -15,7 +15,7 @@ function EventDisplay({ selectedItem, closeModal }) {
   const [desc, setDesc] = useState('');
   const [selectedTime, setSelectedTime] = useState('00:00');
   const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
-  const [, setIsEventAdded] = useState(null); // Initialisez à null
+  const [, setIsEventAdded] = useState(null); // initialisation
 
   const user = auth.currentUser;
   const userID = user ? user.uid : '';
@@ -46,12 +46,12 @@ function EventDisplay({ selectedItem, closeModal }) {
     const eventRef = ref(db, `eventCalendar/${userID}/${title}`);
     set(eventRef, newEvent)
       .then(() => {
-        // Événement ajouté avec succès
+        // Event added with success
         setIsEventAdded(true);
         toast.success('Adding Event Successfully!');
       })
       .catch((error) => {
-        // Échec de l'ajout de l'événement
+        // Event not added
         setIsEventAdded(false);
         toast.error('Failed to Add Event.');
         console.error('Error adding event: ', error);

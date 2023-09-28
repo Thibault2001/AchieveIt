@@ -62,4 +62,14 @@
     color: #FF0000;
     margin-top: 10px;
     font-size: 16px;
-  }  
+  }
+
+  /* Password Requirement not valid in signUp page*/
+  .password-condition.invalid {
+    color: red;
+  }
+  
+  /* Password Requirement valid in signUp page*/
+  .password-condition.valid {
+    color: green;
+  }
