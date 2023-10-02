@@ -43,7 +43,7 @@ function EventDisplay({ selectedItem, closeModal }) {
       reminderTime: selectedReminderTime,
     };
 
-    const eventRef = ref(db, `eventCalendar/${userID}/${title}`);
+    const eventRef = ref(db, `calendar/${userID}/events/${title}`);
     set(eventRef, newEvent)
       .then(() => {
         // Event added with success
