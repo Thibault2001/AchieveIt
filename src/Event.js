@@ -186,4 +186,4 @@ function EventDisplayFunction() {
   }
   
   
-export { Event, EventDisplayFunction };
+export { Event, EventDisplayFunction, GetColour };

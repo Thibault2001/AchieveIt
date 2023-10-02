@@ -3,3 +3,16 @@
     margin-top: 50px; /* Padding for create event button */
 } 
 
+/* CSS for EventDisplay component */
+.events-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns per row */
+  gap: 20px; /* Spacing between events */
+}
+
+.event-card {
+  /* Styles for each event card */
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
