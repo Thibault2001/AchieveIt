@@ -1,5 +1,22 @@
-.createEventButton
-{
-    margin-top: 50px; /* Padding for create event button */
-} 
+/* CSS_files/EventDisplay.css */
 
+/* Styles spécifiques à EventDisplay */
+.event-display-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Trois colonnes par ligne */
+  gap: 20px; /* Espacement entre les événements */
+}
+
+/* Styles pour les cartes sélectionnées dans EventDisplay */
+.event-display-card.selected {
+  box-shadow: 0 0 5px 2px #ff0400; /* Ajoute une surbrillance à la carte sélectionnée */
+}
+
+/* Reste du CSS pour EventDisplay */
+h2, h3, p {
+  margin: 5px 0;
+}
+
+u {
+  text-decoration: underline;
+}

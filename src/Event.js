@@ -49,13 +49,13 @@ function Event({ title, type, date, time, reminderTime, description }) {
 //This function will return a hexadecimal colour based on the type of event the user chooses.
 function GetColour(type) {
     switch (type) {
-        case "Appointment":
+        case "University":
             return "#ffaa00c7" //Orange
         case "Sports":
             return "#13bb0ac7" //Green
         case "Birthday":
             return "#0ab5bbc7" //Turquoise
-        case "University":
+        case "Appointment":
             return "#d4ff00" //Yellow
         default:
             return "#6200ffc7" //Blue
@@ -65,28 +65,7 @@ function GetColour(type) {
 
 function EventDisplayFunction() {
     const [events, setEvents] = useState([
-      //example events
-      {
-        id: 1,
-        title: "Event 1",
-        type: "University",
-        date: "2023-08-18",
-        description: "Today I have an assignment to do"
-      },
-      {
-        id: 2,
-        title: "Event 2",
-        type: "Birthday",
-        date: "2023-09-21",
-        description: "Someone's birthday"
-      },
-      {
-        id: 3,
-        title: "Event 3",
-        type: "Sports",
-        date: "2023-09-21",
-        description: "Today I really want to play some football"
-      }
+
     ]);
   
     const [title, setTitle] = useState('');
@@ -186,4 +165,4 @@ function EventDisplayFunction() {
   }
   
   
-export { Event, EventDisplayFunction };
+export { Event, EventDisplayFunction, GetColour };

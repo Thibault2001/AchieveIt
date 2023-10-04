@@ -90,4 +90,4 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
     );
 }
 
-export default Appointment
+export default Appointment;

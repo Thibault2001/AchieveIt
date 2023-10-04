@@ -6,11 +6,12 @@ import { Event } from './Event.js';
 import { auth, ref, set, db } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+//import Appointment from './Appointment';
 
 function EventDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
-  const [type, setType] = useState('');
+  const [, setType] = useState('');
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
   const [selectedTime, setSelectedTime] = useState('00:00');
@@ -36,14 +37,14 @@ function EventDisplay({ selectedItem, closeModal }) {
     const newEvent = {
       eventID: title,
       eventTitle: title,
-      eventType: type,
+      eventType: selectedItem.name,
       eventDate: date,
       eventTime: selectedTime,
       eventDescription: desc,
       reminderTime: selectedReminderTime,
     };
-
-    const eventRef = ref(db, `eventCalendar/${userID}/${title}`);
+    
+    const eventRef = ref(db, `calendar/${userID}/events/${title}`);
     set(eventRef, newEvent)
       .then(() => {
         // Event added with success
@@ -77,7 +78,7 @@ function EventDisplay({ selectedItem, closeModal }) {
       timeOptions.push(timeOption);
     }
   }
-
+  
   return (
     <body>
       <div className='createEvent'>
@@ -134,7 +135,7 @@ function EventDisplay({ selectedItem, closeModal }) {
             <Event
               key={event.eventID}
               title={event.eventTitle}
-              type={event.eventType}
+              type={selectedItem.name}
               date={event.eventDate}
               time={event.eventTime}
               reminderTime={event.reminderTime}

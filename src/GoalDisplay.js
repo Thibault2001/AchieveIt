@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Event } from './Event.js';
 import './CSS_files/App.css';
 import './CSS_files/Event.css';
+import { Event } from './Event.js';
+import { auth, ref, set, db } from './firebase'; // Assurez-vous d'importer Firebase correctement.
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function GoalDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
@@ -15,6 +19,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [subgoalDate, setSubgoalDate] = useState('');
   const [subgoalTime, setSubgoalTime] = useState('');
   const [subGoalDesc, setSubGoalDesc] = useState('');
+
+  const user = auth.currentUser;
+  const userID = user ? user.uid : '';
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -34,6 +41,27 @@ function GoalDisplay({ selectedItem, closeModal }) {
     setDescrip(event.target.value);
   };
 
+  const handleCreateGoal = () => {
+    const newGoal = {
+      title: title,
+      date: date,
+      description: descrip,
+    };
+
+    const goalRef = ref(db, `calendar/${userID}/goals/${title}`); // Utilisez l'ID de l'utilisateur pour stocker les objectifs dans la base de données
+
+    set(goalRef, newGoal)
+      .then(() => {
+        toast.success('Goal Created Successfully!');
+        // Vous pouvez également mettre à jour l'état local ici si nécessaire.
+      })
+      .catch((error) => {
+        toast.error('Failed to Create Goal.');
+      });
+
+    // Réinitialisez les champs du formulaire.
+    setTitle('');
+    setDate('');<
   const handleCreateEvent = () => {
     const currentDate = new Date();
     const selectedDate = new Date(date);
@@ -137,16 +165,28 @@ function GoalDisplay({ selectedItem, closeModal }) {
     onChange={setSubgoalDate}
   />
 
-  <p>{selectedItem ? selectedItem.name : ''} Description:</p>
-  <textarea
-    id="textAreaDescription"
-    rows="5"
-    cols="50"
-    placeholder="Enter your description here..."
-    onChange={descChange}
-  ></textarea>
-      <p></p>
-      <button onClick={handleCreateSubgoal}>Create Subgoal</button>
+      <p>Description:</p>
+      <textarea
+        id="textAreaDescription"
+        rows="5"
+        cols="50"
+        value={descrip}
+        onChange={descChange}
+        placeholder="Enter your description here..."
+      ></textarea>
+
+      <div className="eventHolder">
+        {goals.map((goal, index) => (
+          <Event
+            key={index}
+            title={goal.title}
+            date={goal.date}
+            description={goal.description}
+          />
+        ))}
+      </div>
+      <button onClick={handleCreateGoal}>Create Goal</button>
+      <ToastContainer autoClose={5000} />
     </div>
   )}
 
