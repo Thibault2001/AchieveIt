@@ -56,6 +56,13 @@ function Navigation() {
     });
   };
 
+  // Conditionally navigate based on isLoggedIn
+  useEffect(() => {
+    if (isLoggedIn) {
+      Navigate('/welcome');
+    }
+  }, [isLoggedIn, Navigate]);
+
   return (
     <nav className="navbar">
       <ul className="nav-list">
