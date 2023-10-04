@@ -6,7 +6,7 @@ import { Event } from './Event.js';
 import { auth, ref, set, db } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Appointment from './Appointment';
+//import Appointment from './Appointment';
 
 function EventDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
