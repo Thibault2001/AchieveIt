@@ -77,7 +77,7 @@ function Goal() {
   //when selected goal type is chosen. 
   return (
     <div className="goal">
-      <button onClick={openDropDown} className="goal-dropdown-list">
+      <button onClick={openDropDown} className="goal-dropdown-list standard-button">
         Add Goal
       </button>
 
