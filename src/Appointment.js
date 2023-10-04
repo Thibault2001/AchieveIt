@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
+// import { toast } from 'react-toastify/dist';
+// import 'react-toastify/dist/ReactToastify.css';
+
     
     /* 
         The Appointment.js file has the dropdown menu that users will use in order to create an event.
@@ -17,6 +20,8 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
         const[isModalOpen, setIsModalOpen] = useState(false);
         const[selectedItem, setSelectedItem] = useState(null);
         const[isDropdownOpen, setIsDropdownOpen] = useState(false);
+        const[isNewEventTypeModalOpen, setIsNewEventTypeModalOpen] = useState(false);
+        const[customEventName, setCustomEventName] = useState('');
 
         //Function to handle the itemClick from the dropdown menu for where user chooses which event type to choose.
         const handleItemClick = (item) =>
@@ -30,7 +35,14 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
         //Handles the Add Event click. It will turn the modal display on which prompts the user to enter their event details.
         const handleAppointmentClick = () =>
         {
+            if(selectedItem && selectedItem.name === 'New Event Type')
+            {
+                setIsNewEventTypeModalOpen(true);
+            }    
+            else
+            {
                 setIsModalOpen(true);
+            }
         };
 
         //When the close button is clicked it will close the modal.
@@ -50,8 +62,34 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
             {id: 1, name: 'Appointment'},
             {id: 2, name: 'Sports'},
             {id: 3, name: 'Birthday'},
-            {id: 4, name: 'University'}
-        ]
+            {id: 4, name: 'University'},
+            {id: 5, name: 'New Event Type'}, //Adding the New Event Type option for the user.
+        ];
+
+        const confirmCreateEventType = () =>
+        {
+            if(selectedItem && selectedItem.name === 'New Event Type')
+            {
+                const confirmation = window.confirm(`Your new event type will be called: ${customEventName}`);
+                if(confirmation)
+                {
+                    // Add event type to the dropdown menu. Make sure new event type is at bottom. 
+                   // toast.success('Added New Event Type!');
+                }
+                setCustomEventName('');
+                setIsNewEventTypeModalOpen(false);
+            }
+            else
+            {
+                setIsModalOpen(false);
+            }
+        }
+
+        const cancelCreateEventType = () =>
+        {
+            setSelectedItem(null);
+            setIsNewEventTypeModalOpen(false);
+        }
 
     return (
       <div className="appointment">
@@ -83,6 +121,24 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
                 >
                     <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/> {/*Calls the EventDisplay*/}
                     <button class="closeButton" onClick={closeModal}> Close </button>
+                </Modal>
+
+                    {/* Modal to allow the user to create a new event type*/}
+                <Modal 
+                    isOpen={isNewEventTypeModalOpen}
+                    onRequestClose={() => isNewEventTypeModalOpen(false)}
+                    contentLabel="New Event Type Modal"
+                >
+
+                    <label htmlFor="customEventName"> New Event Type: </label> {/* Label for user to enter their event name*/}
+                    <input
+                        type="text"
+                        id="customEventName" 
+                        value={customEventName} 
+                        onChange={(e) => setCustomEventName(e.target.value)}
+                        /> {/* Saves their event name to above variable*/}
+                        <button onClick={cancelCreateEventType}>Cancel</button> {/* Cancel and Confirm buttons with functions*/}
+                        <button onClick={confirmCreateEventType}>Confirm</button>
                 </Modal>
            </div>
       </div>
