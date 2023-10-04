@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
@@ -27,10 +27,15 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
         const handleItemClick = (item) =>
         {
             setSelectedItem(item);
-            
-            handleAppointmentClick();
-            
         };
+
+        useEffect(() => 
+        {
+            if(selectedItem !== null)
+            {
+                handleAppointmentClick();
+            }
+        }, [selectedItem]);
 
         //Handles the Add Event click. It will turn the modal display on which prompts the user to enter their event details.
         const handleAppointmentClick = () =>
@@ -43,12 +48,14 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
             {
                 setIsModalOpen(true);
             }
+
         };
 
         //When the close button is clicked it will close the modal.
         const closeModal = () =>
         {
             setIsModalOpen(false);
+            setIsNewEventTypeModalOpen(false);
         };
 
         //Toggles the dropdown 
@@ -87,7 +94,6 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
 
         const cancelCreateEventType = () =>
         {
-            setSelectedItem(null);
             setIsNewEventTypeModalOpen(false);
         }
 
@@ -126,7 +132,7 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
                     {/* Modal to allow the user to create a new event type*/}
                 <Modal 
                     isOpen={isNewEventTypeModalOpen}
-                    onRequestClose={() => isNewEventTypeModalOpen(false)}
+                    onRequestClose={() => setIsNewEventTypeModalOpen(false)}
                     contentLabel="New Event Type Modal"
                 >
 

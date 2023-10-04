@@ -96,9 +96,15 @@ const WelcomeUser = () => {
   return (
     <Box p={4}>
       {/* Small welcome message to the user */}
+
       <Typography variant="h4" fontSize={50} gutterBottom>
         Welcome, here is your day
+
       </Typography>
+      <div className="addEventButton">
+        <Button> Add New Event Type </Button>
+      </div>
+
       <Appointment /> {/* Calls the dropdown of the event creation method. */}
       <Goal/>
       {/* Main container for the grid system, setting margins, and justifying content to center to ensure it appears centered vertically and horizontally */}

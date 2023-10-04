@@ -84,3 +84,9 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.addEventButton
+{
+  background-color: blue;
+  padding-left: 80%;
+}
