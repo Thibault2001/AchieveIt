@@ -18,6 +18,13 @@ function SignUpPage() {
     length: false,
   });
 
+  const [passwordConditions, setPasswordConditions] = useState({
+    uppercase: false,
+    number: false,
+    specialChar: false,
+    length: false,
+  });
+
   const navigate = useNavigate();
 
   const handlePasswordChange = (event) => {
@@ -56,6 +63,11 @@ function SignUpPage() {
       return;
     }
 
+    if (!isPasswordValid()) {
+      toast.error('Password does not meet the required conditions');
+      return;
+    }
+
     if (!isNameValid(name)) {
       toast.error('Name should contain only letters');
       return;
@@ -83,6 +95,13 @@ function SignUpPage() {
     } catch (err) {
       // Handle specific error codes and display appropriate error messages
       if (err.code === 'auth/email-already-in-use') {
+        toast.error('This email is already used');
+      } 
+      else if (err.code === 'auth/invalid-email') {
+        toast.error('This email is invalid');
+      }
+        else {
+        toast.error('Error signing up');
         toast.error('This email is already used');
       } 
       else if (err.code === 'auth/invalid-email') {

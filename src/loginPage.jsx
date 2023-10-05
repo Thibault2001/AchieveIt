@@ -1,12 +1,11 @@
-// Import necessary libraries
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Define a component for the login page
 const LoginPage = () => {
-  // Define a function to get error messages based on error codes
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
       case 'auth/user-not-found':
@@ -17,27 +16,23 @@ const LoginPage = () => {
         return 'Password should be at least 6 characters';
       case 'auth/email-already-in-use':
         return 'This email is already used';
-      // Add more cases for other error codes
       default:
-        return 'Error signing in';
+        return 'Error';
     }
   };
 
-  // State variables for form input and error handling
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
-  const [firebaseError, setFirebaseError] = useState(null);
+  const [, setFirebaseError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  // State variables and functions for password reset
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
 
-  // Get navigation function from react-router-dom
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,9 +58,7 @@ const LoginPage = () => {
           user.getIdTokenResult().then((idTokenResult) => {
             const { admin } = idTokenResult.claims;
 
-            // Convert user in a JSON chain
             const userJSON = JSON.stringify(user);
-            // Définissez le nom du cookie en fonction du rôle de l'utilisateur
             const cookieName = admin ? 'admin' : 'user';
             document.cookie = `${cookieName}=${userJSON}; path=/`;
 
@@ -75,10 +68,13 @@ const LoginPage = () => {
               console.log(document.cookie);
               navigate('/welcome');
             }
+
+            toast.success('Login Successful');
           });
         })
         .catch((error) => {
           setFirebaseError(error);
+          toast.error(getErrorMessage(error.code)); // Utilisation de error.code ici
         });
     } finally {
       setIsSubmitting(false);
@@ -95,14 +91,16 @@ const LoginPage = () => {
 
   const resetPassword = () => {
     setShowReset(true);
-    setFirebaseError(null); // Clear any previous error messages
+    setFirebaseError(null);
   };
 
   const handleReset = async () => {
     try {
       await sendPasswordResetEmail(auth, resetEmail);
+      toast.success('Password reset email sent successfully');
     } catch (error) {
-      setFirebaseError(error); // Set the error object
+      setFirebaseError(error);
+      toast.error('Password reset failed');
     }
   };
 
@@ -150,11 +148,7 @@ const LoginPage = () => {
         </>
       )}
 
-      {firebaseError && (
-        <p className="error-message">
-          {getErrorMessage(firebaseError.code)}
-        </p>
-      )}
+      <ToastContainer autoClose={5000}/>
     </form>
   );
 };

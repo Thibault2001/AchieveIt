@@ -2,6 +2,10 @@ import React from "react";
 import './App.js';
 import { useState } from "react";
 
+/*
+This file contains the logic of creating an event, as well as the reminder times, it also contains the display of an event, and some example events
+*/
+
 function Event({ title, type, date, time, reminderTime, description }) {
 
   const reminderTimeOptions = {
@@ -21,6 +25,7 @@ function Event({ title, type, date, time, reminderTime, description }) {
     '10080': '1 Week',
     '20160': '2 Weeks',
   };
+  //display for the event:
     return (
         <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
             <h2><u>{title}</u></h2><br />
@@ -44,13 +49,13 @@ function Event({ title, type, date, time, reminderTime, description }) {
 //This function will return a hexadecimal colour based on the type of event the user chooses.
 function GetColour(type) {
     switch (type) {
-        case "Appointment":
+        case "University":
             return "#ffaa00c7" //Orange
         case "Sports":
             return "#13bb0ac7" //Green
         case "Birthday":
             return "#0ab5bbc7" //Turquoise
-        case "University":
+        case "Appointment":
             return "#d4ff00" //Yellow
         default:
             return "#6200ffc7" //Blue
@@ -60,28 +65,7 @@ function GetColour(type) {
 
 function EventDisplayFunction() {
     const [events, setEvents] = useState([
-      //example events
-      {
-        id: 1,
-        title: "Event 1",
-        type: "University",
-        date: "2023-08-18",
-        description: "Today I have an assignment to do"
-      },
-      {
-        id: 2,
-        title: "Event 2",
-        type: "Birthday",
-        date: "2023-09-21",
-        description: "Someone's birthday"
-      },
-      {
-        id: 3,
-        title: "Event 3",
-        type: "Sports",
-        date: "2023-09-21",
-        description: "Today I really want to play some football"
-      }
+
     ]);
   
     const [title, setTitle] = useState('');
@@ -106,6 +90,7 @@ function EventDisplayFunction() {
       setDesc(event.target.value);
     };
   
+    //create an event with the inputs
     const handleCreateEvent = () => {
       const newEvent = {
         id: events.length + 1,
@@ -125,7 +110,7 @@ function EventDisplayFunction() {
       setDesc('');
     };
   
-    //
+    //display input fields
     return (
       <body>
         <div className='createEvent'>
@@ -157,6 +142,7 @@ function EventDisplayFunction() {
             onChange={descChange}
           />
           
+          {/*Button to create event*/}
           <button onClick={handleCreateEvent}>Create Event</button>
   
           <div className='eventHolder'>
@@ -179,4 +165,4 @@ function EventDisplayFunction() {
   }
   
   
-export { Event, EventDisplayFunction };
+export { Event, EventDisplayFunction, GetColour };
