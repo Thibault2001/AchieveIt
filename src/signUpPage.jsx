@@ -18,6 +18,13 @@ function SignUpPage() {
     length: false,
   });
 
+  const [passwordConditions, setPasswordConditions] = useState({
+    uppercase: false,
+    number: false,
+    specialChar: false,
+    length: false,
+  });
+
   const navigate = useNavigate();
 
   const handlePasswordChange = (event) => {
@@ -42,11 +49,27 @@ function SignUpPage() {
     return passwordConditions[condition] ? 'valid' : 'invalid';
   };
 
+  const isNameValid = (name) => {
+    // Utilisez une expression régulière pour valider que le nom contient uniquement des lettres
+    const nameRegex = /^[a-zA-Z]+$/;
+    return nameRegex.test(name);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isPasswordValid()) {
       toast.error('Password does not meet the required conditions');
+      return;
+    }
+
+    if (!isPasswordValid()) {
+      toast.error('Password does not meet the required conditions');
+      return;
+    }
+
+    if (!isNameValid(name)) {
+      toast.error('Name should contain only letters');
       return;
     }
 
@@ -79,19 +102,35 @@ function SignUpPage() {
       }
         else {
         toast.error('Error signing up');
+        toast.error('This email is already used');
+      } 
+      else if (err.code === 'auth/invalid-email') {
+        toast.error('This email is invalid');
+      }
+        else {
+        toast.error('Error signing up');
       }
     }
   };
 
+  const nameRegex = /^[a-zA-Zéèçàêâîùôäëïüû]+$/;
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => {
+          const newName = e.target.value;
+          if (nameRegex.test(newName) || newName === '') {
+            setName(newName);
+          }
+        }}
+      />
+
+
 
         <input
           type="email"
