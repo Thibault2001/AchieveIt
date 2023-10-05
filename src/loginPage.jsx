@@ -32,6 +32,7 @@ const LoginPage = () => {
 
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
+  const [showMainForm, setShowMainForm] = useState(true);
 
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ const LoginPage = () => {
         })
         .catch((error) => {
           setFirebaseError(error);
-          toast.error(getErrorMessage(error.code)); // Utilisation de error.code ici
+          toast.error(getErrorMessage(error.code));
         });
     } finally {
       setIsSubmitting(false);
@@ -91,6 +92,7 @@ const LoginPage = () => {
 
   const resetPassword = () => {
     setShowReset(true);
+    setShowMainForm(false);
     setFirebaseError(null);
   };
 
@@ -106,32 +108,36 @@ const LoginPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="username"
-        placeholder="Email"
-        value={formData.username}
-        onChange={handleInputChange}
-        required
-      />
+      {showMainForm && (
+        <>
+          <input
+            type="email"
+            name="username"
+            placeholder="Email"
+            value={formData.username}
+            onChange={handleInputChange}
+            required
+          />
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleInputChange}
-        required
-      />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
 
-      <button type="submit" disabled={!isReady || isSubmitting}>
-        {isSubmitting ? 'Logging in...' : 'Login'}
-      </button>
-      <br />
+          <button type="submit" disabled={!isReady || isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
+          <br />
 
-      <button onClick={resetPassword}>
-        Reset Password
-      </button>
+          <button onClick={resetPassword}>
+            Reset Password
+          </button>
+        </>
+      )}
 
       {showReset && (
         <>
