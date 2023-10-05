@@ -178,7 +178,7 @@ const CalendarDisplay = () => {
                     height: "70px",
                     lineHeight: "50px",
                     borderRadius: "50%",
-                    color: "lightgray",
+                    color: "#000",
                     borderColor: "#9BBDF9",
                   }}
                 >
@@ -235,7 +235,7 @@ const CalendarDisplay = () => {
                       height: "70px",
                       lineHeight: "50px",
                       borderRadius: "50%",
-                      color: "lightgray",
+                      color: "#000",
                       borderColor: "#9BBDF9",
                     }}
                   >
