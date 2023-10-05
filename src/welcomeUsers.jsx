@@ -1,22 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Typography, Box } from "@mui/material";
 import Appointment from "./Appointment";
 import GoalDisplay from "./GoalDisplay";
 import Goal from './Goals';
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./calendarDisplay";
+import { auth } from './firebase'; // Import Firebase module for authentication
+import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
+  const [userName, setUserName] = useState(""); // State to store the user's name
 
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
 
+  useEffect(() => {
+    // Use the auth object to get the ID of the currently logged-in user
+    const userId = auth.currentUser.uid;
+
+    // Use the user's ID to access user data in the Firebase Realtime Database
+    const db = getDatabase();
+    const userRef = ref(db, `users/${userId}/name`);
+
+    // Listen for changes to the user's name in the database
+    onValue(userRef, (snapshot) => {
+      const userNameFromDB = snapshot.val();
+      setUserName(userNameFromDB);
+    });
+  }, []);
+
   return (
     <Box p={4}>
       <Typography variant="h4" fontSize={50} gutterBottom>
-        Welcome, here is your day
+        Welcome {userName}! Here is your day
       </Typography>
       <Appointment />
       <br />
