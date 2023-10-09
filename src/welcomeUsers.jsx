@@ -10,6 +10,8 @@ import React, { useState } from "react";
 import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
 import Appointment from "./Appointment";
 import Goal from './Goals';
+import AddNewEvent from "./AddNewEvent";
+import eventTypes from "./eventTypes";
 
 /* 
     In this section, we are setting up state and utility variables to manage and interact with dates:
@@ -25,6 +27,7 @@ const WelcomeUser = () => {
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
 
+  const [isNewEventTypeModalOpen, setIsNewEventTypeModalOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const daysInMonth = new Date(
     currentDate.getFullYear(),
@@ -91,7 +94,25 @@ const WelcomeUser = () => {
 
   const months = Array.from({ length: 12 }, (_, index) =>
     new Date(2000, index).toLocaleString("default", { month: "long" })
-  );
+  ); 
+
+  const handleAddEventTypeClick = () => 
+  {
+    setIsNewEventTypeModalOpen(true)
+  }
+
+  const [eventTypes, setEventTypes] = useState([
+
+    {id: 1, name: 'Appointment'},
+    {id: 2, name: 'Sports'},
+    {id: 3, name: 'Birthday'},
+    {id: 4, name: 'University'},
+  ]);
+
+  const addNewEventType = (newEventType) => 
+  {
+    setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
+  };
 
   return (
     <Box p={4}>
@@ -102,10 +123,21 @@ const WelcomeUser = () => {
 
       </Typography>
       <div className="addEventButton">
-        <Button> Add New Event Type </Button>
+        <Button onClick={handleAddEventTypeClick}> Add New Event Type </Button>
       </div>
+      <Appointment 
+        isNewEventTypeModalOpen={isNewEventTypeModalOpen} 
+        setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen} 
+        eventTypes={eventTypes}
+        />
 
-      <Appointment /> {/* Calls the dropdown of the event creation method. */}
+      {isNewEventTypeModalOpen && (
+        <AddNewEvent
+        isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+        setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+        addNewEventType={addNewEventType}
+        />
+      )}
       <Goal/>
       {/* Main container for the grid system, setting margins, and justifying content to center to ensure it appears centered vertically and horizontally */}
       <Grid
