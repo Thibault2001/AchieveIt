@@ -1,63 +1,73 @@
 import React, { useState } from 'react';
+import { Event } from './Event.js';
 import './CSS_files/App.css';
 import './CSS_files/Event.css';
-import { Event } from './Event.js';
-import { auth, ref, set, db } from './firebase'; // Assurez-vous d'importer Firebase correctement.
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-function GoalDisplay({ closeModal }) {
-  const [goals] = useState([]); // Utilisez "goals" pour stocker les objectifs
-  const [title, setTitle] = useState('');
+/*
+  This function creates all the details and fields needed for the goal details pop
+  up modal. 
+*/
+function GoalDisplay({ selectedItem, closeModal }) {
+  //create all the state variables
+  const [events, setEvents] = useState([]);
+  const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
+  const [type, setType] = useState('');
   const [date, setDate] = useState('');
   const [descrip, setDescrip] = useState('');
 
-  const user = auth.currentUser;
-  const userID = user ? user.uid : '';
-
+  //Allows a user to enter a Title for the goal
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  //Allows the user to set the due date for the goal
   const dateChange = (event) => {
     setDate(event.target.value);
   };
 
+  //allows the user to add a description for the goal
   const descChange = (event) => {
     setDescrip(event.target.value);
   };
 
-  const handleCreateGoal = () => {
-    const newGoal = {
-      title: title,
-      date: date,
-      description: descrip,
-    };
 
-    const goalRef = ref(db, `calendar/${userID}/goals/${title}`); // Utilisez l'ID de l'utilisateur pour stocker les objectifs dans la base de données
+  const handleCreateEvent = () => {
+    // Get the current date as a JavaScript Date object
+    const currentDate = new Date();
 
-    set(goalRef, newGoal)
-      .then(() => {
-        toast.success('Goal Created Successfully!');
-        // Vous pouvez également mettre à jour l'état local ici si nécessaire.
-      })
-      .catch((error) => {
-        toast.error('Failed to Create Goal.');
-      });
+    // Parse the selected date as a JavaScript Date object
+    const selectedDate = new Date(date);
 
-    // Réinitialisez les champs du formulaire.
-    setTitle('');
-    setDate('');
-    setDescrip('');
+    // Check if the selected date is in the future
+    if (selectedDate > currentDate) {
+      const newEvent = {
+        id: events.length + 1,
+        title: title,
+        type: type,
+        date: date,
+        description: descrip,
+      };
+
+      //clear the fields for the user to add another goal
+      setEvents([...events, newEvent]);
+      setTitle('');
+      setType('');
+      setDate('');
+      setDescrip('');
+    } else {
+      // Display an error message or handle the case when the date is not in the future
+      alert('Please select a date in the future.');
+    }
   };
 
+  //display the pop up modal for the user to see and fill in their
+  //goal details
   return (
     <div className="createEvent">
-      <p>Title:</p>
+      <p>{selectedItem ? selectedItem.name : ''} Title:</p>
       <input
         type="text"
         onChange={titleChange}
-        value={title}
         placeholder="Enter Title"
       />
 
@@ -68,28 +78,28 @@ function GoalDisplay({ closeModal }) {
         onChange={dateChange}
       />
 
-      <p>Description:</p>
+      <p>{selectedItem ? selectedItem.name : ''} Description:</p>
       <textarea
         id="textAreaDescription"
         rows="5"
         cols="50"
-        value={descrip}
-        onChange={descChange}
         placeholder="Enter your description here..."
+        onChange={descChange}
       ></textarea>
 
       <div className="eventHolder">
-        {goals.map((goal, index) => (
+        {events.map((event) => (
           <Event
-            key={index}
-            title={goal.title}
-            date={goal.date}
-            description={goal.description}
+            key={event.id}
+            title={event.title}
+            type={selectedItem ? selectedItem.name : ''}
+            date={event.date}
+            time={event.time}
+            description={event.description}
           />
         ))}
       </div>
-      <button onClick={handleCreateGoal}>Create Goal</button>
-      <ToastContainer autoClose={5000} />
+      <button onClick={handleCreateEvent}>Create Goal</button>
     </div>
   );
 }
