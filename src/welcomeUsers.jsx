@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Box } from "@mui/material";
 import Appointment from "./Appointment";
-import GoalDisplay from "./GoalDisplay";
+import GoalDisplay2 from "./GoalDisplay2";
 import Goal from './Goals';
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./calendarDisplay";
@@ -70,7 +70,7 @@ const WelcomeUser = () => {
         {currentView === "calendar" && <CalendarDisplay />}
 
         {currentView === "events" && <EventDisplay2 />}
-        {currentView === "goals" && <GoalDisplay />}
+        {currentView === "goals" && <GoalDisplay2 />}
       </Box>
     </CSSTransition>
   );
