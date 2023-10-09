@@ -50,7 +50,7 @@ function Navigation() {
 
     // Make sure to unsubscribe when the component is unmounted
     return () => unsubscribe();
-  }, []);
+  }, [Navigate]); // Ajouter Navigate comme dépendance
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -63,7 +63,6 @@ function Navigation() {
       Navigate('/login');
     });
   };
-
 
   return (
     <nav className="navbar">
@@ -86,7 +85,6 @@ function Navigation() {
         )}
       </ul>
     </nav>
-    
   );
 }
 
