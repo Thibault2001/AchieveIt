@@ -3,8 +3,7 @@ import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
 import eventTypes from './eventTypes.js';
-// import { toast } from 'react-toastify/dist';
-// import 'react-toastify/dist/ReactToastify.css';
+
 
     
     /* 

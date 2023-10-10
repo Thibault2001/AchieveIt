@@ -11,7 +11,6 @@ import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
 import Appointment from "./Appointment";
 import Goal from './Goals';
 import AddNewEvent from "./AddNewEvent";
-import eventTypes from "./eventTypes";
 
 /* 
     In this section, we are setting up state and utility variables to manage and interact with dates:

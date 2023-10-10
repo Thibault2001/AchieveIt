@@ -15,10 +15,10 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                     // Add event type to the dropdown menu. Make sure new event type is at bottom. 
                    // toast.success('Added New Event Type!');
 
-                   addNewEventType(customEventName.trim())
-                   setCustomEventName('');
-                   setIsNewEventTypeModalOpen(false);
-
+                    addNewEventType(customEventName.trim())
+                    setCustomEventName('');
+                    setIsNewEventTypeModalOpen(false);
+                    console.log('test');
                 }
             }
             else //If no input is entered and they click confirm
