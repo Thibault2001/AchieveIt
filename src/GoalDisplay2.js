@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { auth, db, ref, onValue, set } from "./firebase";
 import { Box, Typography, Card } from "@mui/material";
+import { auth, db, ref, onValue, set } from "./firebase";
 import { GetColour } from "./Event";
 
 /*
@@ -11,80 +11,77 @@ import { GetColour } from "./Event";
   functionality to select and delete goals.
 */
 const GoalDisplay = () => {
-  const [events, setEvents] = useState([]);
-  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [selectedGoals, setSelectedGoals] = useState([]);
+  const [, setUserID] = useState(null);
 
   useEffect(() => {
     const user = auth.currentUser;
 
     if (user) {
       const userID = user.uid;
+      setUserID(userID);
 
-      const eventsRef = ref(db, `calendar/${userID}/goals`);
+      const goalsRef = ref(db, `calendar/${userID}/goals`);
 
-      onValue(eventsRef, (snapshot) => {
+      onValue(goalsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          const eventsArray = Object.values(data);
-          setEvents(eventsArray);
+          const goalsArray = Object.values(data);
+          setGoals(goalsArray);
         } else {
-          setEvents([]);
+          setGoals([]);
         }
       });
     }
   }, []);
 
-  const handleEventSelect = (event) => {
-    if (selectedEvents.includes(event.eventID)) {
-      setSelectedEvents(selectedEvents.filter((id) => id !== event.eventID));
+  const handleGoalSelect = (goal) => {
+    if (selectedGoals.includes(goal.title)) {
+      setSelectedGoals(selectedGoals.filter((title) => title !== goal.title));
     } else {
-      setSelectedEvents([...selectedEvents, event.eventID]);
+      setSelectedGoals([...selectedGoals, goal.title]);
     }
   };
 
-  const handleDeleteSelectedEvents = () => {
-    selectedEvents.forEach((eventID) => {
+  const handleDeleteSelectedGoals = () => {
+    selectedGoals.forEach((title) => {
       const user = auth.currentUser;
       const userID = user.uid;
-
-      const eventRef = ref(db, `calendar/${userID}/goals/${eventID}`);
-      set(eventRef, null);
+      setUserID(userID);
+      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
+      set(goalRef, null);
     });
 
-    setSelectedEvents([]);
+    setSelectedGoals([]);
   };
 
   return (
     <Box>
       <Typography variant="h4">Goals</Typography>
-      <button onClick={handleDeleteSelectedEvents}>Delete Selected Goals</button>
+      <button onClick={handleDeleteSelectedGoals}>Delete Selected Goals</button>
       <div>
-        {events.length > 0 ? (
+        {goals.length > 0 ? (
           <div className="event-display-container">
-            {events.map((event) => (
+            {goals.map((goal) => (
               <Card
-                className={`event-display-card ${selectedEvents.includes(event.eventID) ? 'selected' : ''}`}
-                style={{ backgroundColor: GetColour(event.eventType) }}
-                key={event.eventID}
-                onClick={() => handleEventSelect(event)}
+                className={`event-display-card ${selectedGoals.includes(goal.title) ? 'selected' : ''}`}
+                style={{ backgroundColor: GetColour(goal.goalType) }}
+                key={goal.title}
+                onClick={() => handleGoalSelect(goal)}
               >
-                <input
-                  type="checkbox"
-                  checked={selectedEvents.includes(event.eventID)}
-                  onChange={() => handleEventSelect(event)}
-                />
                 <h2>
-                  <u>{event.title}</u>
+                  <u>{goal.title}</u>
                 </h2>
                 <br />
                 <h3>
-                  Date: <u>{event.date}</u>
+                  Date: <u>{goal.date}</u>
                 </h3>
                 <br />
                 <p>
                   <b>Details:</b>
                   <br />
-                  {event.description}
+                  {goal.description}
                 </p>
               </Card>
             ))}
