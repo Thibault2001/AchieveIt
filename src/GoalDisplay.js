@@ -2,34 +2,40 @@ import React, { useState } from 'react';
 import { Event } from './Event.js';
 import './CSS_files/App.css';
 import './CSS_files/Event.css';
+import { auth, ref, set, db } from './firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Get UserID
+const user = auth.currentUser;
+const userID = user ? user.uid : '';
 
 /*
-  This function creates all the details and fields needed for the goal details pop
-  up modal. 
+This function creates all the details and fields needed for the goal details pop
+up modal. 
 */
+
 function GoalDisplay({ selectedItem, closeModal }) {
-  //create all the state variables
+  // Create all the state variables
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
-  const [type, setType] = useState('');
   const [date, setDate] = useState('');
   const [descrip, setDescrip] = useState('');
 
-  //Allows a user to enter a Title for the goal
+  // Allows a user to enter a Title for the goal
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
-  //Allows the user to set the due date for the goal
+  // Allows the user to set the due date for the goal
   const dateChange = (event) => {
     setDate(event.target.value);
   };
 
-  //allows the user to add a description for the goal
+  // Allows the user to add a description for the goal
   const descChange = (event) => {
     setDescrip(event.target.value);
   };
-
 
   const handleCreateEvent = () => {
     // Get the current date as a JavaScript Date object
@@ -43,25 +49,29 @@ function GoalDisplay({ selectedItem, closeModal }) {
       const newEvent = {
         id: events.length + 1,
         title: title,
-        type: type,
         date: date,
         description: descrip,
       };
 
-      //clear the fields for the user to add another goal
-      setEvents([...events, newEvent]);
-      setTitle('');
-      setType('');
-      setDate('');
-      setDescrip('');
+      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
+
+      set(goalRef, newEvent)
+        .then(() => {
+          toast.success('Goal Created Successfully!');
+          // Clear the fields for the user to add another goal
+          setEvents([...events, newEvent]);
+          setTitle('');
+          setDate('');
+          setDescrip('');
+        })
+        .catch((error) => {
+          toast.error('Failed to Create Goal. Please try again later.'); // Display an error notification on failure
+        });
     } else {
-      // Display an error message or handle the case when the date is not in the future
-      alert('Please select a date in the future.');
+      toast.error('Please select a date in the future.'); // Display an error notification if the date is not valid
     }
   };
 
-  //display the pop up modal for the user to see and fill in their
-  //goal details
   return (
     <div className="createEvent">
       <p>{selectedItem ? selectedItem.name : ''} Title:</p>
@@ -69,6 +79,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         type="text"
         onChange={titleChange}
         placeholder="Enter Title"
+        value={title}
       />
 
       <p>Date:</p>
@@ -85,6 +96,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         cols="50"
         placeholder="Enter your description here..."
         onChange={descChange}
+        value={descrip}
       ></textarea>
 
       <div className="eventHolder">
@@ -100,6 +112,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         ))}
       </div>
       <button onClick={handleCreateEvent}>Create Goal</button>
+      <ToastContainer autoClose={5000} />
     </div>
   );
 }

@@ -37,12 +37,20 @@ function Navigation() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       // When the user's authentication state changes, user will contain the logged-in user or null
-      setIsLoggedIn(!!user); // Set isLoggedIn based on the authentication state
+      const userIsLoggedIn = !!user; // Determine if the user is logged in
+
+      // Set isLoggedIn based on the authentication state
+      setIsLoggedIn(userIsLoggedIn);
+
+      if (userIsLoggedIn) {
+        // If the user is logged in, navigate to the appropriate page
+        Navigate('/welcome');
+      }
     });
 
     // Make sure to unsubscribe when the component is unmounted
     return () => unsubscribe();
-  }, []);
+  }, [Navigate]); // Ajouter Navigate comme dépendance
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -52,16 +60,9 @@ function Navigation() {
       });
 
       // Log out the user and navigate them to the home page
-      Navigate('/');
+      Navigate('/login');
     });
   };
-
-  // Conditionally navigate based on isLoggedIn
-  useEffect(() => {
-    if (isLoggedIn) {
-      Navigate('/welcome');
-    }
-  }, [isLoggedIn, Navigate]);
 
   return (
     <nav className="navbar">
@@ -69,7 +70,7 @@ function Navigation() {
         {isLoggedIn ? (
           // If connected, display "Log Out" as a link
           <li className="nav-item">
-            <Link to="/" onClick={handleLogout}>Log Out</Link>
+            <Link to="/login" onClick={handleLogout}>Log Out</Link>
           </li>
         ) : (
           // If not connected, display "Log in" and "Sign Up" as links
@@ -84,7 +85,6 @@ function Navigation() {
         )}
       </ul>
     </nav>
-    
   );
 }
 
