@@ -12,34 +12,42 @@ import { CSSTransition } from 'react-transition-group';
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
   const [userName, setUserName] = useState(""); // State to store the user's name
+  const [firstLoad, setFirstLoad] = useState(true); // State to track if it's the first load
 
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
 
   useEffect(() => {
-    // Use the auth object to get the ID of the currently logged-in user
-    const user = auth.currentUser;
-    if (user) {
-      const userId = user.uid;
+    if (firstLoad) {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
 
-      // Use the user's ID to access user data in the Firebase Realtime Database
-      const db = getDatabase();
-      const userRef = ref(db, `users/${userId}/name`);
+        // Use the user's ID to access user data in the Firebase Realtime Database
+        const db = getDatabase();
+        const userRef = ref(db, `users/${userId}/name`);
 
-      // Listen for changes to the user's name in the database
-      onValue(userRef, (snapshot) => {
-        const userNameFromDB = snapshot.val();
-        setUserName(userNameFromDB);
-      });
+        // Listen for changes to the user's name in the database
+        onValue(userRef, (snapshot) => {
+          const userNameFromDB = snapshot.val();
+          setUserName(userNameFromDB);
+
+          // Store the user name in localStorage on the first load
+          localStorage.setItem('userName', userNameFromDB);
+        });
+
+        // Set firstLoad to false to prevent re-storing the name
+        setFirstLoad(false);
+      }
     }
-  }, []);
+  }, [firstLoad]);
 
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
       <Box p={4}>
         <Typography variant="h4" fontSize={50} gutterBottom>
-          Welcome {userName}! Here is your day
+          Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
         </Typography>
         <Appointment />
         <br />
