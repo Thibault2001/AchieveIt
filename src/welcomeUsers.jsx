@@ -3,13 +3,14 @@ import { Button, Typography, Box } from "@mui/material";
 import Appointment from "./Appointment";
 import GoalDisplay2 from "./GoalDisplay2";
 import Goal from './Goals';
-import AddNewEvent from "./AddNewEvent";
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./calendarDisplay";
 import { auth } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
+import AddNewEvent from "./AddNewEvent";
+import eventTypes from "./eventTypes";
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
@@ -69,11 +70,25 @@ const WelcomeUser = () => {
       <Box className="main-container" p={4}>
         <Typography variant="h4" fontSize={50} gutterBottom>
           Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
+          <div className="addEventButton">
+          <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
+
+          <AddNewEvent
+            isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+            setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+            addNewEventType={addNewEventType}
+            />
+        </div>
         </Typography>
+
         <div className="grid-container">
           <div className="title-column">
             <Box className="button-container" mb={3}>
-              <Appointment />
+              <Appointment 
+                isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+                setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+                eventTypes={eventTypes}
+              />
               <br />
               <Goal />
             </Box>

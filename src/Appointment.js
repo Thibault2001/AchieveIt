@@ -15,7 +15,7 @@ import eventTypes from './eventTypes.js';
         of their event. Inside of the Modal being called, the Event.js file is called. 
     */
 
-    function Appointment({isNewEventTypeModalOpen, setIsNewEventTypeModalOpen}) 
+    function Appointment({isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, eventTypes}) 
     { //Defining state variables using the useState hook
         const[isModalOpen, setIsModalOpen] = useState(false);
         const[selectedItem, setSelectedItem] = useState(null);
@@ -65,10 +65,7 @@ import eventTypes from './eventTypes.js';
      
         //Array of all the items for the dropdown menu
         const items = [
-            { id: 1, name: 'Appointment' },
-            { id: 2, name: 'Sports' },
-            { id: 3, name: 'Birthday' },
-            { id: 4, name: 'University' },
+            ...eventTypes.map((eventType) => ({id: eventType.id, name: eventType.name})),
         ];
 
     return (
