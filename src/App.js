@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import './CSS_files/App.css';
 import './CSS_files/login.css';
+import './CSS_files/userWelcome.css'; 
 import LoginPage from './loginPage';
 import SignUpPage from './signUpPage';
 import WelcomeUser from './welcomeUsers';
