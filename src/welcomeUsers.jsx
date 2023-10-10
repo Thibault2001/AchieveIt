@@ -3,6 +3,7 @@ import { Button, Typography, Box } from "@mui/material";
 import Appointment from "./Appointment";
 import GoalDisplay2 from "./GoalDisplay2";
 import Goal from './Goals';
+import AddNewEvent from "./AddNewEvent";
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./calendarDisplay";
 import { auth } from './firebase'; // Import Firebase module for authentication
@@ -15,6 +16,7 @@ const WelcomeUser = () => {
   const [userName, setUserName] = useState(""); // State to store the user's name
   const [firstLoad, setFirstLoad] = useState(true); // State to track if it's the first load
 
+  const [isNewEventTypeModalOpen, setIsNewEventTypeModalOpen] = useState(false);
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
@@ -42,7 +44,25 @@ const WelcomeUser = () => {
         setFirstLoad(false);
       }
     }
-  }, [firstLoad]);
+  }, [firstLoad]); 
+
+  const handleAddEventTypeClick = () => 
+  {
+    setIsNewEventTypeModalOpen(true)
+  }
+
+  const [eventTypes, setEventTypes] = useState([
+
+    {id: 1, name: 'Appointment'},
+    {id: 2, name: 'Sports'},
+    {id: 3, name: 'Birthday'},
+    {id: 4, name: 'University'},
+  ]);
+
+  const addNewEventType = (newEventType) => 
+  {
+    setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
+  };
 
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
