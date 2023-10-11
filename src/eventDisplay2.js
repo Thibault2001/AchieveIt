@@ -78,12 +78,8 @@ const EventDisplay = () => {
                 className={`event-display-card ${selectedEvents.includes(event.eventID) ? 'selected' : ''}`}
                 style={{ backgroundColor: GetColour(event.eventType) }}
                 key={event.eventID}
+                onClick={() => handleEventSelect(event)}
               >
-                <input
-                  type="checkbox"
-                  checked={selectedEvents.includes(event.eventID)}
-                  onChange={() => handleEventSelect(event)}
-                />
                 <h2>
                   <u>{event.eventTitle}</u>
                 </h2>
