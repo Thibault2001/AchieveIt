@@ -36,7 +36,7 @@ const WelcomeUser = () => {
       <Typography variant="h4" fontSize={50} gutterBottom>
         Welcome {userName}! Here is your day
       </Typography>
-      <Appointment />
+      <Appointment/>
       
       <Goal/>
       <Box display="flex" justifyContent="center" mb={3}>

@@ -60,7 +60,7 @@ import'./CSS_files/Goal.css';
 
     return (
       <div className="goal">
-           <button onClick={toggleDropdown} className="goal-dropdown-list standard-button"> {/*Button to toggle the dropdown menu */}
+           <button onClick={toggleDropdown} className="goal-dropdown-list standard-button" style={{ marginRight: "10px" }}> {/*Button to toggle the dropdown menu */}
             Add Event
            </button>   
            
