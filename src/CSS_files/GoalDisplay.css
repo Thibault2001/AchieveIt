@@ -1,0 +1,23 @@
+/* CSS_files/GoalDisplay.css */
+
+/* Styles spécifiques à GoalDisplay */
+.goal-container {
+  border: 1px solid #ccc; /* Add a border around each goal container */
+  padding: 10px;
+  margin: 10px;
+  background-color: #f9f9f9; /* Set a background color for each goal container */
+}
+
+/* Styles for the selected goal container */
+.goal-container.selected {
+  box-shadow: 0 0 5px 2px #ff0400; /* Add a highlight to the selected goal container */
+}
+
+/* Rest of the CSS for GoalDisplay */
+h2, h3, p {
+  margin: 5px 0;
+}
+
+u {
+  text-decoration: underline;
+}

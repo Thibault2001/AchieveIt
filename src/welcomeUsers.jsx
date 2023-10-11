@@ -37,7 +37,7 @@ const WelcomeUser = () => {
         Welcome {userName}! Here is your day
       </Typography>
       <Appointment />
-      <br />
+      
       <Goal/>
       <Box display="flex" justifyContent="center" mb={3}>
         <Button

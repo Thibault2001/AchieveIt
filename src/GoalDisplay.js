@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './CSS_files/App.css';
-import './CSS_files/Event.css';
-import { Event } from './Event.js';
-import { auth, ref, set, db } from './firebase';
+import { auth } from './firebase'; // Import the auth object from your Firebase module
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './CSS_files/GoalDisplay.css'; // Add your CSS file for styling
 
 function GoalDisplay({ selectedItem, closeModal }) {
   const [goals, setGoals] = useState([]);
@@ -15,7 +14,6 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [showSubgoals, setShowSubgoals] = useState(false);
   const [subgoalTitle, setSubgoalTitle] = useState('');
   const [subgoalDate, setSubgoalDate] = useState('');
-  const [subgoalTime, setSubgoalTime] = useState('');
   const [subGoalDesc, setSubGoalDesc] = useState('');
 
   const user = auth.currentUser;
@@ -44,23 +42,16 @@ function GoalDisplay({ selectedItem, closeModal }) {
     if (selectedDate > currentDate) {
       const newGoal = {
         id: goals.length + 1,
+        title: title,
+        date: date,
         description: descrip,
       };
 
-      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
-
-      set(goalRef, newGoal)
-        .then(() => {
-          toast.success('Goal Created Successfully!');
-          setGoals([...goals, newGoal]);
-          setTitle('');
-          setDate('');
-          setDescrip('');
-          setShowSubgoals(false);
-        })
-        .catch((error) => {
-          toast.error('Failed to Create Goal.');
-        });
+      setGoals([...goals, newGoal]);
+      setTitle('');
+      setDate('');
+      setDescrip('');
+      setShowSubgoals(false);
     } else {
       alert('Please select a date in the future.');
     }
@@ -71,13 +62,11 @@ function GoalDisplay({ selectedItem, closeModal }) {
       id: goals.length + 1,
       title: subgoalTitle,
       date: subgoalDate,
-      desc: subGoalDesc,
-      time: subgoalTime,
+      description: subGoalDesc,
     };
     setGoals([...goals, newSubgoal]);
     setSubgoalTitle('');
     setSubgoalDate('');
-    setSubgoalTime('');
     setSubGoalDesc('');
   };
 
@@ -151,23 +140,22 @@ function GoalDisplay({ selectedItem, closeModal }) {
             id="textAreaDescription"
             rows="5"
             cols="50"
-            placeholder="Enter your description here..."
-            onChange={descChange}
+            placeholder="Enter your subgoal description here..."
+            onChange={(e) => setSubGoalDesc(e.target.value)}
           ></textarea>
           <p></p>
           <button onClick={handleCreateSubgoal}>Create Subgoal</button>
         </div>
       )}
-      <div className="eventHolder">
+      <div className="goalHolder">
         {goals.map((goal) => (
-          <Event
-            key={goal.id}
-            title={goal.title}
-            type={selectedItem ? selectedItem.name : ''}
-            date={goal.date}
-            time={goal.time}
-            description={goal.description}
-          />
+          <div key={goal.id} className="goal-container">
+            <p>Goal Type: {selectedItem ? selectedItem.name : ''}</p>
+            <h2>Title: {goal.title}</h2>
+            <p>Date: {goal.date}</p>
+            <p>Description:</p>
+            <p>{goal.description}</p>
+          </div>
         ))}
       </div>
     </div>
