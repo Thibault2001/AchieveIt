@@ -1,97 +1,94 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Card } from "@mui/material";
-import { auth, db, ref, onValue, set } from "./firebase";
-import { GetColour } from "./Event";
+import React, { useState } from 'react';
+import './CSS_files/App.css';
+import './CSS_files/Event.css';
+import { Event } from './Event.js';
+import { auth, ref, set, db } from './firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-/*
-  This component displays a list of goals from a user's database.
-  Users can select and delete goals.
+function GoalDisplay({ closeModal }) {
+  const [goals] = useState([]);
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [descrip, setDescrip] = useState('');
 
-  It fetches goal data from Firebase Realtime Database and provides
-  functionality to select and delete goals.
-*/
-const GoalDisplay = () => {
-  const [goals, setGoals] = useState([]);
-  const [selectedGoals, setSelectedGoals] = useState([]);
-  const [, setUserID] = useState(null);
+  const user = auth.currentUser;
+  const userID = user ? user.uid : '';
 
-  useEffect(() => {
-    const user = auth.currentUser;
-
-    if (user) {
-      const userID = user.uid;
-      setUserID(userID);
-
-      const goalsRef = ref(db, `calendar/${userID}/goals`);
-
-      onValue(goalsRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const goalsArray = Object.values(data);
-          setGoals(goalsArray);
-        } else {
-          setGoals([]);
-        }
-      });
-    }
-  }, []);
-
-  const handleGoalSelect = (goal) => {
-    if (selectedGoals.includes(goal.title)) {
-      setSelectedGoals(selectedGoals.filter((title) => title !== goal.title));
-    } else {
-      setSelectedGoals([...selectedGoals, goal.title]);
-    }
+  const titleChange = (event) => {
+    setTitle(event.target.value);
   };
 
-  const handleDeleteSelectedGoals = () => {
-    selectedGoals.forEach((title) => {
-      const user = auth.currentUser;
-      const userID = user.uid;
-      setUserID(userID);
-      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
-      set(goalRef, null);
-    });
+  const dateChange = (event) => {
+    setDate(event.target.value);
+  };
 
-    setSelectedGoals([]);
+  const descChange = (event) => {
+    setDescrip(event.target.value);
+  };
+
+  const handleCreateGoal = () => {
+    const newGoal = {
+      title: title,
+      date: date,
+      description: descrip,
+    };
+
+    const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
+    set(goalRef, newGoal)
+      .then(() => {
+        toast.success('Goal Created Successfully!');
+      })
+      .catch((error) => {
+        toast.error('Failed to Create Goal.');
+      });
+
+    setTitle('');
+    setDate('');
+    setDescrip('');
   };
 
   return (
-    <Box>
-      <Typography variant="h4">Goals</Typography>
-      <button onClick={handleDeleteSelectedGoals}>Delete Selected Goals</button>
-      <div>
-        {goals.length > 0 ? (
-          <div className="event-display-container">
-            {goals.map((goal) => (
-              <Card
-                className={`event-display-card ${selectedGoals.includes(goal.title) ? 'selected' : ''}`}
-                style={{ backgroundColor: GetColour(goal.goalType) }}
-                key={goal.title}
-                onClick={() => handleGoalSelect(goal)}
-              >
-                <h2>
-                  <u>{goal.title}</u>
-                </h2>
-                <br />
-                <h3>
-                  Date: <u>{goal.date}</u>
-                </h3>
-                <br />
-                <p>
-                  <b>Details:</b>
-                  <br />
-                  {goal.description}
-                </p>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <p>No goals to display.</p>
-        )}
+    <div className="createEvent">
+      <p>Title:</p>
+      <input
+        type="text"
+        onChange={titleChange}
+        value={title}
+        placeholder="Enter Title"
+      />
+
+      <p>Date:</p>
+      <input
+        type="date"
+        value={date}
+        onChange={dateChange}
+      />
+
+      <p>Description:</p>
+      <textarea
+        id="textAreaDescription"
+        rows="5"
+        cols="50"
+        value={descrip}
+        onChange={descChange}
+        placeholder="Enter your description here..."
+      ></textarea>
+
+      <div className="eventHolder">
+        {goals.map((goal, index) => (
+          <Event
+            key={index}
+            title={goal.title}
+            date={goal.date}
+            description={goal.description}
+          />
+        ))}
       </div>
-    </Box>
+      <button onClick={handleCreateGoal}>Create Goal</button>
+      <ToastContainer autoClose={5000} />
+    </div>
   );
-};
+}
 
 export default GoalDisplay;

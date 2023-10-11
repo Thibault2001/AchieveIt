@@ -1,25 +1,13 @@
 import React, { useState } from 'react';
-import { Event } from './Event.js';
 import './CSS_files/App.css';
-import './CSS_files/Event.css';
-import { auth, ref, set, db } from './firebase';
+import { auth } from './firebase'; // Import the auth object from your Firebase module
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CSS_files/GoalDisplay.css'; // Add your CSS file for styling
 
-// Get UserID
-const user = auth.currentUser;
-const userID = user ? user.uid : '';
-
-/*
-This function creates all the details and fields needed for the goal details pop
-up modal. 
-*/
-
 function GoalDisplay({ selectedItem, closeModal }) {
-  // Create all the state variables
-  const [events, setEvents] = useState([]);
-  const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
+  const [goals, setGoals] = useState([]);
+  const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [descrip, setDescrip] = useState('');
   const [showSubgoalsCheckbox, setShowSubgoalsCheckbox] = useState(false);
@@ -28,12 +16,13 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [subgoalDate, setSubgoalDate] = useState('');
   const [subGoalDesc, setSubGoalDesc] = useState('');
 
-  // Allows a user to enter a Title for the goal
+  const user = auth.currentUser;
+  const userID = user ? user.uid : '';
+
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
-  // Allows the user to set the due date for the goal
   const dateChange = (event) => {
     const selectedDate = new Date(event.target.value);
     const currentDate = new Date();
@@ -43,7 +32,6 @@ function GoalDisplay({ selectedItem, closeModal }) {
     setShowSubgoalsCheckbox(selectedDate > threeMonthsFromNow);
   };
 
-  // Allows the user to add a description for the goal
   const descChange = (event) => {
     setDescrip(event.target.value);
   };
@@ -104,7 +92,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         onChange={dateChange}
       />
 
-      <p>{selectedItem ? selectedItem.name : ''} Description:</p>
+      <p>Description:</p>
       <textarea
         id="textAreaDescription"
         rows="5"

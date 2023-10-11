@@ -52,34 +52,31 @@ const LoginPage = () => {
     try {
       setIsSubmitting(true);
 
-      if (!showReset) {
-        // Soumettre le formulaire principal ici
-        signInWithEmailAndPassword(auth, formData.username, formData.password)
-          .then((userCredential) => {
-            const user = userCredential.user;
+      signInWithEmailAndPassword(auth, formData.username, formData.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
 
-            user.getIdTokenResult().then((idTokenResult) => {
-              const { admin } = idTokenResult.claims;
+          user.getIdTokenResult().then((idTokenResult) => {
+            const { admin } = idTokenResult.claims;
 
-              const userJSON = JSON.stringify(user);
-              const cookieName = admin ? 'admin' : 'user';
-              document.cookie = `${cookieName}=${userJSON}; path=/`;
+            const userJSON = JSON.stringify(user);
+            const cookieName = admin ? 'admin' : 'user';
+            document.cookie = `${cookieName}=${userJSON}; path=/`;
 
-              if (admin) {
-                navigate('/welcomeAdmin');
-              } else {
-                console.log(document.cookie);
-                navigate('/welcome');
-              }
+            if (admin) {
+              navigate('/welcomeAdmin');
+            } else {
+              console.log(document.cookie);
+              navigate('/welcome');
+            }
 
-              toast.success('Login Successful');
-            });
-          })
-          .catch((error) => {
-            setFirebaseError(error);
-            toast.error(getErrorMessage(error.code));
+            toast.success('Login Successful');
           });
-      }
+        })
+        .catch((error) => {
+          setFirebaseError(error);
+          toast.error(getErrorMessage(error.code));
+        });
     } finally {
       setIsSubmitting(false);
     }
@@ -99,9 +96,7 @@ const LoginPage = () => {
     setFirebaseError(null);
   };
 
-  const handleReset = async (event) => {
-    event.preventDefault();
-
+  const handleReset = async () => {
     try {
       await sendPasswordResetEmail(auth, resetEmail);
       toast.success('Password reset email sent successfully');
@@ -112,42 +107,40 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {showMainForm && (
-          <>
-            <input
-              type="email"
-              name="username"
-              placeholder="Email"
-              value={formData.username}
-              onChange={handleInputChange}
-              required
-            />
+    <form onSubmit={handleSubmit}>
+      {showMainForm && (
+        <>
+          <input
+            type="email"
+            name="username"
+            placeholder="Email"
+            value={formData.username}
+            onChange={handleInputChange}
+            required
+          />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
 
-            <button type="submit" disabled={!isReady || isSubmitting}>
-              {isSubmitting ? 'Logging in...' : 'Login'}
-            </button>
-            <br />
+          <button type="submit" disabled={!isReady || isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
+          <br />
 
-            <button onClick={resetPassword}>
-              Reset Password
-            </button>
-          </>
-        )}
-      </form>
+          <button onClick={resetPassword}>
+            Reset Password
+          </button>
+        </>
+      )}
 
       {showReset && (
-        <form onSubmit={handleReset}>
+        <>
           <input
             type="email"
             placeholder="Email"
@@ -155,14 +148,14 @@ const LoginPage = () => {
             onChange={(e) => setResetEmail(e.target.value)}
           />
           <br />
-          <button type="submit">
+          <button onClick={handleReset}>
             Confirm Reset
           </button>
-        </form>
+        </>
       )}
 
-      <ToastContainer autoClose={5000} />
-    </div>
+      <ToastContainer autoClose={5000}/>
+    </form>
   );
 };
 
