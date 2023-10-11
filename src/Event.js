@@ -1,6 +1,7 @@
 import React from "react";
 import './App.js';
 import { useState } from "react";
+import './CSS_files/Event.css';
 
 /*
 This file contains the logic of creating an event, as well as the reminder times, it also contains the display of an event, and some example events
@@ -27,7 +28,7 @@ function Event({ title, type, date, time, reminderTime, description }) {
   };
   //display for the event:
     return (
-        <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
+        <div className="goal" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
             <h2><u>{title}</u></h2><br />
             <h3>Event Type: <u>{type}</u></h3> <br />
             <h3>Date: <u>{date}</u></h3>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
 import EventDisplay from './EventDisplay' //Importing EventDisplay file
-    
+import'./CSS_files/Goal.css';
+
     /* 
         The Appointment.js file has the dropdown menu that users will use in order to create an event.
         The button is called Add Event and when this button is clicked, it will set the variable
@@ -22,46 +23,50 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
         const handleItemClick = (item) =>
         {
             setSelectedItem(item);
-            
-            handleAppointmentClick();
-            
-        };
-
-        //Handles the Add Event click. It will turn the modal display on which prompts the user to enter their event details.
-        const handleAppointmentClick = () =>
-        {
-                setIsModalOpen(true);
+            setIsModalOpen(true);
         };
 
         //When the close button is clicked it will close the modal.
-        const closeModal = () =>
-        {
+        const closeModal= () => {
             setIsModalOpen(false);
         };
 
         //Toggles the dropdown 
-        const toggleDropdown = () =>
-        {
+        const toggleDropdown = () => {
             setIsDropdownOpen(!isDropdownOpen);
         };
-     
+
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+              if (isDropdownOpen && !event.target.classList.contains('goal-dropdown-list')) {
+                setIsDropdownOpen(false);
+              }
+            };
+
+            document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
         //Array of all the items for the dropdown menu
         const items = [
             {id: 1, name: 'Appointment'},
             {id: 2, name: 'Sports'},
             {id: 3, name: 'Birthday'},
             {id: 4, name: 'University'}
-        ]
+        ];
 
     return (
-      <div className="appointment">
-           <button onClick={toggleDropdown} className="appointment-toggle"> {/*Button to toggle the dropdown menu */}
+      <div className="goal">
+           <button onClick={toggleDropdown} className="goal-dropdown-list standard-button"> {/*Button to toggle the dropdown menu */}
             Add Event
            </button>   
            
             {/* Dropdown menu */}  
             {isDropdownOpen && (
-            <ul className="appointment-menu">
+            <ul className="goal-types" style={{ zIndex: 9999}}>
                 {items.map((item) => (
                     <li
                     key={item.id}
@@ -75,14 +80,14 @@ import EventDisplay from './EventDisplay' //Importing EventDisplay file
             </ul>
             )}
             {/* Modal for displaying the selected event type, e.g. Sports */}
-            <div className="modal-custom"> 
+            <div className="modal"> 
                 <Modal
                     isOpen={isModalOpen}
                     onRequestClose={closeModal}
-                    contentLabel="Popup Modal"
+                    contentLabel="modal popup"
                 >
                     <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/> {/*Calls the EventDisplay*/}
-                    <button class="closeButton" onClick={closeModal}> Close </button>
+                    <button  onClick={closeModal}> Close </button>
                 </Modal>
            </div>
       </div>
