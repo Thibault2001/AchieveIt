@@ -1,6 +1,6 @@
 .appointment
 {
-    position: relative; /* Positioned relative */
+    position:left; /* Positioned relative */
     display: inline-block; /* Inline level block container */
 }
 
@@ -30,7 +30,7 @@
 
 .appointment-menu :hover
 {
-    background-color: #f643f4; /* hover colour */
+    background-color: #3988d7b5; /* hover colour */
 }
 
 .modal-custom {
