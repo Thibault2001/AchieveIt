@@ -1,14 +1,13 @@
 .grid-container {
   display: grid;
-  grid-template-columns: 25% 75%; /* Une colonne pour le titre et une colonne pour le contenu principal */
-  gap: 10px; /* Espacement entre les colonnes */
+  grid-template-columns: 25% 75%;
+  gap: 10px;
 }
 
 .title-column {
-  /* Styles pour la colonne du titre et des boutons */
-  width: 100%; /* Largeur fixe ou proportionnelle */
+  width: 100%;
 }
 
 .content-column {
-  /* Styles pour la colonne du contenu principal */
+
 }
