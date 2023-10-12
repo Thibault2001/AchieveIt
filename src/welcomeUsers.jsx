@@ -9,12 +9,15 @@ import { auth } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
+import AddNewEvent from "./AddNewEvent";
+import eventTypes from "./eventTypes";
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
   const [userName, setUserName] = useState(""); // State to store the user's name
   const [firstLoad, setFirstLoad] = useState(true); // State to track if it's the first load
 
+  const [isNewEventTypeModalOpen, setIsNewEventTypeModalOpen] = useState(false);
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
@@ -42,18 +45,50 @@ const WelcomeUser = () => {
         setFirstLoad(false);
       }
     }
-  }, [firstLoad]);
+  }, [firstLoad]); 
+
+  const handleAddEventTypeClick = () => 
+  {
+    setIsNewEventTypeModalOpen(true)
+  }
+
+  const [eventTypes, setEventTypes] = useState([
+
+    {id: 1, name: 'Appointment'},
+    {id: 2, name: 'Sports'},
+    {id: 3, name: 'Birthday'},
+    {id: 4, name: 'University'},
+  ]);
+
+  const addNewEventType = (newEventType) => 
+  {
+    setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
+  };
 
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
       <Box className="main-container" p={4}>
         <Typography variant="h4" fontSize={50} gutterBottom>
           Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
+          <div className="addEventButton">
+          <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
+
+          <AddNewEvent
+            isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+            setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+            addNewEventType={addNewEventType}
+            />
+        </div>
         </Typography>
+
         <div className="grid-container">
           <div className="title-column">
             <Box className="button-container" mb={3}>
-              <Appointment />
+              <Appointment 
+                isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+                setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+                eventTypes={eventTypes}
+              />
               <br />
               <Goal />
             </Box>

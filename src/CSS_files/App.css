@@ -94,3 +94,12 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.addEventButton
+{
+  display: flex;
+  justify-content:flex-end;
+  border-radius: 4px;
+  margin-left: 75%;
+
+}
