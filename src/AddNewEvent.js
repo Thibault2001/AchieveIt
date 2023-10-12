@@ -21,7 +21,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
     const confirmCreateEventType = () => {
         if (customEventName.trim() !== '') {
             const user = auth.currentUser;
-            const userID = user ? user.uid : '';
+            const userID = user.uid;
 
             if (user) {
                 const eventRef = ref(db, `calendar/${userID}/eventTypes`);
