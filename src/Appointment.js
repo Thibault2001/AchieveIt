@@ -90,9 +90,11 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   return (
     <div className="appointment">
       <button onClick={toggleDropdown} className="appointment-toggle">
+        {/* Button to toggle the dropdown menu */}
         Add Event
       </button>
 
+      {/* Dropdown menu */}
       {isDropdownOpen && (
         <ul className="appointment-menu">
           {items.map((item, index) => (
@@ -107,6 +109,7 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
         </ul>
       )}
 
+      {/* Modal for displaying the selected event type, e.g., Sports */}
       <div className="modal-custom">
         <Modal
           isOpen={isModalOpen}
