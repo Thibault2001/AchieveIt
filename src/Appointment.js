@@ -1,14 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import EventDisplay from './EventDisplay'; // Importing EventDisplay file
-import { db, auth, ref, onValue } from './firebase';
+import EventDisplay from './EventDisplay';
+import { db, auth, ref, onValue, set, onAuthStateChanged } from './firebase';
 
 function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [eventTypes] = useState([]); // State to store eventTypes from Firebase
+  const [, setUserID] = useState(null);
+  const [eventTypes] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userID = user.uid;
+        setUserID(userID);
+  
+        // Accède à la base de données Firebase
+        const eventsRef = ref(db, `calendar/${userID}/eventTypes`);
+  
+        // Écoute les modifications en temps réel
+        onValue(eventsRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const newEventTypesArray = Object.values(data);
+            setNewEventTypes(newEventTypesArray);
+          } else {
+            setNewEventTypes([]);
+          }
+        });
+      }
+    });
+  
+    return () => unsubscribe(); // Nettoyez l'observateur lors du démontage du composant
+  }, []);
 
   // Separate lists for existing and new event types
   const [existingEventTypes, setExistingEventTypes] = useState([]);
@@ -18,12 +44,6 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const handleItemClick = (item) => {
     setSelectedItem(item);
   };
-
-  useEffect(() => {
-    if (selectedItem !== null) {
-      handleAppointmentClick();
-    }
-  }, [selectedItem]);
 
   // Handles the Add Event click. It will display the modal, prompting the user to enter their event details.
   const handleAppointmentClick = () => {
@@ -46,23 +66,6 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   };
 
   useEffect(() => {
-    const user = auth.currentUser;
-
-    if (user) {
-      const userID = user.uid;
-      const eventsRef = ref(db, `calendar/${userID}/eventTypes`);
-
-      onValue(eventsRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const newEventTypesArray = Object.values(data);
-          setNewEventTypes(newEventTypesArray);
-        }
-      });
-    }
-  }, []);
-
-  useEffect(() => {
     // Construct the list of existing event types
     const existingTypes = [
       { id: 1, name: 'Appointment' },
@@ -73,7 +76,12 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     setExistingEventTypes(existingTypes);
   }, []);
 
-  // Array of all the items for the dropdown menu, including both existing and new event types
+  useEffect(() => {
+    if (selectedItem !== null) {
+      handleAppointmentClick();
+    }
+  }, [selectedItem]);
+
   const items = [
     ...existingEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
     ...newEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
@@ -82,11 +90,9 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   return (
     <div className="appointment">
       <button onClick={toggleDropdown} className="appointment-toggle">
-        {/* Button to toggle the dropdown menu */}
         Add Event
       </button>
 
-      {/* Dropdown menu */}
       {isDropdownOpen && (
         <ul className="appointment-menu">
           {items.map((item, index) => (
@@ -101,15 +107,17 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
         </ul>
       )}
 
-      {/* Modal for displaying the selected event type, e.g., Sports */}
       <div className="modal-custom">
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Popup Modal"
         >
-          <EventDisplay selectedItem={selectedItem} closeModal={closeModal} />{' '}
-          {/* Calls the EventDisplay */}
+          <EventDisplay
+            selectedItem={selectedItem}
+            closeModal={closeModal}
+            events={eventTypes} // Pass events to EventDisplay
+          />
           <button className="closeButton" onClick={closeModal}>
             Close
           </button>
