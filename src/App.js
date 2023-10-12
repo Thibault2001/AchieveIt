@@ -34,8 +34,21 @@ function App() {
 function Navigation() {
   const Navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const initialRedirectDone = localStorage.getItem('initialRedirect');
+
+    // Check if the user has an "admin" cookie when the page loads
+    const cookieValue = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('admin='));
+
+    if (cookieValue) {
+      // If the "admin" cookie exists, consider the user as an administrator
+      setIsAdmin(true);
+    }
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       // When the user's authentication state changes, user will contain the logged-in user or null
       const userIsLoggedIn = !!user; // Determine if the user is logged in
@@ -43,15 +56,23 @@ function Navigation() {
       // Set isLoggedIn based on the authentication state
       setIsLoggedIn(userIsLoggedIn);
 
-      if (userIsLoggedIn) {
-        // If the user is logged in, navigate to the appropriate page
-        Navigate('/welcome');
+      if (userIsLoggedIn && !initialRedirectDone) {
+        if (isAdmin) {
+          // If the user is an admin, navigate to the admin welcome page
+          Navigate('/welcomeAdmin');
+        } else {
+          // If the user is not an admin, navigate to the regular welcome page
+          Navigate('/welcome');
+        }
+
+        // Mark that the initial redirection has occurred
+        localStorage.setItem('initialRedirect', 'done');
       }
     });
 
     // Make sure to unsubscribe when the component is unmounted
     return () => unsubscribe();
-  }, [Navigate]); // Ajouter Navigate comme dépendance
+  }, [Navigate, isAdmin]);
 
   const handleLogout = () => {
     auth.signOut().then(() => {
