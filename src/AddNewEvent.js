@@ -1,65 +1,68 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Modal from 'react-modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { auth, ref, set, db } from './firebase';
-import eventTypes from "./eventTypes";
+import { auth, db, ref, get, set } from './firebase';
 
-const user = auth.currentUser;
-const userID = user ? user.uid : '';
+/* 
+        The Appointment.js file has the dropdown menu that users will use in order to create an event.
+        The button is called Add Event and when this button is clicked, it will set the variable
+        setIsDropdownOpen to True. It is set to false by default and then can be turned on off by clicking 
+        the button. There is an array of items that will be in the dropdown list. From the dropdown, users can select the event type that they like and once they click an
+        event type, the React Modal will be set to true for which the user is prompted to enter the details 
+        of their event. Inside of the Modal being called, the Event.js file is called. 
+    */
 
-const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => 
-{
-    const[customEventName, setCustomEventName] = useState('');
+// This component handles the creation of a new event type using a modal.
+const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => {
+    const [customEventName, setCustomEventName] = useState('');
 
-    const confirmCreateEventType = () =>
-        {
-            if(customEventName.trim() !== '')  //Makes sure user enters a string
-            {
-                const confirm = window.confirm(`Your event type will be called: ${customEventName}`);
-                // console.log("1");
+    // Function to confirm and create a new event type.
+    const confirmCreateEventType = () => {
+        if (customEventName.trim() !== '') {
+            const user = auth.currentUser;
+            const userID = user ? user.uid : '';
+
+            if (user) {
+                const eventRef = ref(db, `calendar/${userID}/eventTypes`);
+
+                // Display a confirmation dialog to the user.
+                const isConfirmed = window.confirm(`Your event type will be called: ${customEventName}`);
                 
-                if(confirm) //If user clicks yes to confirm new event type
-                {
-                
+                if (isConfirmed) {
+                    get(eventRef).then((snapshot) => {
+                        let existingEventTypes = snapshot.val() || [];
+                        existingEventTypes.push({ name: customEventName.trim() });
 
-                    // Add event type to the dropdown menu. Make sure new event type is at bottom. 
-                    console.log('Toast message should appear');
+                        // Set the updated event types in the database.
+                        set(eventRef, existingEventTypes)
+                            .then(() => {
+                                // Event added with success
+                                addNewEventType(customEventName.trim());
+                                setCustomEventName('');
 
-                   const eventRef = ref(db, `calendar/${userID}/eventTypes`);
-                   set(eventRef, eventTypes)
-                     .then(() => {
-                       // Event added with success
-                       //setIsEventAdded(true);
-                       addNewEventType(customEventName.trim())
-                       toast.success('Adding Event Successfully!');
-                     })
-                     .catch((error) => {
-                       // Event not added
-                       //setIsEventAdded(false);
-                       toast.error('Failed to Add Event.');
-                       console.error('Error adding event: ', error);
-                     });
-               
-
-
-                   // addNewEventType(customEventName.trim())
-                    setCustomEventName('');
-                    setIsNewEventTypeModalOpen(false);
-                    toast.success('Added New Event Type!');
-
-
+                                // Show a success message after the user confirms.
+                                toast.success('Adding Event Successfully!');
+                            })
+                            .catch((error) => {
+                                // Event not added
+                                toast.error('Failed to Add Event.');
+                                console.error('Error adding event: ', error);
+                            });
+                    });
                 }
+            } else {
+                // User is not authenticated
+                toast.error('User is not authenticated.');
             }
-            else //If no input is entered and they click confirm
-            {
-                window.alert(`Please enter a name for your new event type!`);
-                console.log('error occurred...!')
-            }
-        };
+        } else {
+            // Empty customEventName
+            toast.error('Please enter a name for your new event type!');
+        }
+    };
 
-    const cancelCreateEventType = () => 
-    {
+    // Function to cancel creating a new event type.
+    const cancelCreateEventType = () => {
         setIsNewEventTypeModalOpen(false);
     };
 
@@ -78,11 +81,10 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 id="customEventName" 
                 value={customEventName} 
                 onChange={(e) => setCustomEventName(e.target.value)}
-                /> 
-                <button onClick={cancelCreateEventType}>Cancel</button> 
-                <button onClick={confirmCreateEventType}>Confirm</button>
-            </Modal>
-           
+            /> 
+            <button onClick={cancelCreateEventType}>Cancel</button> 
+            <button onClick={confirmCreateEventType}>Confirm</button>
+        </Modal>
     );
 };
 
