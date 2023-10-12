@@ -1,32 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { db, ref, onValue } from './firebase';
+import React, { useState, useEffect,useRef } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { db, ref, onValue } from './firebase'; // Assurez-vous que le chemin vers votre fichier firebase.js est correct
 
-function MyComponent() {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
+function MyCalendar() {
+  const [events, setEvents] = useState([]);
+  const calendarRef = useRef(null);
 
   useEffect(() => {
-    // Reference to the Firebase Realtime Database
-    const databaseRef = ref(db, '/eventCalendar');
+    // Référence à la table (nœud) des événements dans la base de données Firebase (adaptez le chemin)
+    const eventsRef = ref(db, 'events');
 
-    // Using onValue to get real-time updates of the data
-    onValue(databaseRef, (snapshot) => {
-      const data = snapshot.val();
-      setData(data);
-      setLoading(false); // Mark loading as complete once the data is received
+    // Écouter les changements en temps réel dans les événements
+    onValue(eventsRef, (snapshot) => {
+      const eventData = snapshot.val();
+      if (eventData) {
+        const eventArray = Object.entries(eventData).map(([key, value]) => ({
+          id: key,
+          title: value.title,
+          start: value.start,
+          end: value.end,
+        }));
+        setEvents(eventArray);
+      }
     });
   }, []);
 
   return (
     <div>
-      <h1>Real-Time Database Data</h1>
-      {loading ? (
-        <p>Loading data...</p>
-      ) : (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      )}
+      <FullCalendar
+        ref={calendarRef}
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={events} // Utilisation des données d'événements depuis Firebase
+      />
     </div>
   );
 }
 
-export default MyComponent;
+export default MyCalendar;
