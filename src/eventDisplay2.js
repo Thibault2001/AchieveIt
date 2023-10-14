@@ -27,7 +27,6 @@ const EventDisplay = () => {
 
   useEffect(() => {
     const user = auth.currentUser;
-
     if (user) {
       const userID = user.uid;
       setUserID(userID);

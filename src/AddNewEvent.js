@@ -4,15 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { auth, db, ref, get, set } from './firebase';
 
-/* 
-        The Appointment.js file has the dropdown menu that users will use in order to create an event.
-        The button is called Add Event and when this button is clicked, it will set the variable
-        setIsDropdownOpen to True. It is set to false by default and then can be turned on off by clicking 
-        the button. There is an array of items that will be in the dropdown list. From the dropdown, users can select the event type that they like and once they click an
-        event type, the React Modal will be set to true for which the user is prompted to enter the details 
-        of their event. Inside of the Modal being called, the Event.js file is called. 
-    */
-
 // This component handles the creation of a new event type using a modal.
 const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => {
     const [customEventName, setCustomEventName] = useState('');
@@ -21,7 +12,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
     const confirmCreateEventType = () => {
         if (customEventName.trim() !== '') {
             const user = auth.currentUser;
-            const userID = user ? user.uid : '';
+            const userID = user.uid;
 
             if (user) {
                 const eventRef = ref(db, `calendar/${userID}/eventTypes`);
@@ -82,7 +73,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 value={customEventName} 
                 onChange={(e) => setCustomEventName(e.target.value)}
             /> 
-            <button onClick={cancelCreateEventType}>Cancel</button> 
+            <button onClick={cancelCreateEventType}>Close</button> 
             <button onClick={confirmCreateEventType}>Confirm</button>
         </Modal>
     );
