@@ -157,7 +157,7 @@ function EventDisplay({ selectedItem, closeModal }) {
               id="colourPick"
               onChange={colourChange}
             />
-            <p>{colour}</p>
+        
           </div>
           
         )}
