@@ -10,7 +10,7 @@ import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebas
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
 import AddNewEvent from "./AddNewEvent";
-import eventTypes from "./eventTypes";
+
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
