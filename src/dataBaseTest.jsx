@@ -5,13 +5,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { auth, db, ref, onValue } from './firebase';
 import moment from 'moment';
 import { GetColour } from './Event';
-import databaseTest from './CSS_files/databaseTest.css';
+//import databaseTest from './CSS_files/databaseTest.css';
 
 function MyCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-  const [selectedEvent, setSelectedEvent] = useState(null); // État pour stocker l'événement sélectionné
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const calendarRef = useRef(null);
   const [, setUserID] = useState(null);
 
@@ -31,7 +31,7 @@ function MyCalendar() {
               start: moment(eventData.eventDate + 'T' + eventData.eventTime).format('YYYY-MM-DDTHH:mm:ss'),
               backgroundColor: GetColour(eventData.eventType),
               borderColor: GetColour(eventData.eventType),
-              description: eventData.eventDescription, // Ajoutez la description de l'événement
+              description: eventData.eventDescription,
             }));
             setEvents(eventArray);
           }
@@ -42,23 +42,23 @@ function MyCalendar() {
     return () => unsubscribe();
   }, []);
 
-  // Fonction pour afficher les informations de l'événement sélectionné en popup
+  // Display event in a popup
   function displayEventInfo(eventData, position) {
     setSelectedEvent(eventData);
     setPopupPosition(position);
   }
 
-  // Fonction pour fermer le popup d'informations de l'événement
+  // Close the popup
   function closeEventInfo() {
     setSelectedEvent(null);
   }
 
-  // Gestion du clic sur un événement
+  // handle click on event
   function handleEventClick(info) {
     const eventData = info.event.extendedProps;
     const elementRect = info.jsEvent.target.getBoundingClientRect();
     const position = {
-      top: elementRect.bottom + window.scrollY + 10, // Ajustez la position pour l'affichage du popup
+      top: elementRect.bottom + window.scrollY + 10, // Place of the popup
       left: elementRect.left + window.scrollX,
     };
     displayEventInfo(eventData, position);
@@ -80,13 +80,13 @@ function MyCalendar() {
         eventClick={handleEventClick}
       />
 
-      {/* Affichage des informations de l'événement sélectionné en popup */}
+      {/*Display infos of the selected event */}
       {selectedEvent && (
         <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
           <h2>{selectedEvent.title}</h2>
           <p>Date: {selectedEvent.start}</p>
-          <p>Description: {selectedEvent.description}</p> {/* Affichez la description de l'événement */}
-          <button onClick={closeEventInfo}>Fermer</button>
+          <p>Description: {selectedEvent.description}</p> {/* display description */}
+          <button onClick={closeEventInfo}>Close</button>
         </div>
       )}
     </div>

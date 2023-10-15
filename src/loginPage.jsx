@@ -8,10 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 setPersistence(auth, browserSessionPersistence)
   .then(() => {
-    console.log('Authentification persistante activée avec succès');
+    console.log('Success of the auth');
   })
   .catch((error) => {
-    console.error("Erreur lors de l'activation de l'authentification persistante", error);
+    console.error("Error of the auth", error);
   });
 
 const LoginPage = () => {
@@ -62,7 +62,7 @@ const LoginPage = () => {
       setIsSubmitting(true);
 
       if (!showReset) {
-        // Soumettre le formulaire principal ici
+        // Submet main form
         signInWithEmailAndPassword(auth, formData.username, formData.password)
           .then((userCredential) => {
             const user = userCredential.user;
