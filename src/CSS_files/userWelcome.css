@@ -4,6 +4,10 @@
   gap: 10px;
 }
 
+.button-container{
+  width: 150px;
+}
+
 .title-column {
   width: 100%;
 }
