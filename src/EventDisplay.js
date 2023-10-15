@@ -3,11 +3,10 @@ import './CSS_files/App.css';
 import './CSS_files/Event.css';
 import './CSS_files/EventDisplay.css';
 import { Event } from './Event.js';
-import { auth, ref, set, db } from './firebase';
+import { auth, ref, set, db, get } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GetColour } from './Event.js';
-//import Appointment from './Appointment';
 
 function EventDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
@@ -39,8 +38,8 @@ function EventDisplay({ selectedItem, closeModal }) {
     const newColour = event.target.value;
     setColour(newColour.substring(1));
   }
-   
-  
+
+
   const handleCreateEvent = () => {
     const newEvent = {
       eventID: title,
@@ -90,13 +89,58 @@ function EventDisplay({ selectedItem, closeModal }) {
 
   useEffect(() => {
     if (GetColour(selectedItem.name) === "CUSTOMCOLOUR") {
-      
-      setColour(colour);
+      for (let i = 0; i < 99; i++) {
+        const colourRef = ref(db, `calendar/${userID}/eventTypes/${i}/colour`);
+        const titleRef = ref(db, `calendar/${userID}/eventTypes/${i}/name`);
+
+        get(titleRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const titleData = snapshot.val();
+            console.log(`if ${titleData} == ${selectedItem.name}`)
+            if (titleData == selectedItem.name) {
+              get(colourRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                  const colourData = snapshot.val();
+                  //console.log("***COLOUR:", colourData);
+                  setColour(colourData)
+                }
+                else {
+                  console.log("no data found for colour!")
+                }
+              }).catch((error) => {
+                console.error("error getting colour", error);
+              });
+              setColour(colour);
+            }
+          }
+          else {
+            console.log(`no data found for title! -- ${title}`)
+          }
+        }).catch((error) => {
+          console.error("error getting title", error);
+        });
+      }
     } else {
 
       setColour(GetColour(selectedItem.name).substring(1));
     }
   }, [selectedItem.name]);
+
+
+
+  /* GetColour(selectedItem.name) === "CUSTOMCOLOUR" && (
+     <div>
+        <p>Choose a color:</p>
+        <input
+          type="color"
+          id="colourPick"
+          onChange={colourChange}
+        />
+    
+      </div>
+      setColour(colour)
+    )*/
+
 
   return (
     <body>
@@ -147,20 +191,6 @@ function EventDisplay({ selectedItem, closeModal }) {
           <option value="5">5 Minutes</option>
           <option value="10">10 Minutes</option>
         </select>
-
-
-        {GetColour(selectedItem.name) === "CUSTOMCOLOUR" && (
-          <div>
-            <p>Choose a color:</p>
-            <input
-              type="color"
-              id="colourPick"
-              onChange={colourChange}
-            />
-        
-          </div>
-          
-        )}
 
         <br />
         <div className='eventHolder'>

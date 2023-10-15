@@ -7,6 +7,11 @@ import { auth, db, ref, get, set } from './firebase';
 // This component handles the creation of a new event type using a modal.
 const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => {
     const [customEventName, setCustomEventName] = useState('');
+    const [colour, setColour] = useState('');
+    const colourChange = (event) => {
+        const newColour = event.target.value;
+        setColour(newColour.substring(1));
+      }
 
     // Function to confirm and create a new event type.
     const confirmCreateEventType = () => {
@@ -23,7 +28,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 if (isConfirmed) {
                     get(eventRef).then((snapshot) => {
                         let existingEventTypes = snapshot.val() || [];
-                        existingEventTypes.push({ name: customEventName.trim() });
+                        existingEventTypes.push({ name: customEventName.trim(), colour });
 
                         // Set the updated event types in the database.
                         set(eventRef, existingEventTypes)
@@ -73,6 +78,13 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 value={customEventName} 
                 onChange={(e) => setCustomEventName(e.target.value)}
             /> 
+            <p>Choose a color for your event type:</p>
+            <input
+              type="color"
+              id="colourPick"
+              onChange={colourChange}
+            />
+            <br />
             <button onClick={cancelCreateEventType}>Close</button> 
             <button onClick={confirmCreateEventType}>Confirm</button>
         </Modal>

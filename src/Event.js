@@ -45,7 +45,6 @@ function Event({ title, type, date, time, reminderTime, description, colour }) {
         </u>
       </h3>
       <p><b>Details:</b><br />{description}</p> {/* Prints event description based on user input */}
-      <p>Colour: {colour}</p>
     </div>
   );
 }
