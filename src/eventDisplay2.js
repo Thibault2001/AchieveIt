@@ -24,22 +24,7 @@ const reminderTimeOptions = {
 
 function editEvent(title, type, date, time, reminderTime, desc) {
   return (
-    <div className="modal-custom">
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Popup Modal"
-        >
-          <CreateEvent
-            selectedItem={selectedItem}
-            closeModal={closeModal}
-            events={eventTypes} // Pass events to EventDisplay
-          />
-          <button className="closeButton" onClick={closeModal}>
-            Close
-          </button>
-        </Modal>
-      </div>
+   console.log(title, type, date, time, reminderTime, desc)
   )
 }
 
