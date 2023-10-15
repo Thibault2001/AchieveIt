@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { GetColour } from "./Event";
 import { Box, Typography, Card } from "@mui/material";
 import { auth, db, ref, onValue, set } from "./firebase";
+import CreateEvent from "./EventCreate";
+import { Modal } from "@mui/base";
+
 
 const reminderTimeOptions = {
   at_event: 'At Time of Event',
@@ -19,6 +21,27 @@ const reminderTimeOptions = {
   '10080': '1 Week',
   '20160': '2 Weeks',
 };
+
+function editEvent(title, type, date, time, reminderTime, desc) {
+  return (
+    <div className="modal-custom">
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Popup Modal"
+        >
+          <CreateEvent
+            selectedItem={selectedItem}
+            closeModal={closeModal}
+            events={eventTypes} // Pass events to EventDisplay
+          />
+          <button className="closeButton" onClick={closeModal}>
+            Close
+          </button>
+        </Modal>
+      </div>
+  )
+}
 
 const EventDisplay = () => {
   const [events, setEvents] = useState([]);
@@ -65,6 +88,9 @@ const EventDisplay = () => {
     setSelectedEvents([]);
   };
 
+
+
+
   return (
     <Box>
       <Typography variant="h4">Events</Typography>
@@ -76,10 +102,10 @@ const EventDisplay = () => {
               <Card
                 className={`event-display-card ${selectedEvents.includes(event.eventID) ? 'selected' : ''}`}
 
-                
-                style={{ backgroundColor: `#${event.colour}`}}
-                
-                
+
+                style={{ backgroundColor: `#${event.colour}` }}
+
+
                 key={event.eventID}
                 onClick={() => handleEventSelect(event)}
               >
@@ -116,7 +142,9 @@ const EventDisplay = () => {
                   <br />
                   {event.eventDescription}
                 </p>
-               {/* <p>Colour: {event.colour}</p> ------ debugging colour*/}
+                <button className='editEventButton' onClick={editEvent(event.eventTitle, event.eventType, event.eventDate, event.eventTime, event.reminderTime, event.desc)}>
+                  Customise
+                </button>
               </Card>
             ))}
           </div>

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GetColour } from './Event.js';
 
-function EventDisplay({ selectedItem, closeModal }) {
+function CreateEvent({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
   const [, setType] = useState('');
@@ -33,12 +33,6 @@ function EventDisplay({ selectedItem, closeModal }) {
   const descChange = (event) => {
     setDesc(event.target.value);
   };
-
-  const colourChange = (event) => {
-    const newColour = event.target.value;
-    setColour(newColour.substring(1));
-  }
-
 
   const handleCreateEvent = () => {
     const newEvent = {
@@ -126,22 +120,6 @@ function EventDisplay({ selectedItem, closeModal }) {
     }
   }, [selectedItem.name]);
 
-
-
-  /* GetColour(selectedItem.name) === "CUSTOMCOLOUR" && (
-     <div>
-        <p>Choose a color:</p>
-        <input
-          type="color"
-          id="colourPick"
-          onChange={colourChange}
-        />
-    
-      </div>
-      setColour(colour)
-    )*/
-
-
   return (
     <body>
       <div className='createEvent'>
@@ -217,4 +195,4 @@ function EventDisplay({ selectedItem, closeModal }) {
   );
 }
 
-export default EventDisplay;
+export default CreateEvent;
