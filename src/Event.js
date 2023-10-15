@@ -30,7 +30,7 @@ function Event({ title, type, date, time, reminderTime, description, colour }) {
   };
   //display for the event:
   return (
-    <div className="event" style={{ backgroundColor: GetColour(type) }}> {/*Will display background colour for card based on event type*/}
+    <div className="event" style={{ backgroundColor: `#${colour}`}}> {/*Will display background colour for card based on event type*/}
       <h2><u>{title}</u></h2><br />
       <h3>Event Type: <u>{type}</u></h3> <br />
       <h3>Date: <u>{date}</u></h3>
