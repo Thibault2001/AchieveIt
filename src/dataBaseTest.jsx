@@ -5,7 +5,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { auth, db, ref, onValue } from './firebase';
 import moment from 'moment';
 import { GetColour } from './Event';
-//import databaseTest from './CSS_files/databaseTest.css';
 
 function MyCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -64,12 +63,23 @@ function MyCalendar() {
     displayEventInfo(eventData, position);
   }
 
+  // Handle date change from input
+  function handleDateChange(date) {
+    if (date) {
+      setCurrentDate(date);
+      if (calendarRef.current) {
+        const calendar = calendarRef.current.getApi();
+        calendar.gotoDate(date);
+      }
+    }
+  }
+
   return (
     <div>
       <input
         type="date"
         value={currentDate ? moment(currentDate).format('YYYY-MM-DD') : ''}
-        onChange={(e) => setCurrentDate(e.target.value ? new Date(e.target.value) : null)}
+        onChange={(e) => handleDateChange(e.target.value ? new Date(e.target.value) : null)}
       />
 
       <FullCalendar
@@ -78,6 +88,10 @@ function MyCalendar() {
         initialView="dayGridMonth"
         events={events}
         eventClick={handleEventClick}
+        selectable={true}
+        select={(info) => {
+          handleDateChange(info.startStr);
+        }}
       />
 
       {/*Display infos of the selected event */}
