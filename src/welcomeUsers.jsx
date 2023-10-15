@@ -46,10 +46,10 @@ const WelcomeUser = () => {
     }
   }, [firstLoad]); 
 
-  const handleAddEventTypeClick = () => 
+  /*const handleAddEventTypeClick = () => 
   {
     setIsNewEventTypeModalOpen(true)
-  }
+  }*/
 
   const [eventTypes, setEventTypes] = useState([
 
@@ -69,20 +69,18 @@ const WelcomeUser = () => {
       <Box className="main-container" p={4}>
         <Typography variant="h4" fontSize={50} gutterBottom>
           Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
-          <div className="addEventButton">
-          <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
-
-          <AddNewEvent
-            isNewEventTypeModalOpen={isNewEventTypeModalOpen}
-            setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
-            addNewEventType={addNewEventType}
-            />
-        </div>
         </Typography>
 
         <div className="grid-container">
           <div className="title-column">
             <Box className="button-container" mb={3}>
+              <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
+
+              <AddNewEvent
+                isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+                setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+                addNewEventType={addNewEventType}
+                />
               <Appointment 
                 isNewEventTypeModalOpen={isNewEventTypeModalOpen}
                 setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}

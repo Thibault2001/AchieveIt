@@ -182,10 +182,9 @@ const LoginPage = () => {
             Confirm Reset
           </button>
           <br />
-          {/* Add a link to return to the main form view */}
-          <a href="#" onClick={goBackToMainForm}>
+          <button className = "link-button" onClick={goBackToMainForm}>
             Go Back
-          </a>
+          </button>
         </form>
       )}
 
