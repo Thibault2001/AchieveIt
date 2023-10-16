@@ -98,7 +98,7 @@ function MyCalendar() {
       {selectedEvent && (
         <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
           <h2>{selectedEvent.title}</h2>
-          <p>Date: {selectedEvent.start}</p>
+          <p>Reminder Time: {selectedEvent.start}</p>
           <p>Description: {selectedEvent.description}</p> {/* display description */}
           <button onClick={closeEventInfo}>Close</button>
         </div>
