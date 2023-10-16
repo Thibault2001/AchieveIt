@@ -2,9 +2,13 @@
   "name": "achieveit",
   "version": "0.1.0",
   "private": true,
+  "main": "src/index.js",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
     "@mui/icons-material": "^5.14.6",
     "@mui/material": "^5.14.6",
     "@testing-library/jest-dom": "^5.17.0",
@@ -13,12 +17,16 @@
     "babel": "^6.23.0",
     "firebase": "^10.3.0",
     "firebase-admin": "^11.10.1",
+    "fullcalendar": "^6.1.9",
+    "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.1",
     "material": "^0.5.3",
     "modal": "^1.2.0",
+    "moment": "^2.29.4",
     "mui": "^0.0.1",
     "react": "^18.2.0",
+    "react-big-calendar": "^1.8.4",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
@@ -53,5 +61,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-react": "^7.22.15",
+    "jsdom": "^22.1.0"
   }
 }
