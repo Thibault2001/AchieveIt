@@ -37,6 +37,7 @@ function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const inactivityTime = 60 * 60 * 1000; // 1 hour in milliseconds.
+  // NOTE FOR TESTER: Change time to 10 * 1000; to test on a 10 sec timer.
 
   useAutoLogout(inactivityTime, isLoggedIn); // Calls AutoLogout to start checking user activity.
 
