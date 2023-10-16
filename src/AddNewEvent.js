@@ -172,6 +172,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 value={customEventName} 
                 onChange={(e) => setCustomEventName(e.target.value)}
             /> 
+            <br/><br/><br/><br/>
             <p>Choose a color for your event type:</p>
             <input
               type="color"
@@ -179,7 +180,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
               onChange={colourChange}
             />
             <br />
-            <button onClick={cancelCreateEventType}>Close</button> 
+            {/* <button onClick={cancelCreateEventType}>Close</button>  */}
             <button onClick={confirmCreateEventType}>Confirm</button>
 
                 <h2> Select Custom Event Types to Delete: </h2>
@@ -201,7 +202,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                             <button onClick={handleDeleteCustomEvents}> Delete Custom Event Types </button>
                         </div>
                     )}
-                </div>
+                {/* </div> */}
 
             <button onClick={cancelCreateEventType}>Close</button>    
         </Modal>

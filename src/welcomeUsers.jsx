@@ -84,7 +84,6 @@ const WelcomeUser = () => {
         <div className="grid-container">
           <div className="title-column">
             <Box className="button-container" mb={3}>
-              <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
 
               <AddNewEvent
                 isNewEventTypeModalOpen={isNewEventTypeModalOpen}
