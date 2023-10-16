@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CSS_files/App.css';
 import './CSS_files/Event.css';
 import './CSS_files/EventDisplay.css';
 import { Event } from './Event.js';
-import { auth, ref, set, db } from './firebase';
+import { auth, ref, set, db, get } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-//import Appointment from './Appointment';
+import { GetColour } from './Event.js';
 
 function EventDisplay({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
@@ -14,6 +14,7 @@ function EventDisplay({ selectedItem, closeModal }) {
   const [, setType] = useState('');
   const [date, setDate] = useState('');
   const [desc, setDesc] = useState('');
+  const [colour, setColour] = useState('');
   const [selectedTime, setSelectedTime] = useState('00:00');
   const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
   const [, setIsEventAdded] = useState(null); // initialisation
@@ -33,6 +34,12 @@ function EventDisplay({ selectedItem, closeModal }) {
     setDesc(event.target.value);
   };
 
+  const colourChange = (event) => {
+    const newColour = event.target.value;
+    setColour(newColour.substring(1));
+  }
+
+
   const handleCreateEvent = () => {
     const newEvent = {
       eventID: title,
@@ -42,8 +49,9 @@ function EventDisplay({ selectedItem, closeModal }) {
       eventTime: selectedTime,
       eventDescription: desc,
       reminderTime: selectedReminderTime,
+      colour: colour
     };
-    
+
     const eventRef = ref(db, `calendar/${userID}/events/${title}`);
     set(eventRef, newEvent)
       .then(() => {
@@ -78,7 +86,62 @@ function EventDisplay({ selectedItem, closeModal }) {
       timeOptions.push(timeOption);
     }
   }
-  
+
+  useEffect(() => {
+    if (GetColour(selectedItem.name) === "CUSTOMCOLOUR") {
+      for (let i = 0; i < 99; i++) {
+        const colourRef = ref(db, `calendar/${userID}/eventTypes/${i}/colour`);
+        const titleRef = ref(db, `calendar/${userID}/eventTypes/${i}/name`);
+
+        get(titleRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const titleData = snapshot.val();
+            console.log(`if ${titleData} == ${selectedItem.name}`)
+            if (titleData == selectedItem.name) {
+              get(colourRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                  const colourData = snapshot.val();
+                  //console.log("***COLOUR:", colourData);
+                  setColour(colourData)
+                }
+                else {
+                  console.log("no data found for colour!")
+                }
+              }).catch((error) => {
+                console.error("error getting colour", error);
+              });
+              setColour(colour);
+            }
+          }
+          else {
+            console.log(`no data found for title! -- ${title}`)
+          }
+        }).catch((error) => {
+          console.error("error getting title", error);
+        });
+      }
+    } else {
+
+      setColour(GetColour(selectedItem.name).substring(1));
+    }
+  }, [selectedItem.name]);
+
+
+
+  /* GetColour(selectedItem.name) === "CUSTOMCOLOUR" && (
+     <div>
+        <p>Choose a color:</p>
+        <input
+          type="color"
+          id="colourPick"
+          onChange={colourChange}
+        />
+    
+      </div>
+      setColour(colour)
+    )*/
+
+
   return (
     <body>
       <div className='createEvent'>
@@ -140,6 +203,7 @@ function EventDisplay({ selectedItem, closeModal }) {
               time={event.eventTime}
               reminderTime={event.reminderTime}
               description={event.eventDescription}
+              colour={colour}
             />
           ))}
         </div>
@@ -148,7 +212,7 @@ function EventDisplay({ selectedItem, closeModal }) {
           Create Event
         </button>
       </div>
-      <ToastContainer autoClose={5000}/>
+      <ToastContainer autoClose={5000} />
     </body>
   );
 }

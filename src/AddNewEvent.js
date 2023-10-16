@@ -8,6 +8,11 @@ import './CSS_files/AddNewEvent.css';
 // This component handles the creation of a new event type using a modal.
 const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => {
     const [customEventName, setCustomEventName] = useState('');
+    const [colour, setColour] = useState('');
+    const colourChange = (event) => {
+        const newColour = event.target.value;
+        setColour(newColour.substring(1));
+      }
     const [selectedCustomEvents, setSelectedCustomEvents] = useState([]);
     const [userEventTypes, setUserEventTypes] = useState([]);
 
@@ -61,7 +66,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 if (isConfirmed) {
                     get(eventRef).then((snapshot) => {
                         let existingEventTypes = snapshot.val() || [];
-                        existingEventTypes.push({ name: customEventName.trim() });
+                        existingEventTypes.push({ name: customEventName.trim(), colour });
 
                         // Set the updated event types in the database.
                         set(eventRef, existingEventTypes)
@@ -167,10 +172,14 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
                 value={customEventName} 
                 onChange={(e) => setCustomEventName(e.target.value)}
             /> 
-             <br/><br/>
-
-            <div>
-                <p>  ‎   </p>
+            <p>Choose a color for your event type:</p>
+            <input
+              type="color"
+              id="colourPick"
+              onChange={colourChange}
+            />
+            <br />
+            <button onClick={cancelCreateEventType}>Close</button> 
             <button onClick={confirmCreateEventType}>Confirm</button>
 
                 <h2> Select Custom Event Types to Delete: </h2>

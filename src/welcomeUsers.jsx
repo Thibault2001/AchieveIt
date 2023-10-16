@@ -4,13 +4,13 @@ import Appointment from "./Appointment";
 import GoalDisplay2 from "./GoalDisplay2";
 import Goal from './Goals';
 import EventDisplay2 from "./eventDisplay2";
-import CalendarDisplay from "./calendarDisplay";
+import CalendarDisplay from "./dataBaseTest";
 import { auth } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
+import './CSS_files/databaseTest.css';
 import AddNewEvent from "./AddNewEvent";
-
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
@@ -47,10 +47,10 @@ const WelcomeUser = () => {
     }
   }, [firstLoad]); 
 
-  const handleAddEventTypeClick = () => 
+  /*const handleAddEventTypeClick = () => 
   {
     setIsNewEventTypeModalOpen(true)
-  }
+  }*/
 
   const [eventTypes, setEventTypes] = useState([
 
@@ -84,6 +84,13 @@ const WelcomeUser = () => {
         <div className="grid-container">
           <div className="title-column">
             <Box className="button-container" mb={3}>
+              <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
+
+              <AddNewEvent
+                isNewEventTypeModalOpen={isNewEventTypeModalOpen}
+                setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}
+                addNewEventType={addNewEventType}
+                />
               <Appointment 
                 isNewEventTypeModalOpen={isNewEventTypeModalOpen}
                 setIsNewEventTypeModalOpen={setIsNewEventTypeModalOpen}

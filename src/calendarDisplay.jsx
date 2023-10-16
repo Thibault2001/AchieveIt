@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
 import { auth, ref, db } from './firebase';
 import { get } from "firebase/database";
+import './CSS_files/App.css';
+import './CSS_files/calendarDisplay.css';
+
 
 const CalendarDisplay = () => {
   const today = new Date();
@@ -197,9 +200,9 @@ const CalendarDisplay = () => {
                   onClick={() => handleDateClick(currentDate.getFullYear(), currentDate.getMonth(), index + 1)} 
                   style={{
                     margin: "5px",
-                    width: "12vw",  // Adjusted the size based on viewport
-                    height: "12vw",
-                    lineHeight: "12vw",
+                    width: "7vw",  // Adjusted the size based on viewport
+                    height: "7vw",
+                    lineHeight: "7vw",
                     borderRadius: "50%",
                     color: "#000",
                     borderColor: "#9BBDF9",
@@ -224,9 +227,9 @@ const CalendarDisplay = () => {
                     onClick={() => handleDateClick(currentDate.getFullYear(), currentDate.getMonth(), index + 1)} 
                     style={{
                       margin: "5px",
-                      width: "12vw",
-                      height: "12vw",
-                      lineHeight: "12vw",
+                      width: "7vw",
+                      height: "7vw",
+                      lineHeight: "7vw",
                       borderRadius: "50%",
                       color: "#000",
                       borderColor: "#9BBDF9",
@@ -258,9 +261,9 @@ const CalendarDisplay = () => {
                     onClick={() => handleDateClick(currentDate.getFullYear(), currentDate.getMonth(), index + 1)} 
                     style={{
                       margin: "5px",
-                      width: "12vw",
-                      height: "12vw",
-                      lineHeight: "12vw",
+                      width: "7vw",
+                      height: "7vw",
+                      lineHeight: "7vw",
                       borderRadius: "50%",
                       color: "#000",
                       borderColor: "#9BBDF9",

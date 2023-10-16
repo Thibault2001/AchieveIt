@@ -1,0 +1,46 @@
+.event-popup {
+  position: absolute;
+  background-color: #000000e0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  max-width: 300px;
+  text-align: left;
+  white-space: normal;
+}
+
+.event-popup h2 {
+  font-size: 16px;
+  color: #333;
+  margin: 0 0 10px;
+  max-width: 100%; /* Ajuste la largeur maximale pour empêcher le débordement du texte */
+  overflow: hidden; /* Cache le texte qui dépasse */
+  text-overflow: ellipsis; /* Ajoute des points de suspension pour les textes qui dépassent */
+}
+
+.event-popup p {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.event-popup button {
+  background-color: #7ab3efc9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.event-popup button:hover {
+  background-color: #0056b3;
+}

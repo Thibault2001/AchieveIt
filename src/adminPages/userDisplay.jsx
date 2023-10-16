@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db, ref, onValue, set } from '../firebase'; // Assurez-vous d'importer correctement les dépendances Firebase.
+import { db, ref, onValue, set } from '../firebase';
 import '../CSS_files/userDisplay.css';
 
 function UsersPage() {
@@ -19,7 +19,7 @@ function UsersPage() {
       if (data) {
         const usersArray = Object.keys(data).map((userId) => ({
           uid: userId,
-          email: data[userId].email, // Mettez à jour la structure de données pour utiliser le nouveau chemin.
+          email: data[userId].email,
         }));
         setUsers(usersArray);
       }

@@ -73,3 +73,18 @@
   .password-condition.valid {
     color: green;
   }
+
+  /* Button that look like a link */
+  .link-button {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+  }
+  
+  .link-button:hover {
+    background: none;
+    text-decoration: none;
+    color: blue;
+  }
