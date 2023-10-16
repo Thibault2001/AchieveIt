@@ -71,7 +71,7 @@ const WelcomeUser = () => {
         <Typography variant="h4" fontSize={50} gutterBottom>
           Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
           <div className="addEventButton">
-          <button onClick={() => setIsNewEventTypeModalOpen(true)}> Add New Event Type </button>
+          <button onClick={() => setIsNewEventTypeModalOpen(true)}> Custom Event Type Settings </button>
 
           <AddNewEvent
             isNewEventTypeModalOpen={isNewEventTypeModalOpen}
