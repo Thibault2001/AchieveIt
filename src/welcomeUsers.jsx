@@ -9,6 +9,7 @@ import { auth } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
+import './CSS_files/databaseTest.css';
 import AddNewEvent from "./AddNewEvent";
 
 const WelcomeUser = () => {
