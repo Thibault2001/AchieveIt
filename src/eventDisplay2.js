@@ -22,10 +22,24 @@ const reminderTimeOptions = {
   '20160': '2 Weeks',
 };
 
-function editEvent(title, type, date, time, reminderTime, desc) {
+function EditEvent({ title, type, date, time, reminderTime, desc, isModalOpen, handleClose }) {
+  console.log(title, type, date, time, reminderTime, desc);
+
   return (
-   console.log(title, type, date, time, reminderTime, desc)
-  )
+    <div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        {/* Modal Content Goes Here */}
+        <h2 id="modal-title">{title}</h2>
+        <p id="modal-description">{desc}</p>
+        <button onClick={handleClose}>Close Modal</button>
+      </Modal>
+    </div>
+  );
 }
 
 const EventDisplay = () => {
@@ -73,8 +87,15 @@ const EventDisplay = () => {
     setSelectedEvents([]);
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
 
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <Box>
@@ -127,9 +148,21 @@ const EventDisplay = () => {
                   <br />
                   {event.eventDescription}
                 </p>
-                <button className='editEventButton' onClick={editEvent(event.eventTitle, event.eventType, event.eventDate, event.eventTime, event.reminderTime, event.desc)}>
+                <button className='editEventButton' onClick={handleOpen}>
                   Customise
                 </button>
+                {isModalOpen && (
+                  <EditEvent
+                    title={event.eventTitle}
+                    type={event.eventType}
+                    date={event.eventDate}
+                    time={event.eventTime}
+                    reminderTime={event.reminderTime}
+                    desc={event.eventDescription}
+                    isModalOpen={isModalOpen}
+                    handleClose={handleClose}
+                  />
+                )}
               </Card>
             ))}
           </div>

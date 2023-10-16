@@ -18,7 +18,7 @@ function CreateEvent({ selectedItem, closeModal }) {
   const [selectedTime, setSelectedTime] = useState('00:00');
   const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
   const [, setIsEventAdded] = useState(null); // initialisation
-
+  const [toCreate, setToCreate] = useState(true);
   const user = auth.currentUser;
   const userID = user ? user.uid : '';
 
@@ -35,6 +35,7 @@ function CreateEvent({ selectedItem, closeModal }) {
   };
 
   const handleCreateEvent = () => {
+    console.log("first: "+toCreate)
     const newEvent = {
       eventID: title,
       eventTitle: title,
@@ -52,6 +53,7 @@ function CreateEvent({ selectedItem, closeModal }) {
         // Event added with success
         setIsEventAdded(true);
         toast.success('Adding Event Successfully!');
+        setToCreate(false)
       })
       .catch((error) => {
         // Event not added
@@ -185,13 +187,21 @@ function CreateEvent({ selectedItem, closeModal }) {
             />
           ))}
         </div>
+        <div>
+          {toCreate && (
+            <div>
+              <button className='createEventButton' onClick={handleCreateEvent}>
+                Create Event
+              </button>
+            </div>
+            
+          )}
 
-        <button className='createEventButton' onClick={handleCreateEvent}>
-          Create Event
-        </button>
+        </div>
+
       </div>
       <ToastContainer autoClose={5000} />
-    </body>
+    </body >
   );
 }
 
