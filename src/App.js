@@ -11,6 +11,7 @@ import Test from './dataBaseTest';
 import UserDisplayPage from './adminPages/userDisplay';
 import { auth } from './firebase';
 import Cookies from 'js-cookie';
+import useAutoLogout from './useAutoLogout';
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function Navigation() {
   const Navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const inactivityTime = 60 * 60 * 1000; // 1 hour in milliseconds.
+
+  useAutoLogout(inactivityTime, isLoggedIn); // Calls AutoLogout to start checking user activity.
 
   useEffect(() => {
     const initialRedirectDone = localStorage.getItem('initialRedirect');
@@ -55,6 +59,7 @@ function Navigation() {
 
       // Set isLoggedIn based on the authentication state
       setIsLoggedIn(userIsLoggedIn);
+      // >>
 
       if (userIsLoggedIn && !initialRedirectDone) {
         if (isAdmin) {
