@@ -3,9 +3,11 @@ import { Box, Typography, Card } from "@mui/material";
 import { auth, db, ref, onValue, set } from "./firebase";
 import CreateEvent from "./EventCreate";
 import { Modal } from "@mui/base";
+import { EditEvent } from "./editEvent"
 
 
 const reminderTimeOptions = {
+
   at_event: 'At Time of Event',
   '5': '5 Minutes',
   '10': '10 Minutes',
@@ -22,30 +24,13 @@ const reminderTimeOptions = {
   '20160': '2 Weeks',
 };
 
-function EditEvent({ title, type, date, time, reminderTime, desc, isModalOpen, handleClose }) {
-  console.log(title, type, date, time, reminderTime, desc);
-
-  return (
-    <div>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        {/* Modal Content Goes Here */}
-        <h2 id="modal-title">{title}</h2>
-        <p id="modal-description">{desc}</p>
-        <button onClick={handleClose}>Close Modal</button>
-      </Modal>
-    </div>
-  );
-}
 
 const EventDisplay = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [, setUserID] = useState(null);
+
+  const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -91,10 +76,6 @@ const EventDisplay = () => {
 
   const handleClose = () => {
     setIsModalOpen(false);
-  };
-
-  const handleOpen = () => {
-    setIsModalOpen(true);
   };
 
   return (
@@ -148,21 +129,23 @@ const EventDisplay = () => {
                   <br />
                   {event.eventDescription}
                 </p>
-                <button className='editEventButton' onClick={handleOpen}>
+                <button
+                  className="editEventButton"
+                  onClick={() => setIsEditEventModalOpen(true)}
+                >
                   Customise
                 </button>
-                {isModalOpen && (
-                  <EditEvent
-                    title={event.eventTitle}
-                    type={event.eventType}
-                    date={event.eventDate}
-                    time={event.eventTime}
-                    reminderTime={event.reminderTime}
-                    desc={event.eventDescription}
-                    isModalOpen={isModalOpen}
-                    handleClose={handleClose}
-                  />
-                )}
+                <EditEvent
+                  isOpen={isEditEventModalOpen}
+                  title={event.eventTitle}
+                  type={event.eventType}
+                  date={event.eventDate}
+                  time={event.eventTime}
+                  reminderTime={event.reminderTime}
+                  desc={event.eventDescription}
+                  handleClose={() => setIsEditEventModalOpen(false)}
+                />
+                
               </Card>
             ))}
           </div>
