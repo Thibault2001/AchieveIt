@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Set browser session persistence for Firebase authentication
+setPersistence(auth, browserSessionPersistence)
+  .then(() => {
+    console.log('Authentication persistence successfully set');
+  })
+  .catch((error) => {
+    console.error("Error setting authentication persistence", error);
+  });
+
 const LoginPage = () => {
+  // Function to get an error message based on the authentication error code
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
       case 'auth/user-not-found':
@@ -21,6 +32,7 @@ const LoginPage = () => {
     }
   };
 
+  // State variables
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -36,12 +48,14 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
+  // Use effect to check if Firebase auth is ready
   useEffect(() => {
     if (auth) {
       setIsReady(true);
     }
   }, []);
 
+  // Handle the submission of the login form
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -53,7 +67,7 @@ const LoginPage = () => {
       setIsSubmitting(true);
 
       if (!showReset) {
-        // Soumettre le formulaire principal ici
+        // Submit the main form
         signInWithEmailAndPassword(auth, formData.username, formData.password)
           .then((userCredential) => {
             const user = userCredential.user;
@@ -85,6 +99,7 @@ const LoginPage = () => {
     }
   };
 
+  // Handle input changes in the form
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -93,12 +108,14 @@ const LoginPage = () => {
     });
   };
 
+  // Function to switch to the password reset view
   const resetPassword = () => {
     setShowReset(true);
     setShowMainForm(false);
     setFirebaseError(null);
   };
 
+  // Handle the submission of the password reset form
   const handleReset = async (event) => {
     event.preventDefault();
 
@@ -109,6 +126,12 @@ const LoginPage = () => {
       setFirebaseError(error);
       toast.error('Password reset failed');
     }
+  };
+
+  // Function to go back to the main form view
+  const goBackToMainForm = () => {
+    setShowReset(false);
+    setShowMainForm(true);
   };
 
   return (
@@ -157,6 +180,10 @@ const LoginPage = () => {
           <br />
           <button type="submit">
             Confirm Reset
+          </button>
+          <br />
+          <button className = "link-button" onClick={goBackToMainForm}>
+            Go Back
           </button>
         </form>
       )}

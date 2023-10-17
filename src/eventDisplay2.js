@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetColour } from "./Event";
+//import { GetColour } from "./Event";
 import { Box, Typography, Card } from "@mui/material";
 import { auth, db, ref, onValue, set } from "./firebase";
 
@@ -27,7 +27,6 @@ const EventDisplay = () => {
 
   useEffect(() => {
     const user = auth.currentUser;
-
     if (user) {
       const userID = user.uid;
       setUserID(userID);
@@ -76,7 +75,11 @@ const EventDisplay = () => {
             {events.map((event) => (
               <Card
                 className={`event-display-card ${selectedEvents.includes(event.eventID) ? 'selected' : ''}`}
-                style={{ backgroundColor: GetColour(event.eventType) }}
+
+                
+                style={{ backgroundColor: `#${event.colour}`}}
+                
+                
                 key={event.eventID}
                 onClick={() => handleEventSelect(event)}
               >
@@ -105,10 +108,15 @@ const EventDisplay = () => {
                   </u>
                 </h3>
                 <p>
+                  <br />
+                  <br />
+                </p>
+                <p>
                   <b>Details:</b>
                   <br />
                   {event.eventDescription}
                 </p>
+               {/* <p>Colour: {event.colour}</p> ------ debugging colour*/}
               </Card>
             ))}
           </div>
