@@ -1,0 +1,17 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 15% 85%;
+  gap: 10px;
+}
+
+.button-container{
+  width: 150px;
+}
+
+.title-column {
+  width: 100%;
+}
+
+.content-column {
+
+}

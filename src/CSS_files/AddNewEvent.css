@@ -1,0 +1,18 @@
+.left-align
+{
+    text-align: left;
+}
+
+.input left-align
+{
+    text-align: left;
+    width: 100%;
+    float: left;
+}
+
+.input
+{
+    float: left;
+    background-color: black;
+    padding: 5000000px;
+}

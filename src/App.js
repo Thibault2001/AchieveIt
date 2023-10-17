@@ -10,6 +10,7 @@ import Test from './dataBaseTest';
 import UserDisplayPage from './adminPages/userDisplay';
 import { auth } from './firebase';
 import Cookies from 'js-cookie';
+import useAutoLogout from './useAutoLogout';
 
 function App() {
   return (
@@ -33,16 +34,49 @@ function App() {
 function Navigation() {
   const Navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const inactivityTime = 60 * 60 * 1000; // 1 hour in milliseconds.
+  // NOTE FOR TESTER: Change time to 10 * 1000; to test on a 10 sec timer.
+
+  useAutoLogout(inactivityTime, isLoggedIn); // Calls AutoLogout to start checking user activity.
 
   useEffect(() => {
+    const initialRedirectDone = localStorage.getItem('initialRedirect');
+
+    // Check if the user has an "admin" cookie when the page loads
+    const cookieValue = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('admin='));
+
+    if (cookieValue) {
+      // If the "admin" cookie exists, consider the user as an administrator
+      setIsAdmin(true);
+    }
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       // When the user's authentication state changes, user will contain the logged-in user or null
-      setIsLoggedIn(!!user); // Set isLoggedIn based on the authentication state
+      const userIsLoggedIn = !!user; // Determine if the user is logged in
+
+      // Set isLoggedIn based on the authentication state
+      setIsLoggedIn(userIsLoggedIn);
+      // >>
+
+      if (userIsLoggedIn && !initialRedirectDone) {
+        if (isAdmin) {
+          // If the user is an admin, navigate to the admin welcome page
+          Navigate('/welcomeAdmin');
+        } else {
+          // If the user is not an admin, navigate to the regular welcome page
+          Navigate('/welcome');
+        }
+
+        // Mark that the initial redirection has occurred
+        localStorage.setItem('initialRedirect', 'done');
+      }
     });
 
     // Make sure to unsubscribe when the component is unmounted
     return () => unsubscribe();
-  }, []);
 
   const handleLogout = () => {
     auth.signOut().then(() => {

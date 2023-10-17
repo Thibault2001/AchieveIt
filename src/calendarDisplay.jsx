@@ -8,6 +8,10 @@ the month and year they want to view. The current date is highlighted and displa
 // Importing required components.
 import React, { useState } from "react";
 import { Button, Typography, Box, Grid, Select, MenuItem } from "@mui/material";
+import { auth, ref, db } from './firebase';
+import { get } from "firebase/database";
+import './CSS_files/App.css';
+import './CSS_files/calendarDisplay.css';
 
 /* 
     In this section, we are setting up state and utility variables to manage and interact with dates:
@@ -174,9 +178,9 @@ const CalendarDisplay = () => {
                   variant="outlined"
                   style={{
                     margin: "5px",
-                    width: "70px",
-                    height: "70px",
-                    lineHeight: "50px",
+                    width: "7vw",  // Adjusted the size based on viewport
+                    height: "7vw",
+                    lineHeight: "7vw",
                     borderRadius: "50%",
                     color: "#708090",
                     borderColor: "#9BBDF9",
@@ -213,10 +217,31 @@ const CalendarDisplay = () => {
                         : "white",
                   }}
                 >
-                  {index + 1}
-                </Button>
-              </Box>
-            ))}
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleDateClick(currentDate.getFullYear(), currentDate.getMonth(), index + 1)} 
+                    style={{
+                      margin: "5px",
+                      width: "7vw",
+                      height: "7vw",
+                      lineHeight: "7vw",
+                      borderRadius: "50%",
+                      color: "#000",
+                      borderColor: "#9BBDF9",
+                      backgroundColor:
+                        index + 1 === todayDate &&
+                        currentDate.getMonth() === todayMonth &&
+                        currentDate.getFullYear() === todayYear
+                          ? "#9BBDF9"
+                          : "white",
+                    }}
+                  >
+                    {index + 1}
+                    {eventInfo && <span>{eventInfo.title}{eventInfo.more && "+"}</span>}
+                  </Button>
+                </Box>
+              );
+            })}
 
             {/* Render days from the next month */}
             {Array.from({ length: 42 - daysInMonth - adjustedFirstDay }).map(
@@ -231,9 +256,9 @@ const CalendarDisplay = () => {
                     variant="outlined"
                     style={{
                       margin: "5px",
-                      width: "70px",
-                      height: "70px",
-                      lineHeight: "50px",
+                      width: "7vw",
+                      height: "7vw",
+                      lineHeight: "7vw",
                       borderRadius: "50%",
                       color: "#708090",
                       borderColor: "#9BBDF9",
