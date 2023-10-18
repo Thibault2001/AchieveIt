@@ -31,9 +31,9 @@ const Reminders = () =>
 
                                 const reminderDateTime = new Date(eventDateTime.getTime() - reminderTime * 60000);
 
-                                if(currentTime >= reminderDateTime) 
+                                if(currentTime >= reminderDateTime) //Change to == when happy with outcome
                                 {
-                                   toast.info(`Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`, { autoClose: 20000});
+                                   toast.info(`Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`, { autoClose: 30000});
                                 }
                             });
                     }

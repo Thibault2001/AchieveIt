@@ -69,9 +69,6 @@ const WelcomeUser = () => {
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
       <Box className="main-container" p={4}>
-      <div>
-        <Reminders/>
-      </div>
         <Typography variant="h4" fontSize={50} gutterBottom>
           Welcome {userName ? userName : localStorage.getItem('userName')}! Here is your day
           <div className="addEventButton">
@@ -134,7 +131,11 @@ const WelcomeUser = () => {
             {currentView === "goals" && <GoalDisplay2 />}
           </div>
         </div>
+        <div>
+        <Reminders/>
+      </div>
       </Box>
+      
     </CSSTransition>
   );
 };
