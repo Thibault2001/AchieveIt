@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import EventDisplay from './EventDisplay';
-import { db, auth, ref, onValue, onAuthStateChanged } from './firebase';
+import CreateEvent from './EventCreate';
+import { db, auth, ref, onValue, set, onAuthStateChanged } from './firebase';
 
 function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,7 +116,7 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
           onRequestClose={closeModal}
           contentLabel="Popup Modal"
         >
-          <EventDisplay
+          <CreateEvent
             selectedItem={selectedItem}
             closeModal={closeModal}
             events={eventTypes} // Pass events to EventDisplay
