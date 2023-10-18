@@ -1,8 +1,9 @@
 //import React, { useEffect } from "react";
 import './App.js';
+import { useState } from "react";
+import './CSS_files/Event.css';
 import { useState, React } from "react";
 //import { SketchPicker } from 'react-color';
-
 //import { auth, db, ref, onValue, set } from "./firebase";
 
 /*

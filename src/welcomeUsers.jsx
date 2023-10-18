@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Box } from "@mui/material";
 import Appointment from "./Appointment";
-import GoalDisplay2 from "./GoalDisplay2";
+import GoalDisplay from "./GoalDisplay";
 import Goal from './Goals';
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./dataBaseTest";
 import { auth } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
-import { CSSTransition } from 'react-transition-group';
-import './CSS_files/userWelcome.css';
-import './CSS_files/databaseTest.css';
-import AddNewEvent from "./AddNewEvent";
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
   const [userName, setUserName] = useState(""); // State to store the user's name
-  const [firstLoad, setFirstLoad] = useState(true); // State to track if it's the first load
 
   const [isNewEventTypeModalOpen, setIsNewEventTypeModalOpen] = useState(false);
   const handleViewChange = (view) => {
@@ -23,14 +18,12 @@ const WelcomeUser = () => {
   };
 
   useEffect(() => {
-    if (firstLoad) {
-      const user = auth.currentUser;
-      if (user) {
-        const userId = user.uid;
+    // Use the auth object to get the ID of the currently logged-in user
+    const userId = auth.currentUser.uid;
 
-        // Use the user's ID to access user data in the Firebase Realtime Database
-        const db = getDatabase();
-        const userRef = ref(db, `users/${userId}/name`);
+    // Use the user's ID to access user data in the Firebase Realtime Database
+    const db = getDatabase();
+    const userRef = ref(db, `users/${userId}/name`);
 
         // Listen for changes to the user's name in the database
         onValue(userRef, (snapshot) => {
@@ -123,14 +116,11 @@ const WelcomeUser = () => {
               </Button>
             </Box>
 
-            {currentView === "calendar" && <CalendarDisplay />}
+      {currentView === "calendar" && <CalendarDisplay />}
 
-            {currentView === "events" && <EventDisplay2 />}
-            {currentView === "goals" && <GoalDisplay2 />}
-          </div>
-        </div>
-      </Box>
-    </CSSTransition>
+      {currentView === "events" && <EventDisplay2 />}
+      {currentView === "goals" && <GoalDisplay />}
+    </Box>
   );
 };
 

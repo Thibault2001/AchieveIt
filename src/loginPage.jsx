@@ -93,7 +93,11 @@ const LoginPage = () => {
             setFirebaseError(error);
             toast.error(getErrorMessage(error.code));
           });
-      }
+        })
+        .catch((error) => {
+          setFirebaseError(error);
+          toast.error(getErrorMessage(error.code));
+        });
     } finally {
       setIsSubmitting(false);
     }
@@ -118,7 +122,6 @@ const LoginPage = () => {
   // Handle the submission of the password reset form
   const handleReset = async (event) => {
     event.preventDefault();
-
     try {
       await sendPasswordResetEmail(auth, resetEmail);
       toast.success('Password reset email sent successfully');
@@ -135,42 +138,40 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {showMainForm && (
-          <>
-            <input
-              type="email"
-              name="username"
-              placeholder="Email"
-              value={formData.username}
-              onChange={handleInputChange}
-              required
-            />
+    <form onSubmit={handleSubmit}>
+      {showMainForm && (
+        <>
+          <input
+            type="email"
+            name="username"
+            placeholder="Email"
+            value={formData.username}
+            onChange={handleInputChange}
+            required
+          />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
 
-            <button type="submit" disabled={!isReady || isSubmitting}>
-              {isSubmitting ? 'Logging in...' : 'Login'}
-            </button>
-            <br />
+          <button type="submit" disabled={!isReady || isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
+          <br />
 
-            <button onClick={resetPassword}>
-              Reset Password
-            </button>
-          </>
-        )}
-      </form>
+          <button onClick={resetPassword}>
+            Reset Password
+          </button>
+        </>
+      )}
 
       {showReset && (
-        <form onSubmit={handleReset}>
+        <>
           <input
             type="email"
             placeholder="Email"
@@ -178,7 +179,7 @@ const LoginPage = () => {
             onChange={(e) => setResetEmail(e.target.value)}
           />
           <br />
-          <button type="submit">
+          <button onClick={handleReset}>
             Confirm Reset
           </button>
           <br />
@@ -188,8 +189,8 @@ const LoginPage = () => {
         </form>
       )}
 
-      <ToastContainer autoClose={5000} />
-    </div>
+      <ToastContainer autoClose={5000}/>
+    </form>
   );
 };
 

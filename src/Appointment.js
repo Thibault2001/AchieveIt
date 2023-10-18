@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useState, useEffect } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import CreateEvent from './EventCreate';
-import { db, auth, ref, onValue, set, onAuthStateChanged } from './firebase';
+import EventDisplay from './EventDisplay' //Importing EventDisplay file
+import'./CSS_files/Goal.css';
+import { db, auth, ref, onValue, onAuthStateChanged } from './firebase';
+
+    /* 
+        The Appointment.js file has the dropdown menu that users will use in order to create an event.
+        The button is called Add Event and when this button is clicked, it will set the variable
+        setIsDropdownOpen to True. It is set to false by default and then can be turned on off by clicking 
+        the button. There is an array of items that will be in the dropdown list. From the dropdown, users can select the event type that they like and once they click an
+        event type, the React Modal will be set to true for which the user is prompted to enter the details 
+        of their event. Inside of the Modal being called, the Event.js file is called. 
+    */
 
 function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,15 +46,41 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   
     return () => unsubscribe(); // Nettoyez l'observateur lors du démontage du composant
   }, []);
+  
+  //Function to handle the itemClick from the dropdown menu for where user chooses which event type to choose.
+        const handleItemClick = (item) =>
+        {
+            setSelectedItem(item);
+            setIsModalOpen(true);
+        };
+
+        //When the close button is clicked it will close the modal.
+        const closeModal= () => {
+            setIsModalOpen(false);
+        };
+
+        //Toggles the dropdown 
+        const toggleDropdown = () => {
+            setIsDropdownOpen(!isDropdownOpen);
+        };
+
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+              if (isDropdownOpen && !event.target.classList.contains('goal-dropdown-list')) {
+                setIsDropdownOpen(false);
+              }
+            };
+
+            document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   // Separate lists for existing and new event types
   const [existingEventTypes, setExistingEventTypes] = useState([]);
   const [newEventTypes, setNewEventTypes] = useState([]);
-
-  // Function to handle the itemClick from the dropdown menu for where the user chooses which event type to select.
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-  };
 
   // Handles the Add Event click. It will display the modal, prompting the user to enter their event details.
   const handleAppointmentClick = () => {
@@ -52,17 +89,6 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     } else {
       setIsModalOpen(true);
     }
-  };
-
-  // When the close button is clicked, it will close the modal.
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setIsNewEventTypeModalOpen(false);
-  };
-
-  // Toggles the dropdown
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
   };
 
   useEffect(() => {
@@ -82,52 +108,44 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     }
   }, [selectedItem]);
 
+
   const items = [
     ...existingEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
     ...newEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
   ];
-
-  return (
-    <div className="appointment">
-      <button onClick={toggleDropdown} className="appointment-toggle">
-        {/* Button to toggle the dropdown menu */}
-        Add Event
-      </button>
-
-      {/* Dropdown menu */}
-      {isDropdownOpen && (
-        <ul className="appointment-menu">
-          {items.map((item, index) => (
-            <li
-              key={index}
-              className={selectedItem === item ? 'selected' : ''}
-              onClick={() => handleItemClick(item)}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Modal for displaying the selected event type, e.g., Sports */}
-      <div className="modal-custom">
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Popup Modal"
-        >
-          <CreateEvent
-            selectedItem={selectedItem}
-            closeModal={closeModal}
-            events={eventTypes} // Pass events to EventDisplay
-          />
-          <button className="closeButton" onClick={closeModal}>
-            Close
-          </button>
-        </Modal>
+  
+    return (
+      <div className="goal">
+           <button onClick={toggleDropdown} className="goal-dropdown-list standard-button" style={{ marginRight: "10px" }}> {/*Button to toggle the dropdown menu */}
+            Add Event
+           </button>   
+           
+            {/* Dropdown menu */}  
+            {isDropdownOpen && (
+            <ul className="goal-types" style={{ zIndex: 9999}}>
+                {items.map((item) => (
+                    <li
+                    key={item.id}
+                    className={selectedItem === item ? 'selected' : ''}
+                    onClick={() => handleItemClick(item)}
+                    >
+                       {item.name} 
+                    </li>
+                    
+                ))}
+            </ul>
+            )}
+            {/* Modal for displaying the selected event type, e.g. Sports */}
+            <div className="modal"> 
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="modal popup"
+                >
+                    <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/> {/*Calls the EventDisplay*/}
+                    <button  onClick={closeModal}> Close </button>
+                </Modal>
+           </div>
       </div>
-    </div>
-  );
-}
 
 export default Appointment;
