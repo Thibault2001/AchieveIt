@@ -35,7 +35,6 @@ function CreateEvent({ selectedItem, closeModal }) {
   };
 
   const handleCreateEvent = () => {
-    console.log("first: "+toCreate)
     const newEvent = {
       eventID: title,
       eventTitle: title,
@@ -93,7 +92,7 @@ function CreateEvent({ selectedItem, closeModal }) {
           if (snapshot.exists()) {
             const titleData = snapshot.val();
             console.log(`if ${titleData} == ${selectedItem.name}`)
-            if (titleData == selectedItem.name) {
+            if (titleData === selectedItem.name) {
               get(colourRef).then((snapshot) => {
                 if (snapshot.exists()) {
                   const colourData = snapshot.val();
@@ -140,17 +139,11 @@ function CreateEvent({ selectedItem, closeModal }) {
         />
 
         <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p>
-        <select
+        <input
           type="time"
           value={selectedTime}
           onChange={(e) => setSelectedTime(e.target.value)}
-        >
-          {timeOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        />
 
         <p>{selectedItem ? selectedItem.name : ''} Description:</p>
         <textarea
@@ -184,6 +177,7 @@ function CreateEvent({ selectedItem, closeModal }) {
               reminderTime={event.reminderTime}
               description={event.eventDescription}
               colour={colour}
+              userID={userID}
             />
           ))}
         </div>
@@ -194,7 +188,7 @@ function CreateEvent({ selectedItem, closeModal }) {
                 Create Event
               </button>
             </div>
-            
+
           )}
 
         </div>
