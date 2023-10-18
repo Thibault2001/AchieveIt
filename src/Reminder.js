@@ -2,12 +2,16 @@ import React, {useEffect} from 'react';
 import { auth, db, ref, onValue } from './firebase';
 import { toast } from 'react-toastify';
 
-const Reminders = () =>
+const Reminders = ({ onCheckReminders }) =>
 {
     useEffect(() =>
     {
-        const checkReminders = async () =>
-        {
+        onCheckReminders();
+        const reminderInterval = setInterval(onCheckReminders, 60000);
+        return () => clearInterval(reminderInterval);
+    }, [onCheckReminders]);
+
+        const checkReminders = async () => {
             console.log("Checking reminder");
             const user = auth.currentUser;
             if(user)
@@ -41,16 +45,7 @@ const Reminders = () =>
             }
         };
 
-        checkReminders();
-
-        const reminderInterval = setInterval(checkReminders, 60000);
-
-        return () => clearInterval(reminderInterval);
-    }, []);
-
-    // return (
-
-    // );
+        return null;
 };
 
 export default Reminders;

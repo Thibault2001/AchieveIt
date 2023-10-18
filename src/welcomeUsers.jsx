@@ -12,6 +12,9 @@ import './CSS_files/userWelcome.css';
 import './CSS_files/databaseTest.css';
 import AddNewEvent from "./AddNewEvent";
 import Reminders from "./Reminder";
+import { toast } from 'react-toastify';
+import { db } from './firebase';
+
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
@@ -65,6 +68,43 @@ const WelcomeUser = () => {
   {
     setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
   };
+
+  const handleCheckReminders = () =>
+  {
+    if(currentView === "calendar" || currentView === "events" || currentView === "goals")
+    {
+      const user = auth.currentUser;
+    if (user) {
+      const userID = user.uid;
+      const eventRef = ref(db, `calendar/${userID}/events`);
+
+      onValue(eventRef, (snapshot) => {
+        const events = snapshot.val();
+        if (events) {
+          const currentTime = new Date();
+
+          Object.keys(events).forEach((eventID) => {
+            const eventData = events[eventID];
+            const { eventDate, eventTime, reminderTime, eventTitle } = eventData;
+
+            const eventDateTime = new Date(`${eventDate} ${eventTime}`);
+            const reminderDateTime = new Date(
+              eventDateTime.getTime() - reminderTime * 60000
+            );
+
+            if (currentTime >= reminderDateTime) {
+              toast.info(
+                `Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`,
+                { autoClose: 30000 }
+              );
+            }
+          });
+        }
+      });
+    }
+  }
+};
+
 
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
@@ -132,7 +172,7 @@ const WelcomeUser = () => {
           </div>
         </div>
         <div>
-        <Reminders/>
+        <Reminders onCheckReminders={handleCheckReminders}/>
       </div>
       </Box>
       
