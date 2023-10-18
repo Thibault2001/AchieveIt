@@ -77,7 +77,8 @@ function Navigation() {
 
     // Make sure to unsubscribe when the component is unmounted
     return () => unsubscribe();
-
+  });
+  
   const handleLogout = () => {
     auth.signOut().then(() => {
       // Delete all the cookies
@@ -118,7 +119,6 @@ function Navigation() {
         )}
       </ul>
     </nav>
-    
   );
 }
 

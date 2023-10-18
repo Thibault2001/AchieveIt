@@ -87,21 +87,19 @@ const LoginPage = () => {
               }
 
               toast.success('Login Successful');
+            }).catch((error) => {
+              setFirebaseError(error);
+              toast.error(getErrorMessage(error.code));
             });
-          })
-          .catch((error) => {
-            setFirebaseError(error);
-            toast.error(getErrorMessage(error.code));
-          });
-        })
-        .catch((error) => {
-          setFirebaseError(error);
-          toast.error(getErrorMessage(error.code));
-        });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+          }).catch ((error) => {
+        setFirebaseError(error);
+        toast.error(getErrorMessage(error.code));
+      });
+    } 
+  } finally {
+    setIsSubmitting(false);
+  }
+}
 
   // Handle input changes in the form
   const handleInputChange = (event) => {
@@ -183,13 +181,12 @@ const LoginPage = () => {
             Confirm Reset
           </button>
           <br />
-          <button className = "link-button" onClick={goBackToMainForm}>
+          <button className="link-button" onClick={goBackToMainForm}>
             Go Back
           </button>
-        </form>
+        </>
       )}
-
-      <ToastContainer autoClose={5000}/>
+      <ToastContainer autoClose={5000} />
     </form>
   );
 };
