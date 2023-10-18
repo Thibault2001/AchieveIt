@@ -52,30 +52,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
       setDate('');
       setDescrip('');
       setShowSubgoals(false);
-
-      const user = auth.currentUser;
-    if (user) {
-      const userID = user.uid;
-      setUserID(userID);
-      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
-      console.log(goalRef)
-      set(goalRef, newEvent)
-        .then(() => {
-          toast.success('Goal Created Successfully!');
-          // Clear the fields for the user to add another goal
-          setEvents([...events, newEvent]);
-          setTitle('');
-          setDate('');
-          setDescrip('');
-        })
-        .catch((error) => {
-          toast.error('Failed to Create Goal. Please try again later.'); // Display an error notification on failure
-        });
-
     } else {
       alert('Please select a date in the future.');
     }
-  }
   };
 
   const handleCreateSubgoal = () => {

@@ -113,6 +113,7 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     ...existingEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
     ...newEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
   ];
+
   
     return (
       <div className="goal">
