@@ -87,34 +87,40 @@ const EditEvent = ({
         <Modal open={isOpen} onClose={handleClose}>
             <div className="editModal">
                 <Typography variant="h5">Edit Event</Typography>
-                
+                {/*display previous title and take input */}
                 <p>Previous Title: {title}</p>
                 <input
                     type="text"
                     className="newTitleText"
+                    //keep old title as the value so the user doesn't have to change it if they wish to keep it the same
                     value={newTitle}
                     onChange={titleChange}
                 />
                 <br /><br /><br />
 
+                {/* display previous date and take a new date input */}
                 <p>Previous Date: {date}</p>
                 <input
                     type="date"
+                    //keep old date as the value so the user doesn't have to change it if they wish to keep it the same
                     value={newDate}
                     onChange={dateChange}
                 />
                 <p>Previous Time: {time}</p>
                 <input type="time" value={newTime} onChange={timeChange} />
 
+                {/* display old description and take new input */}
                 <p>Previous Description: {desc}</p>
                 <input
                     type="text"
                     className="newDescText"
+                    //keep old description as the value so the user doesn't have to change it if they wish to keep it the same
                     value={newDesc}
                     onChange={descChange}
                 />
                 <br /><br /><br />
 
+                {/* take new colour input */}
                 <p>Colour:</p>
                 <input
                     type="color"
@@ -124,9 +130,11 @@ const EditEvent = ({
                 <br />
                 <br />
 
+                {/* close button */}
                 <Button variant="contained" onClick={handleClose} style={{ marginTop: 20 }}>
                     Close
                 </Button>
+                {/* customise button */}
                 <Button className="editButton" variant="contained" onClick={updateEvent} style={{ marginTop: 20 }}>
                     Save Changes
                 </Button>

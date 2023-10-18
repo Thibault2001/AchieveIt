@@ -54,7 +54,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
       };
 
       const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
-
+      console.log(goalRef)
       set(goalRef, newEvent)
         .then(() => {
           toast.success('Goal Created Successfully!');
