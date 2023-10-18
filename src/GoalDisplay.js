@@ -21,6 +21,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
   const [date, setDate] = useState('');
   const [descrip, setDescrip] = useState('');
+  const [userID, setUserID] = useState(null);
 
   // Allows a user to enter a Title for the goal
   const titleChange = (event) => {
@@ -52,7 +53,10 @@ function GoalDisplay({ selectedItem, closeModal }) {
         date: date,
         description: descrip,
       };
-
+      const user = auth.currentUser;
+    if (user) {
+      const userID = user.uid;
+      setUserID(userID);
       const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
       console.log(goalRef)
       set(goalRef, newEvent)
@@ -70,6 +74,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
     } else {
       toast.error('Please select a date in the future.'); // Display an error notification if the date is not valid
     }
+  }
   };
 
   return (
