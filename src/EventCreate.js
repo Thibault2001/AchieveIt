@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GetColour } from './Event.js';
 
-function EventDisplay({ selectedItem, closeModal }) {
+function CreateEvent({ selectedItem, closeModal }) {
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState(selectedItem ? selectedItem.name : '');
   const [, setType] = useState('');
@@ -18,7 +18,7 @@ function EventDisplay({ selectedItem, closeModal }) {
   const [selectedTime, setSelectedTime] = useState('00:00');
   const [selectedReminderTime, setSelectedReminderTime] = useState('at_event');
   const [, setIsEventAdded] = useState(null); // initialisation
-
+  const [toCreate, setToCreate] = useState(true);
   const user = auth.currentUser;
   const userID = user ? user.uid : '';
 
@@ -33,12 +33,6 @@ function EventDisplay({ selectedItem, closeModal }) {
   const descChange = (event) => {
     setDesc(event.target.value);
   };
-
-  const colourChange = (event) => {
-    const newColour = event.target.value;
-    setColour(newColour.substring(1));
-  }
-
 
   const handleCreateEvent = () => {
     const newEvent = {
@@ -58,6 +52,7 @@ function EventDisplay({ selectedItem, closeModal }) {
         // Event added with success
         setIsEventAdded(true);
         toast.success('Adding Event Successfully!');
+        setToCreate(false)
       })
       .catch((error) => {
         // Event not added
@@ -97,7 +92,7 @@ function EventDisplay({ selectedItem, closeModal }) {
           if (snapshot.exists()) {
             const titleData = snapshot.val();
             console.log(`if ${titleData} == ${selectedItem.name}`)
-            if (titleData == selectedItem.name) {
+            if (titleData === selectedItem.name) {
               get(colourRef).then((snapshot) => {
                 if (snapshot.exists()) {
                   const colourData = snapshot.val();
@@ -126,22 +121,6 @@ function EventDisplay({ selectedItem, closeModal }) {
     }
   }, [selectedItem.name]);
 
-
-
-  /* GetColour(selectedItem.name) === "CUSTOMCOLOUR" && (
-     <div>
-        <p>Choose a color:</p>
-        <input
-          type="color"
-          id="colourPick"
-          onChange={colourChange}
-        />
-    
-      </div>
-      setColour(colour)
-    )*/
-
-
   return (
     <body>
       <div className='createEvent'>
@@ -160,17 +139,11 @@ function EventDisplay({ selectedItem, closeModal }) {
         />
 
         <p>{selectedItem ? selectedItem.name : ''} Time (24 Hour Time):</p>
-        <select
+        <input
           type="time"
           value={selectedTime}
           onChange={(e) => setSelectedTime(e.target.value)}
-        >
-          {timeOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        />
 
         <p>{selectedItem ? selectedItem.name : ''} Description:</p>
         <textarea
@@ -204,17 +177,26 @@ function EventDisplay({ selectedItem, closeModal }) {
               reminderTime={event.reminderTime}
               description={event.eventDescription}
               colour={colour}
+              userID={userID}
             />
           ))}
         </div>
+        <div>
+          {toCreate && (
+            <div>
+              <button className='createEventButton' onClick={handleCreateEvent}>
+                Create Event
+              </button>
+            </div>
 
-        <button className='createEventButton' onClick={handleCreateEvent}>
-          Create Event
-        </button>
+          )}
+
+        </div>
+
       </div>
       <ToastContainer autoClose={5000} />
-    </body>
+    </body >
   );
 }
 
-export default EventDisplay;
+export default CreateEvent;
