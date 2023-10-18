@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Typography, Button } from "@mui/material";
-import "./CSS_files/EditEvent.css"
-import { auth, ref, set, db, get } from './firebase';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { GetColour } from './Event.js';
+import "./CSS_files/EditEvent.css";
+import { auth, ref, set, db } from "./firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GetColour } from "./Event.js";
 
 const EditEvent = ({
+    //take in values that have been passed in
     isOpen,
     title,
     type,
@@ -16,97 +17,112 @@ const EditEvent = ({
     desc,
     handleClose,
     userID,
-    colour
+    colour,
 }) => {
-    console.log(title, type, date, time, reminderTime, desc, isOpen, colour)
+    //make the new variables for the edited fields
+    const [newTitle, setNewTitle] = useState(title);
+    const [newDate, setNewDate] = useState(date);
+    const [newDesc, setNewDesc] = useState(desc);
+    const [newColour, setNewColour] = useState(colour);
+    const [newTime, setNewTime] = useState(time);
 
-    const [newTitle, setTitle] = (useState(title))
-    const [newDate, setDate] = useState(date);
-    const [newDesc, setDesc] = useState(desc);
-    const [newColour, setColour] = useState(colour);
-    const [newTime, setTime] = useState(time);
+    //set the new variables 
+    useEffect(() => {
+        setNewTitle(title);
+        setNewDate(date);
+        setNewDesc(desc);
+        setNewColour(colour);
+        setNewTime(time);
+    }, [title, date, desc, colour, time]);
 
+    //set the changing functions
     const titleChange = (event) => {
-        setTitle(event.target.value);
+        setNewTitle(event.target.value);
     };
 
     const dateChange = (event) => {
-        setDate(event.target.value);
+        setNewDate(event.target.value);
     };
 
     const descChange = (event) => {
-        setDesc(event.target.value);
+        setNewDesc(event.target.value);
     };
 
     const colourChange = (event) => {
-        const newColour = (event.target.value)
-        setColour(newColour.substring(1))
-    }
+        setNewColour(event.target.value.substring(1));
+    };
 
     const timeChange = (event) => {
-        setTime(event.target.value);
+        setNewTime(event.target.value);
     };
 
-    const editedEvent = {
-        eventID: newTitle,
-        eventTitle: newTitle,
-        eventType: type,
-        eventDate: newDate,
-        eventTime: newTime,
-        eventDescription: newDesc,
-        reminderTime: reminderTime,
-        colour: newColour
-    };
-
+    //update the database with the updated event, and clear the old event
     const updateEvent = () => {
-        const eventRef = ref(db, `calendar/${userID}/events/${title}`);
-        console.log({ editedEvent })
-        set(eventRef, null)
-        const newEventRef = ref(db, `calendar/${userID}/events/${newTitle}`);
-        set(newEventRef, editedEvent)
-            .then(() => {
-                // toast.success('Edited Event!');
-            })
-            .catch((error) => {
-                // toast.error('Failed to edit event.');
-                // console.error('Error editing event: ', error);
-            });
-        handleClose();
-    }
-    return (
+        //path to where edited event will be saved
+        const editedEventRef = ref(db, `calendar/${userID}/events/${newTitle}`);
+        //path to original event (to clear)
+        const oldEventRef = ref(db, `calendar/${userID}/events/${title}`);
+        //construct new event with new variables
+        const updatedEvent = {
+            eventID: newTitle,
+            eventTitle: newTitle,
+            eventType: type,
+            eventDate: newDate,
+            eventTime: newTime,
+            eventDescription: newDesc,
+            reminderTime: reminderTime,
+            colour: newColour,
+        };
 
+        //clear old event
+        set(oldEventRef, null)
+        //save new event
+        set(editedEventRef, updatedEvent)
+        //close modal
+        handleClose()
+    };
+
+    return (
+        //present modal
         <Modal open={isOpen} onClose={handleClose}>
-            <div className="editModal" >
+            <div className="editModal">
                 <Typography variant="h5">Edit Event</Typography>
+                
                 <p>Previous Title: {title}</p>
-                <input type="text"
+                <input
+                    type="text"
                     className="newTitleText"
-                    placeholder={title}
+                    value={newTitle}
                     onChange={titleChange}
-                ></input>
+                />
                 <br /><br /><br />
+
                 <p>Previous Date: {date}</p>
-                <input type="date"
-                    value={date}
-                    placeholder={date}
-                    onChange={dateChange}></input>
+                <input
+                    type="date"
+                    value={newDate}
+                    onChange={dateChange}
+                />
                 <p>Previous Time: {time}</p>
-                <input type="time"
-                    onChange={timeChange}></input>
+                <input type="time" value={newTime} onChange={timeChange} />
 
                 <p>Previous Description: {desc}</p>
-                <input type="text"
+                <input
+                    type="text"
                     className="newDescText"
-                    placeholder={desc}
+                    value={newDesc}
                     onChange={descChange}
-                ></input>
+                />
                 <br /><br /><br />
 
                 <p>Colour:</p>
-                <input type="color"
-                    onChange={colourChange}>
-                </input>
-                <br /><br />
+                <input
+                    type="color"
+                    value={`#${newColour}`}
+                    onChange={colourChange}
+                />
+                <br />
+                <br />
 
                 <Button variant="contained" onClick={handleClose} style={{ marginTop: 20 }}>
                     Close
