@@ -15,6 +15,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [subgoalTitle, setSubgoalTitle] = useState('');
   const [subgoalDate, setSubgoalDate] = useState('');
   const [subGoalDesc, setSubGoalDesc] = useState('');
+  const [subgoalStartTime, setSubgoalStartTime] = useState('');
+  const [subgoalEndTime, setSubgoalEndTime] = useState('');
+  const [error, setError] = useState('');
 
   const user = auth.currentUser;
   const userID = user ? user.uid : '';
@@ -37,6 +40,14 @@ function GoalDisplay({ selectedItem, closeModal }) {
   };
 
   const handleCreateGoal = () => {
+    if (!title || !date || !descrip) {
+      setError('Please fill in all goal fields.');
+      return;
+    }
+
+    setError('');
+
+    console.log("Creating goal...");
     const currentDate = new Date();
     const selectedDate = new Date(date);
     if (selectedDate > currentDate) {
@@ -45,6 +56,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         title: title,
         date: date,
         description: descrip,
+        isSubgoal: false,
       };
 
       setGoals([...goals, newGoal]);
@@ -52,43 +64,38 @@ function GoalDisplay({ selectedItem, closeModal }) {
       setDate('');
       setDescrip('');
       setShowSubgoals(false);
-
-      const user = auth.currentUser;
-    if (user) {
-      const userID = user.uid;
-      setUserID(userID);
-      const goalRef = ref(db, `calendar/${userID}/goals/${title}`);
-      console.log(goalRef)
-      set(goalRef, newEvent)
-        .then(() => {
-          toast.success('Goal Created Successfully!');
-          // Clear the fields for the user to add another goal
-          setEvents([...events, newEvent]);
-          setTitle('');
-          setDate('');
-          setDescrip('');
-        })
-        .catch((error) => {
-          toast.error('Failed to Create Goal. Please try again later.'); // Display an error notification on failure
-        });
-
     } else {
       alert('Please select a date in the future.');
     }
-  }
   };
 
   const handleCreateSubgoal = () => {
-    const newSubgoal = {
-      id: goals.length + 1,
-      title: subgoalTitle,
-      date: subgoalDate,
-      description: subGoalDesc,
-    };
-    setGoals([...goals, newSubgoal]);
-    setSubgoalTitle('');
-    setSubgoalDate('');
-    setSubGoalDesc('');
+    if (showSubgoals) {
+      if (!subgoalTitle || !subgoalDate || !subGoalDesc) {
+        setError('Please fill in all subgoal fields.');
+        return;
+      }
+      setError('');
+
+      const newSubgoal = {
+        id: goals.length + 1,
+        title: subgoalTitle,
+        date: subgoalDate,
+        description: subGoalDesc,
+        isSubgoal: true,
+        startTime: subgoalStartTime,
+        endTime: subgoalEndTime,
+      };
+
+      setGoals([...goals, newSubgoal]);
+      setSubgoalTitle('');
+      setSubgoalDate('');
+      setSubGoalDesc('');
+      setSubgoalStartTime('');
+      setSubgoalEndTime('');
+    } else {
+      setShowSubgoals(true);
+    }
   };
 
   return (
@@ -156,6 +163,20 @@ function GoalDisplay({ selectedItem, closeModal }) {
             onChange={(e) => setSubgoalDate(e.target.value)}
           />
 
+          <p>Start Time:</p>
+          <input
+            type="time"
+            value={subgoalStartTime}
+            onChange={(e) => setSubgoalStartTime(e.target.value)}
+          />
+
+          <p>End Time:</p>
+          <input
+            type="time"
+            value={subgoalEndTime}
+            onChange={(e) => setSubgoalEndTime(e.target.value)}
+          />
+
           <p>Description:</p>
           <textarea
             id="textAreaDescription"
@@ -168,14 +189,22 @@ function GoalDisplay({ selectedItem, closeModal }) {
           <button onClick={handleCreateSubgoal}>Create Subgoal</button>
         </div>
       )}
+
+      {error && <p className="error">{error}</p>}
+
       <div className="goalHolder">
         {goals.map((goal) => (
           <div key={goal.id} className="goal-container">
             <p>Goal Type: {selectedItem ? selectedItem.name : ''}</p>
             <h2>Title: {goal.title}</h2>
             <p>Date: {goal.date}</p>
-            <p>Description:</p>
-            <p>{goal.description}</p>
+            {goal.isSubgoal && (
+              <>
+                <p>Start Time: {goal.startTime}</p>
+                <p>End Time: {goal.endTime}</p>
+              </>
+            )}
+            <p>Description: {goal.description}</p>
           </div>
         ))}
       </div>
