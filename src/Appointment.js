@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import EventDisplay from './EventDisplay' //Importing EventDisplay file
+import EventDisplay from './eventDisplay2' //Importing EventDisplay file
 import'./CSS_files/Goal.css';
 import { db, auth, ref, onValue, onAuthStateChanged } from './firebase';
 
@@ -113,6 +113,7 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     ...existingEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
     ...newEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
   ];
+
   
     return (
       <div className="goal">
@@ -147,5 +148,5 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
                 </Modal>
            </div>
       </div>
-
+    );}
 export default Appointment;
