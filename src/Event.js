@@ -30,7 +30,7 @@ function Event({ title, type, date, time, reminderTime, description, colour }) {
   };
   //display for the event:
   return (
-    <div className="event" style={{ backgroundColor: `#${colour}` }}> {/*Will display background colour for card based on event type*/}
+    <div className="event" style={{ backgroundColor: `#${colour}`}}> {/*Will display background colour for card based on event type*/}
       <h2><u>{title}</u></h2><br />
       <h3>Event Type: <u>{type}</u></h3> <br />
       <h3>Date: <u>{date}</u></h3>
@@ -60,14 +60,6 @@ function GetColour(type) {
     case "Birthday":
       return "#0ab5bbc7" //Turquoise
     case "Appointment":
-      return "#d4ff00" //Yellow
-    case "Long-Term Goal":
-      return "#d4ff00" //Yellow74
-    case "Short-Term Goal":
-      return "#d4ff00" //Yellow
-    case "Financial Goal":
-      return "#d4ff00" //Yellow
-    case "Career Goal":
       return "#d4ff00" //Yellow
     default:
       return "CUSTOMCOLOUR"
@@ -159,7 +151,7 @@ function EventDisplayFunction() {
 
         <div className='eventHolder'>
           {/* Map through the events and display Event component for each one */}
-          {/*
+{/*
           {events.map((event) => (
             <Event
               key={event.id}

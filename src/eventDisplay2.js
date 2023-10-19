@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 //import { GetColour } from "./Event";
 import { Box, Typography, Card } from "@mui/material";
 import { auth, db, ref, onValue, set } from "./firebase";
-import { EditEvent } from "./editEvent.js"
-
 
 const reminderTimeOptions = {
-
   at_event: 'At Time of Event',
   '5': '5 Minutes',
   '10': '10 Minutes',
@@ -23,15 +20,10 @@ const reminderTimeOptions = {
   '20160': '2 Weeks',
 };
 
-
 const EventDisplay = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const [userID, setUserID] = useState(null);
-  const [editEventData, setEditEventData] = useState(null);
-
-
-  const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false);
+  const [, setUserID] = useState(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -84,7 +76,10 @@ const EventDisplay = () => {
               <Card
                 className={`event-display-card ${selectedEvents.includes(event.eventID) ? 'selected' : ''}`}
 
-                style={{ backgroundColor: `#${event.colour}` }}
+                
+                style={{ backgroundColor: `#${event.colour}`}}
+                
+                
                 key={event.eventID}
               >
                 <input
@@ -125,32 +120,7 @@ const EventDisplay = () => {
                   <br />
                   {event.eventDescription}
                 </p>
-                <button
-                  className="editEventButton"
-                  onClick={() => {
-                    setIsEditEventModalOpen(true);
-                    setEditEventData(event);
-                  }}
-                >
-                  Customise
-                </button>
-                <EditEvent
-                  isOpen={isEditEventModalOpen}
-                  title={editEventData && editEventData.eventTitle}
-                  type={editEventData && editEventData.eventType}
-                  date={editEventData && editEventData.eventDate}
-                  time={editEventData && editEventData.eventTime}
-                  reminderTime={editEventData && editEventData.reminderTime}
-                  desc={editEventData && editEventData.eventDescription}
-                  colour = {editEventData && editEventData.colour}
-                  userID={userID}
-                  handleClose={() => {
-                    setIsEditEventModalOpen(false);
-                    setEditEventData(null); // clear event data after modal is closed
-                  }}
-                />
-
-
+               {/* <p>Colour: {event.colour}</p> ------ debugging colour*/}
               </Card>
             ))}
           </div>
