@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import EventDisplay from './EventDisplay' //Importing EventDisplay file
-import './CSS_files/Goal.css';
+import EventDisplay from './eventDisplay2' //Importing EventDisplay file
+import'./CSS_files/Goal.css';
 import { db, auth, ref, onValue, onAuthStateChanged } from './firebase';
 
 /* 
@@ -113,41 +113,39 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     ...newEventTypes.map((eventType) => ({ id: eventType.id, name: eventType.name })),
   ];
 
-
-  return (
-    <div className="goal">
-      <button onClick={toggleDropdown} className="goal-dropdown-list standard-button" style={{ marginRight: "10px" }}> {/*Button to toggle the dropdown menu */}
-        Add Event
-      </button>
-
-      {/* Dropdown menu */}
-      {isDropdownOpen && (
-        <ul className="goal-types" style={{ zIndex: 9999 }}>
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className={selectedItem === item ? 'selected' : ''}
-              onClick={() => handleItemClick(item)}
-            >
-              {item.name}
-            </li>
-
-          ))}
-        </ul>
-      )}
-      {/* Modal for displaying the selected event type, e.g. Sports */}
-      <div className="modal">
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="modal popup"
-        >
-          <EventDisplay selectedItem={selectedItem} closeModal={closeModal} /> {/*Calls the EventDisplay*/}
-          <button onClick={closeModal}> Close </button>
-        </Modal>
+    return (
+      <div className="goal">
+           <button onClick={toggleDropdown} className="goal-dropdown-list standard-button" style={{ marginRight: "10px" }}> {/*Button to toggle the dropdown menu */}
+            Add Event
+           </button>   
+           
+            {/* Dropdown menu */}  
+            {isDropdownOpen && (
+            <ul className="goal-types" style={{ zIndex: 9999}}>
+                {items.map((item) => (
+                    <li
+                    key={item.id}
+                    className={selectedItem === item ? 'selected' : ''}
+                    onClick={() => handleItemClick(item)}
+                    >
+                       {item.name} 
+                    </li>
+                    
+                ))}
+            </ul>
+            )}
+            {/* Modal for displaying the selected event type, e.g. Sports */}
+            <div className="modal"> 
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="modal popup"
+                >
+                    <EventDisplay selectedItem={selectedItem} closeModal={closeModal}/> {/*Calls the EventDisplay*/}
+                    <button  onClick={closeModal}> Close </button>
+                </Modal>
+           </div>
       </div>
-    </div>
-  )
-};
-
+    );}
+    
 export default Appointment;
