@@ -88,46 +88,38 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   ];
 
   return (
-    <div className="appointment">
-      <button onClick={toggleDropdown} className="appointment-toggle">
-        {/* Button to toggle the dropdown menu */}
-        Add Event
-      </button>
+    <div className="goal">
+         <button onClick={toggleDropdown} className="goal-dropdown-list standard-button" style={{ marginRight: "10px" }}> {/*Button to toggle the dropdown menu */}
+          Add Event
+         </button>   
 
-      {/* Dropdown menu */}
-      {isDropdownOpen && (
-        <ul className="appointment-menu">
-          {items.map((item, index) => (
-            <li
-              key={index}
-              className={selectedItem === item ? 'selected' : ''}
-              onClick={() => handleItemClick(item)}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
-      )}
+          {/* Dropdown menu */}  
+          {isDropdownOpen && (
+          <ul className="goal-types" style={{ zIndex: 9999}}>
+              {items.map((item) => (
+                  <li
+                  key={item.id}
+                  className={selectedItem === item ? 'selected' : ''}
+                  onClick={() => handleItemClick(item)}
+                  >
+                     {item.name} 
+                  </li>
 
-      {/* Modal for displaying the selected event type, e.g., Sports */}
-      <div className="modal-custom">
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Popup Modal"
-        >
-          <CreateEvent
-            selectedItem={selectedItem}
-            closeModal={closeModal}
-            events={eventTypes} // Pass events to EventDisplay
-          />
-          <button className="closeButton" onClick={closeModal}>
-            Close
-          </button>
-        </Modal>
-      </div>
+              ))}
+          </ul>
+          )}
+          {/* Modal for displaying the selected event type, e.g. Sports */}
+          <div className="modal"> 
+              <Modal
+                  isOpen={isModalOpen}
+                  onRequestClose={closeModal}
+                  contentLabel="modal popup"
+              >
+                  <CreateEvent selectedItem={selectedItem} closeModal={closeModal}/> {/*Calls the EventDisplay*/}
+                  <button  onClick={closeModal}> Close </button>
+              </Modal>
+         </div>
     </div>
-  );
-}
+  );}
 
-export default Appointment;
+  export default Appointment;
