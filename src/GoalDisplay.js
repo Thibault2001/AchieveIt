@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import './CSS_files/App.css';
-import { auth, ref, set, db } from './firebase';
+import { auth } from './firebase'; // Import the auth object from your Firebase module
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CSS_files/GoalDisplay.css'; // Add your CSS file for styling
 
 function GoalDisplay({ selectedItem, closeModal }) {
-  const [, setUserID] = useState(null);
   const [goals, setGoals] = useState([]);
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
@@ -19,10 +18,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [subgoalStartTime, setSubgoalStartTime] = useState('');
   const [subgoalEndTime, setSubgoalEndTime] = useState('');
   const [error, setError] = useState('');
-  const [currentGoalTitle, setCurrentGoalTitle] = useState('');
-
 
   const user = auth.currentUser;
+  const userID = user ? user.uid : '';
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -61,30 +59,13 @@ function GoalDisplay({ selectedItem, closeModal }) {
         isSubgoal: false,
       };
 
-      if (user) {
-        const userID = user.uid;
-        setUserID(userID);
-        const goalTitle = title;
-        setUserID(userID);
-        setCurrentGoalTitle(goalTitle);
-        const goalRef = ref(db, `calendar/${userID}/goals/${goalTitle}`);
-        console.log(goalRef)
-        set(goalRef, newGoal)
-          .then(() => {
-            toast.success('Goal Created Successfully!');
-            // Clear the fields for the user to add another goal
-            setGoals([...goals, newGoal]);
-            setTitle('');
-            setDate('');
-            setDescrip('');
-            setShowSubgoals(false);
-          })
-          .catch((error) => {
-            toast.error('Failed to Create Goal. Please try again later.'); // Display an error notification on failure
-          });
-        }
-      } else {
-      toast.error('Please select a date in the future.');
+      setGoals([...goals, newGoal]);
+      setTitle('');
+      setDate('');
+      setDescrip('');
+      setShowSubgoals(false);
+    } else {
+      alert('Please select a date in the future.');
     }
   };
 
@@ -95,7 +76,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         return;
       }
       setError('');
-      
+
       const newSubgoal = {
         id: goals.length + 1,
         title: subgoalTitle,
@@ -106,25 +87,12 @@ function GoalDisplay({ selectedItem, closeModal }) {
         endTime: subgoalEndTime,
       };
 
-      if (user) {
-        const userID = user.uid;
-        const parentGoalTitle = currentGoalTitle;
-        const goalRef = ref(db, `calendar/${userID}/goals/${parentGoalTitle}/subgoals/${subgoalTitle}`);
-        set(goalRef, newSubgoal)
-          .then(() => {
-            toast.success('Subgoal Created Successfully!');
-            // Clear the fields for the user to add another subgoal
-            setGoals([...goals, newSubgoal]);
-            setSubgoalTitle('');
-            setSubgoalDate('');
-            setSubGoalDesc('');
-            setSubgoalStartTime('');
-            setSubgoalEndTime('');
-          })
-          .catch((error) => {
-            toast.error('Failed to Create Subgoal. Please try again later.');
-          });
-        }
+      setGoals([...goals, newSubgoal]);
+      setSubgoalTitle('');
+      setSubgoalDate('');
+      setSubGoalDesc('');
+      setSubgoalStartTime('');
+      setSubgoalEndTime('');
     } else {
       setShowSubgoals(true);
     }
@@ -240,9 +208,8 @@ function GoalDisplay({ selectedItem, closeModal }) {
           </div>
         ))}
       </div>
-      <ToastContainer />
     </div>
   );
 }
-  
+
 export default GoalDisplay;
