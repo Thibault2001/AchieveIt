@@ -99,6 +99,14 @@ function GoalDisplay({ selectedItem, closeModal }) {
         return;
       }
 
+      const currentDate= new Date();
+      const selectedSubgoalDate = new Date(subgoalDate);
+
+      if (selectedSubgoalDate < currentDate) {
+        setError('Subgoal date cannot be in the past.');
+        return;
+      }
+      
       setError('');
       
       const newSubgoal = {
