@@ -93,19 +93,24 @@ const WelcomeUser = () => {
             const reminderDateTime = new Date(
               eventDateTime.getTime() - reminderTime * 60000
             );
-
-            if (currentTime >= reminderDateTime) {
-              toast.info(
-                `Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`,
-                { autoClose: 30000 }
-              );
-            }
           });
         }
       });
     }
   }
 };
+  useEffect(() =>
+  {
+    handleCheckReminders();
+
+    const interval = setInterval(() =>
+    {
+      handleCheckReminders();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
 
 
   return (

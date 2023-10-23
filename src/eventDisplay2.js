@@ -5,6 +5,7 @@ import { auth, db, ref, onValue, set } from "./firebase";
 
 const reminderTimeOptions = {
   at_event: 'At Time of Event',
+  '1': '1 Minute',
   '5': '5 Minutes',
   '10': '10 Minutes',
   '15': '15 Minutes',
