@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, deleteUser, onAuthStateChanged} from "firebase/auth";
 import { getDatabase, ref, get, onValue, remove , set} from 'firebase/database';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 // Configuration Firebase
 const firebaseConfig = {
@@ -22,13 +23,14 @@ const auth = getAuth(app);
 
 // Get Firestore instance
 const db = getDatabase(app);
-
+const firestore = getFirestore(app);
 
 // export 
 export {
   app,
   auth,
   db,
+  firestore,
   onAuthStateChanged,
   remove,
   set,
@@ -36,4 +38,5 @@ export {
   get,
   onValue,
   deleteUser,
+  getDoc,
 };

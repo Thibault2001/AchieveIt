@@ -14,9 +14,13 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.1.0",
     "babel": "^6.23.0",
+    "crypto": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
     "firebase": "^10.3.0",
     "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.4.1",
     "fullcalendar": "^6.1.9",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
@@ -25,6 +29,8 @@
     "modal": "^1.2.0",
     "moment": "^2.29.4",
     "mui": "^0.0.1",
+    "nodemailer": "^6.9.7",
+    "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-big-calendar": "^1.8.4",
     "react-calendar": "^4.6.0",
@@ -36,13 +42,16 @@
     "react-scripts": "^5.0.1",
     "react-time-picker": "^6.5.0",
     "react-toastify": "^9.1.3",
+    "stream-browserify": "^3.0.0",
     "toastify": "^2.0.1",
+    "url": "^0.11.3",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -67,6 +76,7 @@
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
-    "jsdom": "^22.1.0"
+    "jsdom": "^22.1.0",
+    "react-app-rewired": "^2.2.1"
   }
 }

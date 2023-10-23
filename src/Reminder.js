@@ -3,6 +3,7 @@ import { auth, db, ref, get } from './firebase';
 import { toast } from 'react-toastify';
 import {update} from 'firebase/database';
 import { event } from 'jquery';
+import { sendReminderEmail } from './sendReminderEmail';
 
 const Reminders = ({ onCheckReminders }) =>
 {
@@ -37,6 +38,7 @@ const Reminders = ({ onCheckReminders }) =>
 
                                             const eventRefToUpdate = ref(db, `calendar/${userID}/events/${eventID}`);
                                             await update(eventRefToUpdate, {notificationSent: true});
+                                            await sendReminderEmail(eventData);
                                             await new Promise(resolve => setTimeout(resolve, 1000));                                            
                                         }
                                     }
@@ -51,6 +53,7 @@ const Reminders = ({ onCheckReminders }) =>
                                             
                                             const eventRefToUpdate = ref(db, `calendar/${userID}/events/${eventID}`);
                                             await update(eventRefToUpdate, {notificationSent: true});
+                                            await sendReminderEmail(eventData);
                                             await new Promise(resolve => setTimeout(resolve, 1000));
                                         }    
                                     }
