@@ -2,6 +2,7 @@ import {useEffect} from 'react';
 import { auth, db, ref, get } from './firebase';
 import { toast } from 'react-toastify';
 import {update} from 'firebase/database';
+import { event } from 'jquery';
 
 const Reminders = ({ onCheckReminders }) =>
 {
@@ -27,16 +28,31 @@ const Reminders = ({ onCheckReminders }) =>
 
                                 if(!notificationSent)
                                 {
-                                    const eventDateTime = new Date(`${eventDate} ${eventTime}`);
-                                    const reminderDateTime = new Date(eventDateTime.getTime() - reminderTime * 60000);
-
-                                    if(currentTime >= reminderDateTime) //Change to == when happy with outcome
+                                    if(eventData.reminderTime === 'at_event')
                                     {
-                                        toast.info(`Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`, { autoClose: 30000});
-                                        
-                                        const eventRefToUpdate = ref(db, `calendar/${userID}/events/${eventID}`);
-                                        await update(eventRefToUpdate, {notificationSent: true});
-                                        await new Promise(resolve => setTimeout(resolve, 1000));
+                                        const eventDateTime = new Date(`${eventDate} ${eventTime}`);
+                                        if(currentTime >= eventDateTime)
+                                        {
+                                            toast.info(`Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`, { autoClose: 30000});
+
+                                            const eventRefToUpdate = ref(db, `calendar/${userID}/events/${eventID}`);
+                                            await update(eventRefToUpdate, {notificationSent: true});
+                                            await new Promise(resolve => setTimeout(resolve, 1000));                                            
+                                        }
+                                    }
+                                    else
+                                    {
+                                        const eventDateTime = new Date(`${eventDate} ${eventTime}`);
+                                        const reminderDateTime = new Date(eventDateTime.getTime() - reminderTime * 60000);
+    
+                                        if(currentTime >= reminderDateTime) 
+                                        {
+                                            toast.info(`Reminder: ${eventTitle} on ${eventDate} at ${eventTime}`, { autoClose: 30000});
+                                            
+                                            const eventRefToUpdate = ref(db, `calendar/${userID}/events/${eventID}`);
+                                            await update(eventRefToUpdate, {notificationSent: true});
+                                            await new Promise(resolve => setTimeout(resolve, 1000));
+                                        }    
                                     }
                                 }  
                             });
