@@ -9,8 +9,10 @@ import { GetColour } from './Event';
 function MyCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [goals, setGoals] = useState([]);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedGoal, setSelectedGoal] = useState(null);
   const calendarRef = useRef(null);
   const [, setUserID] = useState(null);
 
@@ -31,8 +33,25 @@ function MyCalendar() {
               backgroundColor: GetColour(eventData.eventType),
               borderColor: GetColour(eventData.eventType),
               description: eventData.eventDescription,
+              eventType: eventData.eventType,
+              reminder: eventData.reminderTime,
             }));
             setEvents(eventArray);
+          }
+        });
+
+        const goalsRef = ref(db, `calendar/${userID}/goals`);
+        onValue(goalsRef, (snapshot) => {
+          const goalData = snapshot.val();
+          if (goalData) {
+            const goalArray = Object.entries(goalData).map(([goalID, goalData]) => ({
+              id: goalID,
+              title: goalData.title,
+              start: moment(goalData.date).format('YYYY-MM-DD'),
+              backgroundColor: GetColour('goalsColor'), // PUT THE RIGHT COLOR!
+              description: goalData.description,
+            }));
+            setGoals(goalArray);
           }
         });
       }
@@ -41,29 +60,24 @@ function MyCalendar() {
     return () => unsubscribe();
   }, []);
 
-  // Display event in a popup
   function displayEventInfo(eventData, position) {
     setSelectedEvent(eventData);
     setPopupPosition(position);
   }
 
-  // Close the popup
   function closeEventInfo() {
     setSelectedEvent(null);
   }
 
-  // handle click on event
-  function handleEventClick(info) {
-    const eventData = info.event.extendedProps;
-    const elementRect = info.jsEvent.target.getBoundingClientRect();
-    const position = {
-      top: elementRect.bottom + window.scrollY + 10, // Place of the popup
-      left: elementRect.left + window.scrollX,
-    };
-    displayEventInfo(eventData, position);
+  function displayGoalInfo(goalData, position) {
+    setSelectedGoal(goalData);
+    setPopupPosition(position);
   }
 
-  // Handle date change from input
+  function closeGoalInfo() {
+    setSelectedGoal(null);
+  }
+
   function handleDateChange(date) {
     if (date) {
       setCurrentDate(date);
@@ -86,21 +100,42 @@ function MyCalendar() {
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={events}
-        eventClick={handleEventClick}
+        events={[...events, ...goals]}
+        eventClick={(info) => {
+          if (info.event.extendedProps.description) {
+            displayEventInfo(info.event.extendedProps, {
+              top: info.jsEvent.clientY + window.scrollY + 10,
+              left: info.jsEvent.clientX + window.scrollX,
+            });
+          } else {
+            displayGoalInfo(info.goal.extendedProps, {
+              top: info.jsEvent.clientY + window.scrollY + 10,
+              left: info.jsEvent.clientX + window.scrollX,
+            });
+          }
+        }}
         selectable={true}
         select={(info) => {
           handleDateChange(info.startStr);
         }}
       />
 
-      {/*Display infos of the selected event */}
       {selectedEvent && (
         <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
           <h2>{selectedEvent.title}</h2>
-          <p>Reminder Time: {selectedEvent.start}</p>
-          <p>Description: {selectedEvent.description}</p> {/* display description */}
+          <p>Event Type: {selectedEvent.eventType}</p>
+          <p>Reminder Time: {selectedEvent.reminder}</p>
+          <p>Description: {selectedEvent.description}</p>
           <button onClick={closeEventInfo}>Close</button>
+        </div>
+      )}
+
+      {selectedGoal && (
+        <div className="goal-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
+          <h2>{selectedGoal.title}</h2>
+          <p>Date: {selectedGoal.start}</p>
+          <p>Description: {selectedGoal.description}</p>
+          <button onClick={closeGoalInfo}>Close</button>
         </div>
       )}
     </div>
