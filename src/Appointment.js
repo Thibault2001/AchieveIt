@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CSS_files/Appointment.css';
 import Modal from 'react-modal';
-import CreateEvent from './EventCreate';
+import CreateEvent from './EventCreate.js';
 import { db, auth, ref, onValue, set, onAuthStateChanged } from './firebase';
 
 function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
