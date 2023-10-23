@@ -161,8 +161,20 @@ function CreateEvent({ selectedItem, closeModal }) {
           onChange={(e) => setSelectedReminderTime(e.target.value)}
         >
           <option value="at_event">At Time of Event</option>
+          <option value="1">1 Minute</option>
           <option value="5">5 Minutes</option>
           <option value="10">10 Minutes</option>
+          <option value="15">15 Minutes</option>
+          <option value="30">30 Minutes</option>
+          <option value="60">1 Hour</option>
+          <option value="120">2 Hours</option>
+          <option value="360">6 Hours</option>
+          <option value="720">12 Hours</option>
+          <option value="1440">1 Day</option>
+          <option value="2880">2 Days</option>
+          <option value="4320">3 Days</option>
+          <option value="10080">1 Week</option>
+          <option value="20160">2 Weeks</option>
         </select>
 
         <br />
