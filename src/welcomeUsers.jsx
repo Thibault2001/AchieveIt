@@ -11,7 +11,7 @@ import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
 import './CSS_files/databaseTest.css';
 import AddNewEvent from "./AddNewEvent";
-import Reminders from "./Reminder";
+import Reminders from "./Reminder.js";
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
