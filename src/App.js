@@ -12,6 +12,7 @@ import UserDisplayPage from './adminPages/userDisplay';
 import { auth } from './firebase';
 import Cookies from 'js-cookie';
 import useAutoLogout from './useAutoLogout';
+import Subgoals from './Subgoals';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/welcomeAdmin" element={<WelcomeAdmin />} />
           <Route path="/test" element={<Test />} />
           <Route path="/userDisplay" element={<UserDisplayPage />} />
+          <Route path="/calendar/:userId/goals/:goalTitle/subgoals" element={<Subgoals />} />
         </Routes>
         <div className="logo-text">AchieveIt</div>
       </div>

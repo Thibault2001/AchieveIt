@@ -74,9 +74,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
             toast.success('Goal Created Successfully!');
             // Clear the fields for the user to add another goal
             setGoals([...goals, newGoal]);
-            setTitle('');
-            setDate('');
-            setDescrip('');
+            //setTitle('');
+            //setDate('');
+            //setDescrip('');
             setShowSubgoals(false);
           })
           .catch((error) => {
