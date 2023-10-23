@@ -20,7 +20,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [subgoalEndTime, setSubgoalEndTime] = useState('');
   const [error, setError] = useState('');
   const [currentGoalTitle, setCurrentGoalTitle] = useState('');
-
+  const [subgoals, setSubgoals] = useState([]); // Maintain an array for subgoals
 
   const user = auth.currentUser;
 
@@ -68,7 +68,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         setUserID(userID);
         setCurrentGoalTitle(goalTitle);
         const goalRef = ref(db, `calendar/${userID}/goals/${goalTitle}`);
-        console.log(goalRef)
+        console.log(goalRef);
         set(goalRef, newGoal)
           .then(() => {
             toast.success('Goal Created Successfully!');
@@ -82,9 +82,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
           .catch((error) => {
             toast.error('Failed to Create Goal. Please try again later.'); // Display an error notification on failure
           });
-        }
       } else {
-      toast.error('Please select a date in the future.');
+        toast.error('Please select a date in the future.');
+      }
     }
   };
 
@@ -93,7 +93,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
       setError('Please fill in all the main goal fields before creating a subgoal.');
       return;
     }
-    
+
     if (showSubgoals) {
       if (!subgoalTitle || !subgoalDate || !subGoalDesc) {
         setError('Please fill in all subgoal fields.');
@@ -105,7 +105,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         return;
       }
 
-      const currentDate= new Date();
+      const currentDate = new Date();
       const selectedSubgoalDate = new Date(subgoalDate);
       const selectedMainGoalDate = new Date(date);
 
@@ -120,9 +120,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
       }
 
       setError('');
-      
+
       const newSubgoal = {
-        id: goals.length + 1,
+        id: subgoals.length + 1, // Use subgoals array length to generate a unique ID
         title: subgoalTitle,
         date: subgoalDate,
         description: subGoalDesc,
@@ -138,8 +138,8 @@ function GoalDisplay({ selectedItem, closeModal }) {
         set(goalRef, newSubgoal)
           .then(() => {
             toast.success('Subgoal Created Successfully!');
-            // Clear the fields for the user to add another subgoal
-            setGoals([...goals, newSubgoal]);
+            // Add the new subgoal to the subgoals array
+            setSubgoals([...subgoals, newSubgoal]);
             setSubgoalTitle('');
             setSubgoalDate('');
             setSubGoalDesc('');
@@ -149,7 +149,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
           .catch((error) => {
             toast.error('Failed to Create Subgoal. Please try again later.');
           });
-        }
+      }
     } else {
       setShowSubgoals(true);
     }
@@ -264,10 +264,24 @@ function GoalDisplay({ selectedItem, closeModal }) {
             <p>Description: {goal.description}</p>
           </div>
         ))}
+        {subgoals.map((subgoal) => (
+          <div key={subgoal.id} className="goal-container">
+            <p>Goal Type: {selectedItem ? selectedItem.name : ''}</p>
+            <h2>Title: {subgoal.title}</h2>
+            <p>Date: {subgoal.date}</p>
+            {subgoal.isSubgoal && (
+              <>
+                <p>Start Time: {subgoal.startTime}</p>
+                <p>End Time: {subgoal.endTime}</p>
+              </>
+            )}
+            <p>Description: {subgoal.description}</p>
+          </div>
+        ))}
       </div>
       <ToastContainer />
     </div>
   );
 }
-  
+
 export default GoalDisplay;

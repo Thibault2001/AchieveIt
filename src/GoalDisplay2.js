@@ -10,7 +10,7 @@ import { GetColour } from "./Event";
   It fetches goal data from Firebase Realtime Database and provides
   functionality to select and delete goals.
 */
-const GoalDisplay = () => {
+const GoalDisplay2 = () => {
   const [goals, setGoals] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
   const [, setUserID] = useState(null);
@@ -94,4 +94,4 @@ const GoalDisplay = () => {
   );
 };
 
-export default GoalDisplay;
+export default GoalDisplay2;
