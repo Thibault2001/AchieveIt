@@ -33,6 +33,8 @@ function MyCalendar() {
               backgroundColor: GetColour(eventData.eventType),
               borderColor: GetColour(eventData.eventType),
               description: eventData.eventDescription,
+              eventType: eventData.eventType,
+              reminder: eventData.reminderTime,
             }));
             setEvents(eventArray);
           }
@@ -121,7 +123,8 @@ function MyCalendar() {
       {selectedEvent && (
         <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
           <h2>{selectedEvent.title}</h2>
-          <p>Reminder Time: {selectedEvent.start}</p>
+          <p>Event Type: {selectedEvent.eventType}</p>
+          <p>Reminder Time: {selectedEvent.reminder}</p>
           <p>Description: {selectedEvent.description}</p>
           <button onClick={closeEventInfo}>Close</button>
         </div>
