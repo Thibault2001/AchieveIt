@@ -49,7 +49,8 @@ function EventDisplay({ selectedItem, closeModal }) {
       eventTime: selectedTime,
       eventDescription: desc,
       reminderTime: selectedReminderTime,
-      colour: colour
+      colour: colour,
+      notificationSent: false,
     };
 
     const eventRef = ref(db, `calendar/${userID}/events/${title}`);
