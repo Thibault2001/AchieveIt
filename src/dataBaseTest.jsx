@@ -13,6 +13,8 @@ function MyCalendar() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const calendarRef = useRef(null);
   const [, setUserID] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -67,12 +69,26 @@ function MyCalendar() {
   function handleDateChange(date) {
     if (date) {
       setCurrentDate(date);
+      setSelectedDate(date); // Set the selected date
       if (calendarRef.current) {
         const calendar = calendarRef.current.getApi();
-        calendar.gotoDate(date);
+        calendar.gotoDate(date); // Navigate the calendar to the selected date
       }
     }
   }
+
+  function renderDayCellContent(info) {
+  // We need to compare dates in a way that ignores time, so we'll use moment's 'isSame' function
+  const isSelected = selectedDate && moment(selectedDate).isSame(info.date, 'day');
+  // Apply a class or style conditionally
+  return (
+    <div className={isSelected ? 'selected-date' : ''}>
+      {info.dayNumberText}
+    </div>
+  );
+}
+
+  
 
   return (
     <div>
@@ -92,6 +108,7 @@ function MyCalendar() {
         select={(info) => {
           handleDateChange(info.startStr);
         }}
+        dayCellContent={renderDayCellContent}
       />
 
       {/*Display infos of the selected event */}

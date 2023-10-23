@@ -44,3 +44,13 @@
 .event-popup button:hover {
   background-color: #0056b3;
 }
+
+.selected-date {
+  background-color: #ff4848e9; /* or any color you prefer */
+  border-radius: 50%; /* makes the background color a circle */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
