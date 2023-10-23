@@ -89,11 +89,17 @@ function GoalDisplay({ selectedItem, closeModal }) {
   };
 
   const handleCreateSubgoal = () => {
+    if (!title || !date || !descrip) {
+      setError('Please fill in all the main goal fields before creating a subgoal.');
+      return;
+    }
+    
     if (showSubgoals) {
       if (!subgoalTitle || !subgoalDate || !subGoalDesc) {
         setError('Please fill in all subgoal fields.');
         return;
       }
+
       if (subgoalStartTime >= subgoalEndTime) {
         setError('End time cannot be before or equal to start time');
         return;
@@ -106,7 +112,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         setError('Subgoal date cannot be in the past.');
         return;
       }
-      
+
       setError('');
       
       const newSubgoal = {
