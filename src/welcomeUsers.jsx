@@ -5,12 +5,13 @@ import GoalDisplay2 from "./GoalDisplay2";
 import Goal from './Goals';
 import EventDisplay2 from "./eventDisplay2";
 import CalendarDisplay from "./dataBaseTest";
-import { auth } from './firebase'; // Import Firebase module for authentication
+import { auth, db } from './firebase'; // Import Firebase module for authentication
 import { getDatabase, ref, onValue } from 'firebase/database'; // Import Firebase modules for the database
 import { CSSTransition } from 'react-transition-group';
 import './CSS_files/userWelcome.css';
 import './CSS_files/databaseTest.css';
 import AddNewEvent from "./AddNewEvent";
+import Reminders from "./Reminder.js";
 
 const WelcomeUser = () => {
   const [currentView, setCurrentView] = useState("calendar");
@@ -64,6 +65,47 @@ const WelcomeUser = () => {
   {
     setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
   };
+
+  const handleCheckReminders = () =>
+  {
+    if(currentView === "calendar" || currentView === "events" || currentView === "goals")
+    {
+      const user = auth.currentUser;
+    if (user) {
+      const userID = user.uid;
+      const eventRef = ref(db, `calendar/${userID}/events`);
+
+      onValue(eventRef, (snapshot) => {
+        const events = snapshot.val();
+        if (events) {
+          const currentTime = new Date();
+
+          Object.keys(events).forEach((eventID) => {
+            const eventData = events[eventID];
+            const { eventDate, eventTime, reminderTime, eventTitle } = eventData;
+
+            const eventDateTime = new Date(`${eventDate} ${eventTime}`);
+            const reminderDateTime = new Date(
+              eventDateTime.getTime() - reminderTime * 60000
+            );
+          });
+        }
+      });
+    }
+  }
+};
+  useEffect(() =>
+  {
+    handleCheckReminders();
+
+    const interval = setInterval(() =>
+    {
+      handleCheckReminders();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
 
   return (
     <CSSTransition in={true} appear={true} timeout={500} classNames="page">
@@ -128,6 +170,7 @@ const WelcomeUser = () => {
             {currentView === "events" && <EventDisplay2 />}
             {currentView === "goals" && <GoalDisplay2 />}
           </div>
+          <Reminders onCheckReminders={handleCheckReminders}/>
         </div>
       </Box>
     </CSSTransition>
