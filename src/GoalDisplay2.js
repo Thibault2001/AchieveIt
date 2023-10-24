@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Card } from "@mui/material";
 import { auth, db, ref, onValue, set } from "./firebase";
 import { GetColour } from "./Event";
+import { Link } from "react-router-dom";
 
 /*
   This component displays a list of goals from a user's database.
@@ -10,10 +11,10 @@ import { GetColour } from "./Event";
   It fetches goal data from Firebase Realtime Database and provides
   functionality to select and delete goals.
 */
-const GoalDisplay = () => {
+const GoalDisplay2 = () => {
   const [goals, setGoals] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
-  const [, setUserID] = useState(null);
+  const [userID, setUserID] = useState(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -83,6 +84,10 @@ const GoalDisplay = () => {
                   <br />
                   {goal.description}
                 </p>
+                {/* Add a Link to subgoals page with the specified path */}
+                <Link to={`/calendar/${userID}/goals/${goal.title}/subgoals`}>
+                  View Subgoals
+                </Link>
               </Card>
             ))}
           </div>
@@ -94,4 +99,4 @@ const GoalDisplay = () => {
   );
 };
 
-export default GoalDisplay;
+export default GoalDisplay2;

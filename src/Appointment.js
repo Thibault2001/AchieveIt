@@ -43,6 +43,7 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   // Function to handle the itemClick from the dropdown menu for where the user chooses which event type to select.
   const handleItemClick = (item) => {
     setSelectedItem(item);
+    setIsModalOpen(true);
   };
 
   // Handles the Add Event click. It will display the modal, prompting the user to enter their event details.
@@ -54,6 +55,24 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     }
   };
 
+  //allows the dropdown to close when the menu is not selected
+  //dropdown can close if user selects anywhere else on the page
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.classList.contains('goal-dropdown-list')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener('click', handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   // When the close button is clicked, it will close the modal.
   const closeModal = () => {
     setIsModalOpen(false);
@@ -64,6 +83,25 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  //allows the dropdown to close when the menu is not selected
+  //dropdown can close if user selects anywhere else on the page
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.classList.contains('goal-dropdown-list')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener('click', handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
 
   useEffect(() => {
     // Construct the list of existing event types

@@ -1,0 +1,32 @@
+/* Style for the container */
+.subgoals-container {
+    padding: 20px;
+  }
+  
+  /* Style for each subgoal card */
+  .subgoal-card {
+    background-color: #f0f0f0;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Style for the subgoal title */
+  .subgoal-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the subgoal date */
+  .subgoal-date {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the subgoal description */
+  .subgoal-description {
+    font-size: 14px;
+  }
+  
