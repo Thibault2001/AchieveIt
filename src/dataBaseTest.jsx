@@ -120,24 +120,33 @@ function MyCalendar() {
         }}
       />
 
-      {selectedEvent && (
-        <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
-          <h2>{selectedEvent.title}</h2>
-          <p>Event Type: {selectedEvent.eventType}</p>
-          <p>Reminder Time: {selectedEvent.reminder}</p>
-          <p>Description: {selectedEvent.description}</p>
-          <button onClick={closeEventInfo}>Close</button>
-        </div>
-      )}
+        {selectedEvent && (
+          <div className="event-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
+            <h2>{selectedEvent.title}</h2>
+            {selectedEvent.reminder && (
+            <p>Event Type: {selectedEvent.eventType}</p>
+            )}
+            {selectedEvent.reminder && (
+              <p>Reminder Time: {selectedEvent.reminder}</p>
+            )}
+            {selectedEvent.description && (
+              <p>Description: {selectedEvent.description}</p>
+            )}
+            <button onClick={closeEventInfo}>Close</button>
+          </div>
+        )}
 
-      {selectedGoal && (
-        <div className="goal-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
-          <h2>{selectedGoal.title}</h2>
-          <p>Date: {selectedGoal.start}</p>
-          <p>Description: {selectedGoal.description}</p>
-          <button onClick={closeGoalInfo}>Close</button>
-        </div>
-      )}
+        {selectedGoal && (
+          <div className="goal-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
+            <h2>{selectedGoal.title}</h2>
+            <p>Date: {selectedGoal.start}</p>
+            {selectedGoal.description && (
+              <p>Description: {selectedGoal.description}</p>
+            )}
+            <button onClick={closeGoalInfo}>Close</button>
+          </div>
+        )}
+
     </div>
   );
 }
