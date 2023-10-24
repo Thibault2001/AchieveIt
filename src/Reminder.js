@@ -6,7 +6,9 @@ import { event } from 'jquery';
 
 const Reminders = ({ onCheckReminders }) =>
 {
-        const checkReminders = async () => {
+        //Function to check reminders and display notifications
+        const checkReminders = async () => 
+        {
             console.log("Checking reminder");
             const user = auth.currentUser;
             if(user)
@@ -21,6 +23,7 @@ const Reminders = ({ onCheckReminders }) =>
                     {
                         const currentTime = new Date();
 
+                        //Loops through all events to check + display reminders
                         Object.keys(events).forEach(async (eventID) => 
                             {
                                 const eventData = events[eventID];
@@ -64,6 +67,7 @@ const Reminders = ({ onCheckReminders }) =>
                 
                 };
         };
+        // Effect to check reminders on component mount + scheduling the reminder check
         useEffect(() => 
         {
         checkReminders();
@@ -79,6 +83,7 @@ const Reminders = ({ onCheckReminders }) =>
     return () => clearTimeout(scheduleReminderCheck);
     }, []);
 
+        //returns null as there is no UI to return
         return null;
 };
 

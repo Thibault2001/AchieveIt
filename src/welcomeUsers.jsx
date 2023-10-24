@@ -62,11 +62,13 @@ const WelcomeUser = () => {
     {id: 4, name: 'University'},
   ]);
 
+  //Function to add new event type to state.
   const addNewEventType = (newEventType) => 
   {
     setEventTypes(prevEventTypes => [...prevEventTypes, {id: prevEventTypes.length + 1, name: newEventType}])
   };
 
+  //Checks reminders based on the current calendar view
   const handleCheckReminders = () =>
   {
     if(currentView === "calendar" || currentView === "events" || currentView === "goals")
@@ -76,11 +78,13 @@ const WelcomeUser = () => {
       const userID = user.uid;
       const eventRef = ref(db, `calendar/${userID}/events`);
 
+      //Listens for changes in the events data.
       onValue(eventRef, (snapshot) => {
         const events = snapshot.val();
         if (events) {
           const currentTime = new Date();
 
+          //Loops through all events checking for reminders
           Object.keys(events).forEach((eventID) => {
             const eventData = events[eventID];
             const { eventDate, eventTime, reminderTime, eventTitle } = eventData;
@@ -95,15 +99,18 @@ const WelcomeUser = () => {
     }
   }
 };
+  //Effect to check reminders on component and schedule checks
   useEffect(() =>
   {
     handleCheckReminders();
 
+    //Setting interval to check every 60 seconds
     const interval = setInterval(() =>
     {
       handleCheckReminders();
     }, 60000);
 
+    //Clearing interval
     return () => clearInterval(interval);
   }, []);
 

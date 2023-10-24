@@ -7,15 +7,21 @@ import './CSS_files/AddNewEvent.css';
 
 // This component handles the creation of a new event type using a modal.
 const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addNewEventType }) => {
+    // Used to manage name of type and colour of type
     const [customEventName, setCustomEventName] = useState('');
     const [colour, setColour] = useState('');
+
+    //Function used to handle colour changes
     const colourChange = (event) => {
         const newColour = event.target.value;
         setColour(newColour.substring(1));
       }
+
+    //Used to manage selected custom events and user event types  
     const [selectedCustomEvents, setSelectedCustomEvents] = useState([]);
     const [userEventTypes, setUserEventTypes] = useState([]);
 
+    //Used to get all user's event types from database
     useEffect(() =>
     {
         const user = auth.currentUser;
@@ -40,12 +46,13 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
         }
     }, []);
 
-
+    //Update selected custom events when userEventTypes is updated.
     useEffect(() => 
     {
         setSelectedCustomEvents(userEventTypes.map(event => event.name));
     }, [userEventTypes]);
 
+    //Effect to reset selected custom events when component is used
     useEffect(() => 
     {
         setSelectedCustomEvents([]);
@@ -53,14 +60,16 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
     
     // Function to confirm and create a new event type.
     const confirmCreateEventType = () => {
-        if (customEventName.trim() !== '') {
+        //Checking user input is not empty
+        if (customEventName.trim() !== '') 
+        {
             const user = auth.currentUser;
             const userID = user.uid;
 
             if (user) {
                 const eventRef = ref(db, `calendar/${userID}/eventTypes`);
 
-                // Display a confirmation dialog to the user.
+                // Display a confirmation window to the user.
                 const isConfirmed = window.confirm(`Your event type will be called: ${customEventName}`);
                 
                 if (isConfirmed) {
@@ -100,6 +109,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
         setIsNewEventTypeModalOpen(false);
     };
 
+    //Handles check box changes for selecting types to delete.
     const handleCustomEventCheckboxChange = (eventName) =>
     {
         setSelectedCustomEvents(prevSelected => 
@@ -115,6 +125,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
             });
     };
 
+    //Handling deletion of custom event types
     const handleDeleteCustomEvents = () =>
     {  
         const userConfirmed = window.confirm('Are you sure you want to delete the selected custom events');
@@ -154,6 +165,7 @@ const AddNewEvent = ({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, addN
     }
     }
 
+    //Rendering modal with input fields + buttons
     return (        
         <Modal 
             isOpen={isNewEventTypeModalOpen}
