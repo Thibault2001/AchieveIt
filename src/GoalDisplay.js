@@ -99,7 +99,6 @@ function GoalDisplay({ selectedItem, closeModal }) {
         setError('Please fill in all subgoal fields.');
         return;
       }
-
       if (subgoalStartTime >= subgoalEndTime) {
         setError('End time cannot be before or equal to start time');
         return;
@@ -118,7 +117,7 @@ function GoalDisplay({ selectedItem, closeModal }) {
         setError('Subgoal date cannot be after the main goal date.');
         return;
       }
-
+      
       setError('');
 
       const newSubgoal = {

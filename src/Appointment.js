@@ -55,6 +55,24 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
     }
   };
 
+  //allows the dropdown to close when the menu is not selected
+  //dropdown can close if user selects anywhere else on the page
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.classList.contains('goal-dropdown-list')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener('click', handleClickOutside);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   // When the close button is clicked, it will close the modal.
   const closeModal = () => {
     setIsModalOpen(false);
