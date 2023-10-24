@@ -21,6 +21,8 @@ function GoalDisplay({ selectedItem, closeModal }) {
   const [error, setError] = useState('');
   const [currentGoalTitle, setCurrentGoalTitle] = useState('');
   const [subgoals, setSubgoals] = useState([]); // Maintain an array for subgoals
+  const [hasSubgoal, setHasSubgoal] = useState(false);
+
 
   const user = auth.currentUser;
 
