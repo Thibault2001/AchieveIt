@@ -94,6 +94,25 @@ function GoalDisplay({ selectedItem, closeModal }) {
         setError('Please fill in all subgoal fields.');
         return;
       }
+      if (subgoalStartTime >= subgoalEndTime) {
+        setError('End time cannot be before or equal to start time');
+        return;
+      }
+
+      const currentDate = new Date();
+      const selectedSubgoalDate = new Date(subgoalDate);
+      const selectedMainGoalDate = new Date(date);
+
+      if (selectedSubgoalDate < currentDate) {
+        setError('Subgoal date cannot be in the past.');
+        return;
+      }
+
+      if (selectedSubgoalDate > selectedMainGoalDate) {
+        setError('Subgoal date cannot be after the main goal date.');
+        return;
+      }
+      
       setError('');
       
       const newSubgoal = {
