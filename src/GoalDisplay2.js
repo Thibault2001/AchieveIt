@@ -25,6 +25,7 @@ const GoalDisplay2 = () => {
 
       const goalsRef = ref(db, `calendar/${userID}/goals`);
 
+      //fetch goal data from Firebase Realtime Database
       onValue(goalsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -37,6 +38,7 @@ const GoalDisplay2 = () => {
     }
   }, []);
 
+  //function to handle selecting or deselecting a goal
   const handleGoalSelect = (goal) => {
     if (selectedGoals.includes(goal.title)) {
       setSelectedGoals(selectedGoals.filter((title) => title !== goal.title));
@@ -45,6 +47,7 @@ const GoalDisplay2 = () => {
     }
   };
 
+  //function to delete selected goals
   const handleDeleteSelectedGoals = () => {
     selectedGoals.forEach((title) => {
       const user = auth.currentUser;

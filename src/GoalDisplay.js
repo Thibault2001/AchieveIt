@@ -5,31 +5,41 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './CSS_files/GoalDisplay.css';
 
+/*
+ * The GoalDisplay component is responsible for rendering and managing the user interface
+ * for creating and displaying goals and subgoals. It provides input fields for users to
+ * enter goal details, handles goal creation, and optionally allows users to create subgoals.
+ * Additionally, it displays a list of created goals and subgoals with their details.
+ */
+
+//Define the GoalDisplay component
 function GoalDisplay({ selectedItem, closeModal }) {
   const [, setUserID] = useState(null);
-  const [goals, setGoals] = useState([]);
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [descrip, setDescrip] = useState('');
-  const [showSubgoalsCheckbox, setShowSubgoalsCheckbox] = useState(false);
-  const [showSubgoals, setShowSubgoals] = useState(false);
-  const [subgoalTitle, setSubgoalTitle] = useState('');
-  const [subgoalDate, setSubgoalDate] = useState('');
-  const [subGoalDesc, setSubGoalDesc] = useState('');
-  const [subgoalStartTime, setSubgoalStartTime] = useState('');
-  const [subgoalEndTime, setSubgoalEndTime] = useState('');
-  const [error, setError] = useState('');
-  const [currentGoalTitle, setCurrentGoalTitle] = useState('');
+  const [goals, setGoals] = useState([]); //Array to store main goals
+  const [title, setTitle] = useState('');//Title of the main goal
+  const [date, setDate] = useState(''); //Date of the main goal
+  const [descrip, setDescrip] = useState(''); //Description of the main goal
+  const [showSubgoalsCheckbox, setShowSubgoalsCheckbox] = useState(false); //Checkbox to show subgoal fields
+  const [showSubgoals, setShowSubgoals] = useState(false); //Flag to display subgoals section
+  const [subgoalTitle, setSubgoalTitle] = useState(''); //Title of the subgoal
+  const [subgoalDate, setSubgoalDate] = useState(''); //Date of the subgoal
+  const [subGoalDesc, setSubGoalDesc] = useState(''); //Description of the subgoal
+  const [subgoalStartTime, setSubgoalStartTime] = useState(''); //Start Time of the subgoal
+  const [subgoalEndTime, setSubgoalEndTime] = useState(''); //End time of the subgoal
+  const [error, setError] = useState(''); //Error message
+  const [currentGoalTitle, setCurrentGoalTitle] = useState(''); //Title of the current goal
   const [subgoals, setSubgoals] = useState([]); // Maintain an array for subgoals
-  const [hasSubgoal, setHasSubgoal] = useState(false);
+  const [hasSubgoal, setHasSubgoal] = useState(false); //Flag to indicate if there are subgoals
 
-
+  //Get the current user from Firebase aunthentication
   const user = auth.currentUser;
 
+  //event handlers for input field changes
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  //Hange changes to the goal's date and check if it's three months in the future
   const dateChange = (event) => {
     const selectedDate = new Date(event.target.value);
     const currentDate = new Date();
@@ -43,7 +53,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
     setDescrip(event.target.value);
   };
 
+  //function to create the main goal
   const handleCreateGoal = () => {
+    //check for empty fields
     if (!title || !date || !descrip) {
       setError('Please fill in all goal fields.');
       return;
@@ -90,7 +102,9 @@ function GoalDisplay({ selectedItem, closeModal }) {
     }
   };
 
+  //function to create a subgoal
   const handleCreateSubgoal = () => {
+    //check for empty fields and time validity
     if (!title || !date || !descrip) {
       setError('Please fill in all the main goal fields before creating a subgoal.');
       return;
