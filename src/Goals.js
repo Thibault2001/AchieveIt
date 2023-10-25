@@ -12,7 +12,7 @@ import './CSS_files/Goal.css';
   or today's dates. Dates need to be future dates. If a past date is entered a 
   warning should appear to say that it needs to be set for the future. 
 */
-function Goal() {
+function Goal({ isGoalModalOpen, toggleGoalModal }) {
   
   //Define state variables for modal, dropdown and select goal
   const [selectedGoal, setSelectedGoal] = useState(null);
@@ -23,12 +23,13 @@ function Goal() {
   //handles the itemClick on the dropdown
   const handleItemClick = (item) => {
     setSelectedGoal(item);
-    setIsModalOpen(true); // Open the modal when a goal type is selected
+    toggleGoalModal(); 
   };
 
   //Closes the pop up modal
   const closeModal = () => {
     setIsModalOpen(false);
+    toggleGoalModal();
   };
 
   //toggles the goal type dropdown
@@ -96,10 +97,10 @@ function Goal() {
       )}
       <div className="modal">
         <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
+         isOpen={isGoalModalOpen} // Use the prop here instead of local state
+          onRequestClose={closeModal} // Handling closing the modal
           contentLabel="modal popup"
-          style={customStyles} // Apply custom styles here
+          style={customStyles}
         >
           <GoalDisplay selectedItem={selectedGoal} closeModal={closeModal} /> {/* Use GoalDisplay */}
           <button onClick={closeModal}> Close </button>

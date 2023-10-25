@@ -44,3 +44,17 @@
 .event-popup button:hover {
   background-color: #0056b3;
 }
+
+.selected-date {
+  background-color: #ff5b68a1; 
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  z-index: 0;
+}

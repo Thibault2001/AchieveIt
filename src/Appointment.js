@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import CreateEvent from './EventCreate.js';
 import { db, auth, ref, onValue, set, onAuthStateChanged } from './firebase';
 
-function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
+function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen, onEventModalChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -48,6 +48,9 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
 
   // Handles the Add Event click. It will display the modal, prompting the user to enter their event details.
   const handleAppointmentClick = () => {
+
+    onEventModalChange(true)
+
     if (selectedItem && selectedItem.name === 'New Event Type') {
       setIsNewEventTypeModalOpen(true);
     } else {
@@ -77,6 +80,8 @@ function Appointment({ isNewEventTypeModalOpen, setIsNewEventTypeModalOpen }) {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsNewEventTypeModalOpen(false);
+
+    onEventModalChange(false);
   };
 
   // Toggles the dropdown
